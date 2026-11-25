@@ -57,6 +57,12 @@ claude plugin install boost-web@claude-boost
 claude plugin install boost-dados@claude-boost
 ```
 
+```powershell
+claude plugin install boost-ads@claude-boost
+```
+
+O `boost-ads` (tráfego pago na Meta) funciona com números colados ou exportados. Para o Claude ler a conta de anúncios direto, ligue o conector oficial da Meta: o passo a passo está no [README do boost-ads](../plugins/boost-ads/README.md).
+
 Os MCPs via `npx` demoram na primeira vez. Se algum aparecer como falho no `/mcp`, rode uma vez o pacote para popular o cache e reabra o Claude:
 
 ```powershell

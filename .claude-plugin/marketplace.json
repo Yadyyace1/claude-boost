@@ -1,20 +1,20 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-boost",
-  "description": "Kit de consultoria para turbinar o Claude Code: economia de tokens, setup no Windows, conectores testados e módulos por perfil (design, vídeo, web, dados).",
+  "description": "Kit de consultoria para turbinar o Claude Code: economia de tokens, setup no Windows, conectores testados e módulos por perfil (design, vídeo, web, dados, anúncios).",
   "owner": {
     "name": "João Vitor"
   },
   "plugins": [
     {
       "name": "boost-base",
-      "description": "Núcleo do kit (todo mundo instala): economia de tokens, setup no Windows, diagnóstico de onboarding, guia de conectores e status line com contexto e limite de uso.",
+      "description": "Núcleo do kit (todo mundo instala): economia de tokens, setup no Windows, diagnóstico de onboarding, guia de conectores, checagem de segurança pré-lançamento e status line com contexto e limite de uso.",
       "category": "productivity",
       "source": "./plugins/boost-base"
     },
     {
       "name": "boost-design",
-      "description": "Módulo de design: Photopea (edição de imagem grátis) e PixelLab (pixel art por IA, chave própria), com o fluxo de trabalho que já funcionou.",
+      "description": "Módulo de design: Photopea (edição de imagem grátis) e PixelLab (pixel art por IA, chave própria), fluxo 3D opcional e game juice (golpes com impacto em jogos).",
       "category": "design",
       "source": "./plugins/boost-design"
     },
@@ -26,7 +26,7 @@
     },
     {
       "name": "boost-web",
-      "description": "Módulo web: Playwright e Chrome DevTools para o Claude abrir, testar e depurar sites, mais o fluxo de deploy na Vercel.",
+      "description": "Módulo web: Playwright e Chrome DevTools para o Claude abrir, testar e depurar sites, fluxo de deploy na Vercel e referências de UI (componentes, microinterações, inspiração).",
       "category": "development",
       "source": "./plugins/boost-web"
     },
@@ -35,6 +35,12 @@
       "description": "Módulo de dados: planilhas, relatórios e dados de mercado (TradingView) com análise técnica. Não é recomendação de investimento.",
       "category": "productivity",
       "source": "./plugins/boost-dados"
+    },
+    {
+      "name": "boost-ads",
+      "description": "Módulo de tráfego pago (Meta Ads): diagnóstico de campanha, metas, estrutura, criativos, copy, auditor de políticas (Meta e OAB para advocacia) e relatório para o cliente.",
+      "category": "productivity",
+      "source": "./plugins/boost-ads"
     }
   ]
 }

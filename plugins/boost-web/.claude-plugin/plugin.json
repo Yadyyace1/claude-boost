@@ -1,7 +1,7 @@
 {
   "name": "boost-web",
-  "version": "0.1.0",
-  "description": "Módulo web do Claude Boost: Playwright e Chrome DevTools para o Claude abrir, testar e depurar sites, mais o fluxo de deploy pela Vercel.",
+  "version": "0.2.0",
+  "description": "Módulo web do Claude Boost: Playwright e Chrome DevTools para o Claude abrir, testar e depurar sites, mais o fluxo de deploy pela Vercel e referências de UI (componentes, microinterações, inspiração).",
   "author": {
     "name": "João Vitor"
   },

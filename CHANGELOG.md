@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-11-25
+
+Material novo, escrito com as nossas palavras a partir de referências que o João juntou.
+
+- **boost-ads (0.1.0, novo):** módulo de tráfego pago na Meta com 7 skills: `diagnostico-campanha` (acha o primeiro gargalo do funil e decide escalar, manter, ajustar ou pausar), `metas-trafego` (CPA máximo, ROAS de equilíbrio, CPL, custo por conversa e 3 cenários), `estrutura-campanha` (modelos, protocolo de teste, checklist pré-lançamento, padrão de nomes), `criativos-ads` (matriz de 5 dimensões, 8 a 12 conceitos), `copy-anuncio` (5 variações por ângulo), `auditor-politicas` (semáforo de risco pela Meta e pelo Provimento 205/2021 da OAB) e `relatorio-cliente` (com versão para WhatsApp). O README do módulo ensina a ligar o MCP oficial da Meta.
+- **boost-base (0.3.0):** skill `checagem-lancamento`, com 20 verificações de segurança antes de publicar um app, e indicação do plugin oficial `claude-security` e do `/security-review`. O `/diagnostico` e a skill `conectores` passam a citar o boost-ads e o conector da Meta.
+- **boost-web (0.2.0):** skill `referencias-ui` (Bencho, MicroKit, Godly, regras de microinteração) e o pstack como opcional de terceiros.
+- **boost-design (0.3.0):** skill `game-juice` (as 8 etapas de um golpe com impacto) usando o `vfx_workbench` do PixelLab.
+- **Docs:** guia de instalação com o boost-ads.
+
 ## 0.2.0 — 2026-11-25
 
 Ferramentas testadas na máquina do João. Cada pessoa instala as suas: elas não vêm embutidas no kit.

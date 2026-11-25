@@ -32,6 +32,7 @@ Com base nas respostas, recomende só o que ela vai usar (cada módulo ligado oc
 | `boost-video` | corta, legenda ou monta vídeo |
 | `boost-web` | tem site, testa páginas, faz deploy |
 | `boost-dados` | planilhas, relatórios, acompanha mercado |
+| `boost-ads` | gerencia anúncios no Facebook e Instagram (tráfego pago) |
 
 Mostre o comando de cada um: `claude plugin install <modulo>@claude-boost`. Sugira também os conectores do app que fazem sentido (ver a skill `conectores`).
 

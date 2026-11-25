@@ -21,6 +21,7 @@ Onde: no app do Claude, **Configurações → Conectores** (Settings → Connect
 | Notion | ler e escrever páginas e bancos | ✅ |
 | Canva | criar e editar designs | ✅ |
 | Vercel | deploy e logs de sites (boost-web) | ✅ |
+| Meta Ads (oficial, beta) | ler e gerenciar contas de anúncio (boost-ads); se não estiver na lista, adicionar como conector personalizado com a URL `https://mcp.facebook.com/ads` | ainda não |
 
 Regras para passar ao usuário:
 

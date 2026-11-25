@@ -8,11 +8,12 @@ Kit para turbinar o **Claude Code**: o que já foi testado e funciona, num pacot
 
 | Plugin | Para quem | O que traz |
 |---|---|---|
-| **boost-base** | todo mundo | economia de tokens, setup no Windows, `/diagnostico` (onboarding + CLAUDE.md pessoal), `/boost-setup` (checagem + status line), guia de conectores, MCP context7 |
-| **boost-design** | quem faz arte, posts, pixel art | Photopea (grátis) + PixelLab (chave própria), fluxo de design |
-| **boost-video** | quem edita vídeo | receitas de FFmpeg, legendas, transcrição com Whisper local |
-| **boost-web** | quem tem site | Playwright + Chrome DevTools, testar site, deploy na Vercel |
+| **boost-base** | todo mundo | economia de tokens (ccusage, rtk, Graphify), setup no Windows, `/diagnostico` (onboarding + CLAUDE.md pessoal), `/boost-setup` (checagem + status line), guia de conectores, checagem de segurança pré-lançamento, MCP context7 |
+| **boost-design** | quem faz arte, posts, pixel art, jogos | Photopea (grátis) + PixelLab (chave própria), fluxo de design, 3D opcional (Tripo), game juice |
+| **boost-video** | quem edita vídeo | receitas de FFmpeg, legendas, transcrição com Whisper local, auto-editor, HyperFrames |
+| **boost-web** | quem tem site | Playwright + Chrome DevTools, testar site, deploy na Vercel, referências de UI |
 | **boost-dados** | planilhas, relatórios, mercado | planilhas e relatórios, TradingView (não é recomendação de investimento) |
+| **boost-ads** | quem gerencia tráfego pago | Meta Ads: diagnóstico, metas, estrutura, criativos, copy, auditor de políticas (Meta + OAB) e relatório; [como ligar o conector da Meta](plugins/boost-ads/README.md) |
 
 Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= tokens).
 
@@ -41,7 +42,7 @@ Módulos opcionais:
 claude plugin install boost-design@claude-boost
 ```
 
-(troque por `boost-video`, `boost-web` ou `boost-dados`).
+(troque por `boost-video`, `boost-web`, `boost-dados` ou `boost-ads`).
 
 ## Atualizar
 
