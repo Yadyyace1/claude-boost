@@ -1,0 +1,9 @@
+{
+  "name": "boost-dados",
+  "version": "0.1.0",
+  "description": "Módulo de dados do Claude Boost: planilhas, relatórios e dados de mercado (TradingView) com análise técnica. Não é recomendação de investimento.",
+  "author": {
+    "name": "João Vitor"
+  },
+  "keywords": ["dados", "planilha", "relatorio", "mercado", "tradingview", "pt-br"]
+}

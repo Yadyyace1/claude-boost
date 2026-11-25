@@ -1,0 +1,40 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-boost",
+  "description": "Kit de consultoria para turbinar o Claude Code: economia de tokens, setup no Windows, conectores testados e módulos por perfil (design, vídeo, web, dados).",
+  "owner": {
+    "name": "João Vitor"
+  },
+  "plugins": [
+    {
+      "name": "boost-base",
+      "description": "Núcleo do kit (todo mundo instala): economia de tokens, setup no Windows, diagnóstico de onboarding, guia de conectores e status line com contexto e limite de uso.",
+      "category": "productivity",
+      "source": "./plugins/boost-base"
+    },
+    {
+      "name": "boost-design",
+      "description": "Módulo de design: Photopea (edição de imagem grátis) e PixelLab (pixel art por IA, chave própria), com o fluxo de trabalho que já funcionou.",
+      "category": "design",
+      "source": "./plugins/boost-design"
+    },
+    {
+      "name": "boost-video",
+      "description": "Módulo de vídeo: receitas de FFmpeg para cortar, legendar, comprimir e montar vídeos, mais transcrição local com Whisper.",
+      "category": "productivity",
+      "source": "./plugins/boost-video"
+    },
+    {
+      "name": "boost-web",
+      "description": "Módulo web: Playwright e Chrome DevTools para o Claude abrir, testar e depurar sites, mais o fluxo de deploy na Vercel.",
+      "category": "development",
+      "source": "./plugins/boost-web"
+    },
+    {
+      "name": "boost-dados",
+      "description": "Módulo de dados: planilhas, relatórios e dados de mercado (TradingView) com análise técnica. Não é recomendação de investimento.",
+      "category": "productivity",
+      "source": "./plugins/boost-dados"
+    }
+  ]
+}

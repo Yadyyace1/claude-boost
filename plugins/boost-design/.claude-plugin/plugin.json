@@ -1,0 +1,18 @@
+{
+  "name": "boost-design",
+  "version": "0.1.0",
+  "description": "Módulo de design do Claude Boost: Photopea (edição de imagem grátis) e PixelLab (pixel art por IA, com a chave da própria pessoa).",
+  "author": {
+    "name": "João Vitor"
+  },
+  "keywords": ["design", "imagem", "pixel-art", "photopea", "pixellab", "pt-br"],
+  "userConfig": {
+    "PIXELLAB_API_KEY": {
+      "type": "string",
+      "title": "Chave da API do PixelLab",
+      "description": "Opcional. Só para quem tem conta no PixelLab (pixellab.ai > conta > API). Sem ela, o Photopea funciona normalmente.",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

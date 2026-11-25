@@ -1,0 +1,4 @@
+# Tudo com LF: o bash quebra com CRLF nos scripts (\r no fim da linha)
+* text=auto eol=lf
+*.png binary
+*.jpg binary

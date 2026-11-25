@@ -1,0 +1,13 @@
+{
+  "photopea": {
+    "command": "npx",
+    "args": ["-y", "photopea-mcp-server"]
+  },
+  "pixellab": {
+    "type": "http",
+    "url": "https://api.pixellab.ai/mcp",
+    "headers": {
+      "Authorization": "Bearer ${user_config.PIXELLAB_API_KEY}"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+# Segredos: nunca no repositório
+.env
+.env.*
+*.key
+*credentials*.json
+.claude/settings.local.json
+
+# Fichas de clientes ficam no vault, não aqui
+clientes/
+fichas/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
