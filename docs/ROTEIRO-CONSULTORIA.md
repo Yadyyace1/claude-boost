@@ -12,7 +12,7 @@ Objetivo: a pessoa sai com o Claude configurado para o trabalho dela **e** com u
 
 | Tempo | Etapa | O que fazer |
 |---|---|---|
-| 0–10 | **Diagnóstico** | conversar sobre o trabalho dela; preencher a ficha |
+| 0–10 | **Diagnóstico** | conversar sobre o trabalho dela; preencher a ficha; se ela já usa o Claude Code, rodar `ccusage daily` e anotar o consumo na ficha (o "antes") |
 | 10–25 | **Instalação** | pré-requisitos, marketplace, `boost-base`, `/boost-base:boost-setup` (status line) |
 | 25–35 | **Perfil** | `/boost-base:diagnostico` → módulos recomendados → `CLAUDE.md` pessoal (ler junto antes de gravar) |
 | 35–40 | **Conectores** | ligar na conta dela só os que ela usa (Configurações → Conectores) |
@@ -29,6 +29,7 @@ Objetivo: a pessoa sai com o Claude configurado para o trabalho dela **e** com u
 ## Depois (1 semana)
 
 - Mensagem perguntando: o que usou? o que travou? o que faltou?
+- Pedir o `ccusage daily` de novo e comparar com o "antes" da ficha.
 - Toda dor que se repetir em mais de uma pessoa vira melhoria do kit (skill nova ou ajuste), registrada no `CHANGELOG.md` com nova versão.
 - Atualizar a ficha dela.
 

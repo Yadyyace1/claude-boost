@@ -77,7 +77,41 @@ A chave fica no armazenamento seguro da máquina, **nunca** em arquivo do reposi
 
 No app do Claude: **Configurações → Conectores**. Ligue os que você usa (Gmail, Google Calendar, Google Drive, Notion, Canva, Vercel) com o seu login. Isso não vem no kit porque cada conta autoriza a sua.
 
-## 7. Atualizar e remover
+## 7. Economia de tokens: ferramentas extras (opcional)
+
+Não vêm no kit; cada pessoa instala as suas. Detalhes na skill `economia-tokens` do boost-base.
+
+Medir o consumo (faça antes de mudar qualquer coisa, para ter o "antes"):
+
+```powershell
+npm.cmd i -g ccusage
+```
+
+```powershell
+ccusage daily
+```
+
+**rtk** (enxuga a saída dos comandos; depois de instalar, **reinicie o app do Claude**, porque o `rtk.exe` fica fora do PATH do app que já estava aberto):
+
+```powershell
+winget install rtk-ai.rtk
+```
+
+```powershell
+rtk init -g --auto-patch
+```
+
+**Graphify** (grafo do projeto; use `/graphify .` em projetos grandes):
+
+```powershell
+uv tool install graphifyy --python 3.12
+```
+
+```powershell
+graphify install --platform claude
+```
+
+## 8. Atualizar e remover
 
 ```powershell
 claude plugin marketplace update claude-boost
@@ -96,3 +130,4 @@ claude plugin uninstall boost-video@claude-boost
 | `python` abre a Microsoft Store | alias falso do Windows | instalar pelo `uv python install 3.12` |
 | MCP "Failed to connect" | cache do npx vazio ou registrado pelo Git Bash | rodar `npx -y <pacote> --help`; registrar pelo PowerShell |
 | comando "não reconhecido" logo após instalar | PATH antigo | abrir terminal novo |
+| rtk instalado mas sem efeito | o app aberto não vê o PATH novo | reiniciar o app do Claude |

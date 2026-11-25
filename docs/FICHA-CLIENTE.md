@@ -11,6 +11,11 @@
 - Sistema: ( ) Windows ( ) Mac — Plano Claude: ( ) Pro ( ) Max ( ) API ( ) nenhum
 - Data da sessão:
 
+## Consumo (ccusage daily)
+
+- Antes (dia da sessão):
+- Depois (1 semana):
+
 ## Dores (as 3 tarefas que mais tomam tempo)
 
 1.

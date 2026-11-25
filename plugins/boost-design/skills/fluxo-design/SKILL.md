@@ -13,6 +13,7 @@ description: Fluxo de trabalho de design do Claude Boost — editar imagem com o
 | pixel art: personagem, sprite, tile, animação, item de jogo | **PixelLab** (MCP `pixellab`, pago, chave própria) |
 | post de rede social, apresentação, peça com modelo pronto | **Canva** (conector oficial: Configurações → Conectores, ou o plugin oficial `canva` do marketplace da Anthropic) |
 | ajuste simples (cortar, converter, redimensionar) | script local (Python/Pillow ou FFmpeg), sem gastar crédito |
+| modelo 3D para site ou vídeo | **Tripo** (API paga) + Three.js / HyperFrames (ver a seção 3D) |
 
 ## Regras que já evitaram retrabalho
 
@@ -32,3 +33,12 @@ description: Fluxo de trabalho de design do Claude Boost — editar imagem com o
 
 - Abra o arquivo, trabalhe por camadas e **exporte uma versão nova** no fim.
 - Use `get_preview` para conferir o resultado antes de exportar e mostre ao usuário.
+
+## 3D (opcional): Tripo + Three.js + HyperFrames
+
+Gera um modelo 3D a partir de texto ou imagem (Tripo), mostra na web (Three.js) ou anima em vídeo (HyperFrames, ver o boost-video).
+
+- **Custos:** os créditos grátis do Tripo valem só no site. A **API tem saldo próprio, pago**. Mostre o custo e espere o OK antes de cada geração pela API.
+- **Licença:** no plano grátis os modelos ficam **públicos** e **sem uso comercial**. Avise antes de usar em trabalho de cliente.
+- A chave da API do Tripo é da própria pessoa: fica numa variável de ambiente, nunca no código nem no repositório.
+- Formato para a web: GLB, carregado com o `GLTFLoader` do Three.js.

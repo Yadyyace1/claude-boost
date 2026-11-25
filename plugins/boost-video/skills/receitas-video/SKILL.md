@@ -1,6 +1,6 @@
 ---
 name: receitas-video
-description: Receitas de edição de vídeo e áudio com FFmpeg e transcrição com Whisper local — cortar trecho, comprimir para WhatsApp/Instagram, mudar formato (vertical 9:16), queimar legenda, juntar vídeos, extrair áudio, gerar GIF, transcrever e gerar SRT. Use quando o usuário pedir qualquer edição de vídeo ou áudio, legenda ou transcrição.
+description: Receitas de edição de vídeo e áudio com FFmpeg, Whisper local, auto-editor e HyperFrames — cortar trecho, cortar silêncio, comprimir para WhatsApp/Instagram, mudar formato (vertical 9:16), queimar legenda, juntar vídeos, extrair áudio, gerar GIF, transcrever e gerar SRT, títulos e vinhetas animadas. Use quando o usuário pedir qualquer edição de vídeo ou áudio, legenda ou transcrição.
 ---
 
 # Receitas de vídeo (FFmpeg + Whisper)
@@ -76,6 +76,37 @@ uvx --from openai-whisper whisper in.mp4 --language pt --model small --output_fo
 
 - `small` é um bom equilíbrio; `medium` acerta mais e é bem mais lento. Primeira execução baixa o modelo.
 - Revise o SRT gerado (nomes próprios e gírias erram) e depois queime com a receita acima.
+
+## Cortar silêncio automaticamente (auto-editor)
+
+O **auto-editor** corta as pausas e os silêncios de vídeos falados (aulas, vlogs, podcasts). Instale pelo executável oficial do *release* no GitHub (`WyattBlue/auto-editor`) e **confira o SHA-256** do arquivo baixado com o publicado no release antes de rodar. Peça autorização antes de baixar.
+
+```bash
+auto-editor in.mp4 --margin 0.2s -o sem-silencio-v01.mp4
+```
+
+## Vídeo com motion design: HyperFrames (plugin oficial)
+
+Para vinheta, título animado, legenda estilizada, explainer ou vídeo de produto, use o plugin oficial **HyperFrames** (marketplace da Anthropic):
+
+```powershell
+claude plugin install hyperframes@claude-plugins-official
+```
+
+- São 21 skills, com uns **2,7 mil tokens fixos por sessão**. Desligue quando não estiver usando: `claude plugin disable hyperframes@claude-plugins-official` (e `enable` para voltar).
+- Desligue a telemetria: `npx hyperframes telemetry disable`.
+- **Fontes:** use as embutidas (Archivo Black, Montserrat, Oswald). Lilita One e Impact quebram o lint.
+
+## Kit grátis de "editar vídeo com Claude"
+
+No lugar dos cursos pagos, este conjunto cobre o fluxo inteiro:
+
+1. **auto-editor:** corta os silêncios.
+2. **Whisper:** transcreve e gera o SRT.
+3. **HyperFrames:** títulos, legendas animadas e vinhetas.
+4. **Uma pasta de marca** no projeto (`marca/`, com logo, cores em hex, fontes e 2 ou 3 vídeos de referência), que o Claude usa em toda peça.
+
+**Voz clonada local** (opcional): só com uma placa de vídeo boa. O Chatterbox Multilingual (licença MIT) fala português do Brasil. Use apenas a voz da própria pessoa, ou uma voz com autorização.
 
 ## Fechamento
 

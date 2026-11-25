@@ -1,6 +1,6 @@
 {
   "name": "boost-base",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Núcleo do Claude Boost: economia de tokens, setup no Windows, diagnóstico de onboarding, guia de conectores e status line.",
   "author": {
     "name": "João Vitor"
