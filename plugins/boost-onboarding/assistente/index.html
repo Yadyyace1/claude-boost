@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding do Claude</title>
+<style>
+  :root {
+    --fundo: #0f1115; --painel: #171a21; --painel2: #1e222b; --borda: #2a2f3a;
+    --texto: #e8eaf0; --suave: #9aa3b2; --fraco: #6b7383;
+    --cor: #E0A33B; --cor-fundo: rgba(224,163,59,.12);
+    --ok: #4cc38a; --alerta: #e5b452; --perigo: #ef6b6b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .topo { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; border-bottom: 1px solid var(--borda); }
+  .marca { font-weight: 600; letter-spacing: .2px; }
+  .marca small { display: block; color: var(--suave); font-weight: 400; font-size: 13px; }
+  .passos { display: flex; gap: 8px; }
+  .passo { width: 34px; height: 6px; border-radius: 3px; background: var(--borda); }
+  .passo.feito { background: var(--cor); }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 24px 140px; }
+  h1 { font-size: 26px; margin: 0 0 6px; font-weight: 600; }
+  .sub { color: var(--suave); margin: 0 0 26px; }
+  .pergunta { background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 20px 22px; margin-bottom: 16px; }
+  .pergunta h2 { font-size: 17px; margin: 0 0 14px; font-weight: 600; }
+  .opcoes { display: flex; flex-wrap: wrap; gap: 10px; }
+  .op { background: var(--painel2); border: 1px solid var(--borda); color: var(--texto); border-radius: 10px; padding: 10px 14px; cursor: pointer; font: inherit; text-align: left; }
+  .op small { display: block; color: var(--fraco); font-size: 12.5px; }
+  .op:hover { border-color: #3a4150; }
+  .op.on { border-color: var(--cor); background: var(--cor-fundo); }
+  .cartao-op { min-width: 200px; flex: 1 1 200px; }
+  input[type=text] { width: 100%; max-width: 360px; background: var(--painel2); border: 1px solid var(--borda); color: var(--texto); border-radius: 10px; padding: 11px 14px; font: inherit; }
+  input[type=range] { width: 100%; accent-color: var(--cor); }
+  .faixa-valor { font-size: 22px; font-weight: 600; color: var(--cor); }
+  .erro { color: var(--perigo); font-size: 13px; margin-top: 8px; min-height: 18px; }
+  .rodape { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(15,17,21,.96); border-top: 1px solid var(--borda); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .totais { display: flex; gap: 22px; flex-wrap: wrap; color: var(--suave); font-size: 14px; }
+  .totais b { color: var(--texto); font-size: 16px; }
+  .totais .estoura b { color: var(--alerta); }
+  .botoes { display: flex; gap: 10px; }
+  button.prim, button.sec { font: inherit; border-radius: 10px; padding: 11px 20px; cursor: pointer; border: 1px solid var(--borda); }
+  button.prim { background: var(--cor); color: #1a1206; border-color: var(--cor); font-weight: 600; }
+  button.sec { background: transparent; color: var(--texto); }
+  button:disabled { opacity: .5; cursor: default; }
+  .grupo { margin: 26px 0 10px; display: flex; align-items: baseline; gap: 10px; }
+  .grupo h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .grupo span { color: var(--suave); font-size: 13.5px; }
+  .itens { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+  .item { background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
+  .item.on { border-color: var(--cor); box-shadow: 0 0 0 1px var(--cor) inset; }
+  .item .cab { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+  .item .nome { font-weight: 600; }
+  .item .cat { color: var(--fraco); font-size: 12.5px; }
+  .caixa { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #4a5264; flex: none; display: grid; place-items: center; font-size: 13px; }
+  .item.on .caixa { background: var(--cor); border-color: var(--cor); color: #1a1206; }
+  .item .resumo { color: #c9ced8; font-size: 14.5px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 12px; border-radius: 999px; padding: 2px 9px; background: var(--painel2); border: 1px solid var(--borda); color: var(--suave); }
+  .chip.gratis { color: var(--ok); border-color: rgba(76,195,138,.35); }
+  .chip.pago { color: var(--alerta); border-color: rgba(229,180,82,.35); }
+  .chip.inst { color: var(--ok); }
+  .porque { font-size: 13px; color: var(--suave); }
+  .aviso { font-size: 12.5px; color: var(--alerta); }
+  .req { background: var(--painel); border: 1px dashed var(--borda); border-radius: 12px; padding: 12px 16px; color: var(--suave); font-size: 14px; margin-top: 18px; }
+  .fim { text-align: center; padding: 80px 20px; }
+  .fim h1 { font-size: 30px; }
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="marca" id="marca">Claude Boost<small>Vamos montar o seu Claude</small></div>
+  <div class="passos" id="passos"></div>
+</header>
+<main id="app"></main>
+<footer class="rodape" id="rodape"></footer>
+
+<script type="module">
+import { recomendar, calcular } from "./assistente/recomendar.mjs";
+
+const [catalogo, perguntas, marca, ambiente] = await Promise.all(
+  ["/dados/catalogo.json", "/dados/perguntas.json", "/dados/marca.json", "/ambiente.json"].map((u) => fetch(u).then((r) => r.json()))
+);
+const porId = Object.fromEntries(catalogo.itens.map((i) => [i.id, i]));
+document.getElementById("marca").innerHTML = `${esc(marca.nome)}<small>${esc(marca.subtitulo)}</small>`;
+document.documentElement.style.setProperty("--cor", marca.cor || "#E0A33B");
+
+const respostas = { orcamento: 50 };
+let etapa = 0;
+let rec = null;
+let selecao = new Set();
+const TOTAL = perguntas.etapas.length + 1;
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function brl(v) { return v ? `R$ ${v.toLocaleString("pt-BR")}` : "R$ 0"; }
+
+function desenharPassos() {
+  document.getElementById("passos").innerHTML = Array.from({ length: TOTAL }, (_, i) => `<div class="passo ${i <= etapa ? "feito" : ""}"></div>`).join("");
+}
+
+function desenharEtapa() {
+  desenharPassos();
+  const e = perguntas.etapas[etapa];
+  const app = document.getElementById("app");
+  app.innerHTML = `<h1>${esc(e.titulo)}</h1><p class="sub">Etapa ${etapa + 1} de ${TOTAL}. Responda do seu jeito: dá para mudar tudo no fim.</p>` +
+    e.perguntas.map(desenharPergunta).join("");
+  for (const q of e.perguntas) ligarPergunta(q);
+  rodape(`<div class="totais"></div>`, etapa > 0, "Continuar");
+}
+
+function desenharPergunta(q) {
+  let corpo = "";
+  if (q.tipo === "texto") corpo = `<input type="text" id="q-${q.id}" placeholder="${esc(q.placeholder || "")}" value="${esc(respostas[q.id] || "")}">`;
+  else if (q.tipo === "faixa") {
+    const v = respostas[q.id] ?? q.padrao;
+    corpo = `<div class="faixa-valor" id="v-${q.id}">${esc(q.prefixo || "")}${v}</div><input type="range" id="q-${q.id}" min="${q.min}" max="${q.max}" step="${q.passo}" value="${v}">`;
+  } else {
+    const cartao = q.opcoes.some((o) => o.descricao);
+    corpo = `<div class="opcoes">` + q.opcoes.map((o) => {
+      const on = [].concat(respostas[q.id] ?? []).includes(o.valor);
+      return `<button type="button" class="op ${cartao ? "cartao-op" : ""} ${on ? "on" : ""}" data-q="${q.id}" data-v="${esc(o.valor)}">${esc(o.rotulo)}${o.descricao ? `<small>${esc(o.descricao)}</small>` : ""}</button>`;
+    }).join("") + `</div>`;
+  }
+  return `<section class="pergunta"><h2>${esc(q.titulo)}</h2>${corpo}<div class="erro" id="e-${q.id}"></div></section>`;
+}
+
+function ligarPergunta(q) {
+  if (q.tipo === "texto") document.getElementById(`q-${q.id}`).addEventListener("input", (ev) => { respostas[q.id] = ev.target.value.trim(); });
+  else if (q.tipo === "faixa") {
+    respostas[q.id] = respostas[q.id] ?? q.padrao;
+    document.getElementById(`q-${q.id}`).addEventListener("input", (ev) => {
+      respostas[q.id] = Number(ev.target.value);
+      document.getElementById(`v-${q.id}`).textContent = `${q.prefixo || ""}${ev.target.value}`;
+    });
+  } else {
+    document.querySelectorAll(`[data-q="${q.id}"]`).forEach((b) => b.addEventListener("click", () => {
+      const v = b.dataset.v;
+      document.getElementById(`e-${q.id}`).textContent = "";
+      if (q.tipo === "unico") {
+        respostas[q.id] = v;
+        document.querySelectorAll(`[data-q="${q.id}"]`).forEach((x) => x.classList.toggle("on", x === b));
+      } else {
+        const atual = new Set(respostas[q.id] || []);
+        if (atual.has(v)) atual.delete(v);
+        else {
+          if (q.max && atual.size >= q.max) { document.getElementById(`e-${q.id}`).textContent = `Escolha no máximo ${q.max}.`; return; }
+          atual.add(v);
+        }
+        respostas[q.id] = [...atual];
+        b.classList.toggle("on", atual.has(v));
+      }
+    }));
+  }
+}
+
+function validarEtapa() {
+  let ok = true;
+  for (const q of perguntas.etapas[etapa].perguntas) {
+    const r = respostas[q.id];
+    const vazio = r == null || r === "" || (Array.isArray(r) && !r.length);
+    const obrigatoria = ["area", "nivel", "preferencia", "economia", "sensivel"].includes(q.id);
+    if (obrigatoria && vazio) { document.getElementById(`e-${q.id}`).textContent = "Escolha uma opção para continuar."; ok = false; }
+  }
+  return ok;
+}
+
+function rodape(totaisHtml, voltar, rotulo) {
+  const r = document.getElementById("rodape");
+  r.innerHTML = `${totaisHtml}<div class="botoes">${voltar ? `<button class="sec" id="voltar">Voltar</button>` : ""}<button class="prim" id="seguir">${rotulo}</button></div>`;
+  if (voltar) document.getElementById("voltar").onclick = () => { etapa--; etapa < perguntas.etapas.length ? desenharEtapa() : null; window.scrollTo(0, 0); };
+  document.getElementById("seguir").onclick = () => {
+    if (etapa < perguntas.etapas.length) {
+      if (!validarEtapa()) return;
+      etapa++;
+      etapa < perguntas.etapas.length ? desenharEtapa() : desenharRecomendacao(true);
+      window.scrollTo(0, 0);
+    } else confirmar();
+  };
+}
+
+const GRUPOS = [
+  ["essenciais", "Essenciais", "a base que todo mundo usa"],
+  ["recomendados", "Recomendados para você", "já vêm marcados; desmarque o que não quiser"],
+  ["opcionais", "Opcionais", "podem ser úteis; marque se quiser"],
+  ["fora_orcamento", "Fora do orçamento", "bons para você, mas passam do valor por mês que você escolheu"],
+];
+
+function desenharRecomendacao(novo) {
+  desenharPassos();
+  if (novo) {
+    rec = recomendar(respostas, catalogo, perguntas, ambiente);
+    selecao = new Set(rec.selecao);
+  }
+  const nome = respostas.nome ? `, ${esc(respostas.nome)}` : "";
+  let html = `<h1>Sua recomendação${nome}</h1><p class="sub">Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar. Nada é instalado ainda: o Claude instala depois, item por item, com o seu OK.</p>`;
+  for (const [g, titulo, sub] of GRUPOS) {
+    const lista = rec.grupos[g];
+    if (!lista.length) continue;
+    html += `<div class="grupo"><h3>${titulo}</h3><span>${sub}</span></div><div class="itens">` + lista.map(cartao).join("") + `</div>`;
+  }
+  html += `<div class="req" id="reqs"></div><p class="sub" style="margin-top:22px">${esc(marca.rodape || "")}</p>`;
+  document.getElementById("app").innerHTML = html;
+  document.querySelectorAll(".item").forEach((el) => el.addEventListener("click", () => {
+    const id = el.dataset.id;
+    selecao.has(id) ? selecao.delete(id) : selecao.add(id);
+    el.classList.toggle("on", selecao.has(id));
+    el.querySelector(".caixa").textContent = selecao.has(id) ? "✓" : "";
+    atualizarTotais();
+  }));
+  atualizarTotais();
+}
+
+function cartao(a) {
+  const it = a.item, on = selecao.has(it.id);
+  const custo = it.custo || {};
+  const chips = [
+    custo.tipo === "pago" ? `<span class="chip pago">${custo.mensal_brl ? `~${brl(custo.mensal_brl)}/mês` : "pago"}</span>` : custo.tipo === "freemium" ? `<span class="chip gratis">grátis com limites</span>` : `<span class="chip gratis">grátis</span>`,
+    it.tokens_fixos ? `<span class="chip">${it.tokens_fixos.toLocaleString("pt-BR")} tokens/sessão</span>` : `<span class="chip">não pesa no uso</span>`,
+    it.oficial ? `<span class="chip">oficial</span>` : it.kit ? `<span class="chip">do kit</span>` : `<span class="chip">comunidade</span>`,
+    a.instalado ? `<span class="chip inst">já instalado</span>` : "",
+    a.desligado ? `<span class="chip">fica desligado até precisar</span>` : "",
+  ].join("");
+  return `<div class="item ${on ? "on" : ""}" data-id="${esc(it.id)}">
+    <div class="cab"><div><div class="nome">${esc(it.nome)}</div><div class="cat">${esc(it.categoria)}</div></div><div class="caixa">${on ? "✓" : ""}</div></div>
+    <div class="resumo">${esc(it.resumo)}</div>
+    <div class="chips">${chips}</div>
+    ${a.motivos.length ? `<div class="porque">Por quê: ${esc(a.motivos.join("; "))}.</div>` : ""}
+    ${a.avisos.slice(0, 1).map((t) => `<div class="aviso">${esc(t)}</div>`).join("")}
+  </div>`;
+}
+
+function atualizarTotais() {
+  const t = calcular([...selecao], catalogo, ambiente, { avaliados: Object.values(rec.grupos).flat() });
+  const estoura = t.totais.mensal_brl > (respostas.orcamento ?? 0);
+  const tokensEstoura = t.totais.tokens_fixos > rec.teto;
+  const reqs = t.requisitos.map((id) => porId[id]?.nome).filter(Boolean);
+  document.getElementById("reqs").innerHTML = reqs.length
+    ? `Para funcionar, o Claude também vai instalar: <b>${esc(reqs.join(", "))}</b>.`
+    : "Nenhum programa extra precisa ser instalado antes.";
+  rodape(
+    `<div class="totais">
+      <div>${selecao.size} itens</div>
+      <div class="${estoura ? "estoura" : ""}">Custo extra: <b>${brl(t.totais.mensal_brl)}/mês</b></div>
+      <div class="${tokensEstoura ? "estoura" : ""}">Peso por sessão: <b>${t.totais.tokens_fixos.toLocaleString("pt-BR")}</b> de ${rec.teto.toLocaleString("pt-BR")} tokens</div>
+    </div>`, true, "Confirmar e instalar");
+  document.getElementById("voltar").onclick = () => { etapa = perguntas.etapas.length - 1; desenharEtapa(); window.scrollTo(0, 0); };
+}
+
+async function confirmar() {
+  const botao = document.getElementById("seguir");
+  botao.disabled = true;
+  botao.textContent = "Enviando…";
+  const t = calcular([...selecao], catalogo, ambiente, { avaliados: Object.values(rec.grupos).flat() });
+  const desligados = Object.values(rec.grupos).flat().filter((a) => a.desligado && selecao.has(a.item.id)).map((a) => a.item.id);
+  const corpo = { respostas, selecao: [...selecao], requisitos: t.requisitos, desligados, totais: t.totais, teto_tokens: rec.teto, sistema: ambiente.sistema || "win" };
+  try {
+    const r = await fetch("/confirmar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
+    if (!r.ok) throw new Error();
+    document.getElementById("rodape").innerHTML = "";
+    document.getElementById("passos").innerHTML = "";
+    document.getElementById("app").innerHTML = `<div class="fim"><h1>Pronto${respostas.nome ? ", " + esc(respostas.nome) : ""}!</h1><p class="sub">Suas escolhas foram enviadas. Pode fechar esta aba e voltar para o Claude: ele vai instalar tudo item por item e pedir o seu OK em cada passo.</p></div>`;
+  } catch {
+    botao.disabled = false;
+    botao.textContent = "Tentar de novo";
+    alertaRodape("Não consegui falar com o Claude. Ele ainda está aberto?");
+  }
+}
+
+function alertaRodape(msg) {
+  const d = document.createElement("div");
+  d.className = "erro";
+  d.textContent = msg;
+  document.getElementById("rodape").prepend(d);
+}
+
+desenharEtapa();
+</script>
+</body>
+</html>

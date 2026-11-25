@@ -1,0 +1,1424 @@
+{
+  "versao": "2026-11-25",
+  "observacao": "tokens_fixos = custo aproximado em tokens que o item adiciona a TODA sessão (medido com `claude plugin details` quando possível; 'estimado: true' quando não). custo.mensal_brl é estimativa para o orçamento; conferir o preço no site antes de vender.",
+  "itens": [
+    {
+      "id": "req-node",
+      "nome": "Node.js",
+      "categoria": "Requisitos",
+      "tipo": "requisito",
+      "resumo": "Motor que roda a maioria dos conectores (MCPs). Instala uma vez e esquece.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "detectar": {
+        "cmd": "node"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id OpenJS.NodeJS.LTS",
+          "mac": "brew install node"
+        }
+      ]
+    },
+    {
+      "id": "req-uv",
+      "nome": "uv (Python)",
+      "categoria": "Requisitos",
+      "tipo": "requisito",
+      "resumo": "Roda ferramentas em Python sem bagunçar o computador.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "detectar": {
+        "cmd": "uv"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id astral-sh.uv",
+          "mac": "brew install uv"
+        }
+      ]
+    },
+    {
+      "id": "req-git",
+      "nome": "Git",
+      "categoria": "Requisitos",
+      "tipo": "requisito",
+      "resumo": "Controle de versões; o Claude Code no Windows precisa dele.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "detectar": {
+        "cmd": "git"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id Git.Git",
+          "mac": "xcode-select --install"
+        }
+      ]
+    },
+    {
+      "id": "req-bun",
+      "nome": "Bun",
+      "categoria": "Requisitos",
+      "tipo": "requisito",
+      "resumo": "Motor de JavaScript que o plugin do Telegram usa.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "detectar": {
+        "cmd": "bun"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id Oven-sh.Bun",
+          "mac": "brew install oven-sh/bun/bun"
+        }
+      ]
+    },
+    {
+      "id": "req-ffmpeg",
+      "nome": "FFmpeg",
+      "categoria": "Requisitos",
+      "tipo": "requisito",
+      "resumo": "Canivete suíço de vídeo e áudio; base de toda edição de vídeo.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "detectar": {
+        "cmd": "ffmpeg"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id Gyan.FFmpeg",
+          "mac": "brew install ffmpeg"
+        }
+      ]
+    },
+    {
+      "id": "boost-base",
+      "nome": "Claude Boost (núcleo)",
+      "categoria": "Economia e base",
+      "tipo": "plugin",
+      "resumo": "O núcleo do kit: dicas para gastar menos tokens, documentação sempre atualizada (Context7), checagem de segurança e status line com o uso do limite.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "essencial": true,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 432,
+      "sinais": {
+        "economia": 2,
+        "produtividade": 1
+      },
+      "detectar": {
+        "plugin": "boost-base@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin marketplace add Yadyyace1/claude-boost",
+          "mac": "claude plugin marketplace add Yadyyace1/claude-boost",
+          "nota": "repositório privado: o cliente precisa de acesso no GitHub (convite) antes"
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-base@claude-boost",
+          "mac": "claude plugin install boost-base@claude-boost"
+        }
+      ],
+      "kit": true
+    },
+    {
+      "id": "rtk",
+      "nome": "rtk",
+      "categoria": "Economia e base",
+      "tipo": "app",
+      "resumo": "Encolhe a saída de comandos (git, testes, listagens) antes do Claude ler. Medido: cerca de 50% menos em git log e git diff.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 60,
+      "sinais": {
+        "economia": 3,
+        "dev": 2
+      },
+      "detectar": {
+        "cmd": "rtk"
+      },
+      "aviso": "Licença Apache + BUSL: uso próprio livre; cada cliente instala o seu. Reiniciar o app do Claude depois.",
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id rtk-ai.rtk",
+          "mac": "brew install rtk"
+        },
+        {
+          "tipo": "cmd",
+          "win": "rtk init -g --auto-patch",
+          "mac": "rtk init -g --auto-patch",
+          "nota": "rodar em um terminal novo (PATH atualizado)"
+        }
+      ]
+    },
+    {
+      "id": "ccusage",
+      "nome": "ccusage",
+      "categoria": "Economia e base",
+      "tipo": "cli",
+      "resumo": "Mostra quanto você gastou por dia e por sessão. Serve para medir o antes e depois.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "economia": 2
+      },
+      "requisitos": [
+        "req-node"
+      ],
+      "detectar": {
+        "cmd": "ccusage"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "npm.cmd install -g ccusage",
+          "mac": "npm install -g ccusage"
+        }
+      ]
+    },
+    {
+      "id": "graphify",
+      "nome": "Graphify",
+      "categoria": "Economia e base",
+      "tipo": "cli",
+      "resumo": "Transforma uma pasta grande (código, PDFs, notas) num mapa que o Claude consulta em vez de reler tudo.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 80,
+      "sinais": {
+        "economia": 1,
+        "dev": 2,
+        "pesquisa": 1,
+        "docs": 1,
+        "estudos": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "cmd": "graphify"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "uv tool install graphifyy --python 3.12",
+          "mac": "uv tool install graphifyy --python 3.12"
+        },
+        {
+          "tipo": "cmd",
+          "win": "graphify install --platform claude",
+          "mac": "graphify install --platform claude"
+        }
+      ]
+    },
+    {
+      "id": "gmail",
+      "nome": "Gmail",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "O Claude lê, resume e rascunha e-mails (só envia com o seu OK).",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 3,
+        "comunicacao": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Gmail → Conectar, e entrar com a conta Google."
+        }
+      ]
+    },
+    {
+      "id": "gcal",
+      "nome": "Google Agenda",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Ver a agenda, achar horário livre e marcar compromissos.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 3,
+        "comunicacao": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Google Calendar → Conectar."
+        }
+      ]
+    },
+    {
+      "id": "gdrive",
+      "nome": "Google Drive",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "O Claude encontra e lê seus documentos, planilhas e PDFs do Drive.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 2,
+        "docs": 3,
+        "dados": 1,
+        "juridico": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Google Drive → Conectar."
+        }
+      ]
+    },
+    {
+      "id": "notion",
+      "nome": "Notion",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Buscar, criar e atualizar páginas e bancos de dados do Notion.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 2,
+        "docs": 2,
+        "estudos": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Notion → Conectar."
+        }
+      ]
+    },
+    {
+      "id": "obsidian",
+      "nome": "Obsidian (direto)",
+      "categoria": "Produtividade",
+      "tipo": "mcp",
+      "resumo": "O Claude lê e escreve nas suas notas do Obsidian.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "produtividade": 2,
+        "docs": 2,
+        "estudos": 2
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "mcp": "obsidian"
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No Obsidian: Configurações → Plugins da comunidade → Ativar → procurar 'Local REST API' → Instalar e ligar. Copiar a API key mostrada nas opções do plugin."
+        },
+        {
+          "tipo": "segredo",
+          "var": "OBSIDIAN_API_KEY",
+          "texto": "Salvar a chave como variável de ambiente (o cliente cola, não passa pelo chat)."
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add obsidian -s user -e 'OBSIDIAN_API_KEY=${OBSIDIAN_API_KEY}' -- uvx mcp-obsidian",
+          "mac": "claude mcp add obsidian -s user -e 'OBSIDIAN_API_KEY=${OBSIDIAN_API_KEY}' -- uvx mcp-obsidian",
+          "nota": "no Windows rodar pelo PowerShell, nunca pelo Git Bash; aspas simples mantêm o ${VAR} literal; o Claude Code troca pelo valor ao iniciar. Conferir com claude mcp list"
+        }
+      ],
+      "verificar": true
+    },
+    {
+      "id": "slack",
+      "nome": "Slack",
+      "categoria": "Comunicação",
+      "tipo": "plugin",
+      "resumo": "Buscar mensagens, ler canais e resumir conversas do Slack da equipe.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "comunicacao": 3,
+        "produtividade": 1
+      },
+      "detectar": {
+        "plugin": "slack@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install slack@claude-plugins-official",
+          "mac": "claude plugin install slack@claude-plugins-official"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp."
+        }
+      ]
+    },
+    {
+      "id": "telegram",
+      "nome": "Telegram (comandar o PC pelo celular)",
+      "categoria": "Comunicação",
+      "tipo": "plugin",
+      "resumo": "Mande uma mensagem para o seu bot e o Claude trabalha no seu PC e responde no Telegram.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 118,
+      "sinais": {
+        "remoto": 3,
+        "comunicacao": 1,
+        "automacao": 2
+      },
+      "requisitos": [
+        "req-bun"
+      ],
+      "detectar": {
+        "plugin": "telegram@claude-plugins-official"
+      },
+      "aviso": "Ligar só numa pasta dedicada: o servidor do bot derruba qualquer outra sessão que use o mesmo token. O PC precisa ficar ligado.",
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install telegram@claude-plugins-official",
+          "mac": "claude plugin install telegram@claude-plugins-official"
+        },
+        {
+          "tipo": "manual",
+          "texto": "No Telegram, falar com @BotFather → /newbot → copiar o token. Numa sessão do Claude: /telegram:configure <token>."
+        },
+        {
+          "tipo": "manual",
+          "texto": "Abrir: claude --channels plugin:telegram@claude-plugins-official ; mandar 'oi' para o bot; aprovar com /telegram:access pair <código>; fechar com /telegram:access policy allowlist."
+        }
+      ]
+    },
+    {
+      "id": "remote-control",
+      "nome": "Remote Control (app do Claude)",
+      "categoria": "Comunicação",
+      "tipo": "nativo",
+      "resumo": "Pelo app do Claude no celular você acompanha e comanda uma sessão aberta no PC. Não precisa instalar nada.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "remoto": 3
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Ativar o Remote Control na sessão e abrir o app do Claude no celular."
+        }
+      ]
+    },
+    {
+      "id": "figma",
+      "nome": "Figma",
+      "categoria": "Design",
+      "tipo": "plugin",
+      "resumo": "O Claude lê seus designs do Figma, transforma em código e até cria telas lá.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 1883,
+      "sinais": {
+        "design": 3,
+        "web": 2,
+        "dev": 1
+      },
+      "detectar": {
+        "plugin": "figma@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install figma@claude-plugins-official",
+          "mac": "claude plugin install figma@claude-plugins-official"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → figma."
+        }
+      ]
+    },
+    {
+      "id": "canva",
+      "nome": "Canva",
+      "categoria": "Design",
+      "tipo": "conector",
+      "resumo": "Criar e editar designs do Canva (posts, apresentações) conversando.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "design": 3,
+        "social": 2,
+        "marketing": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Canva → Conectar (ou /mcp → canva → Authenticate no Claude Code)."
+        }
+      ]
+    },
+    {
+      "id": "photopea",
+      "nome": "Photopea",
+      "categoria": "Design",
+      "tipo": "mcp",
+      "resumo": "Edição de imagem estilo Photoshop, grátis, comandada pelo Claude.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "design": 2,
+        "arte": 2
+      },
+      "requisitos": [
+        "req-node"
+      ],
+      "detectar": {
+        "mcp": "photopea"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add photopea -s user -- npx -y photopea-mcp-server",
+          "mac": "claude mcp add photopea -s user -- npx -y photopea-mcp-server",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ]
+    },
+    {
+      "id": "miro",
+      "nome": "Miro",
+      "categoria": "Design",
+      "tipo": "plugin",
+      "resumo": "O Claude lê e desenha nos seus quadros do Miro (diagramas, fluxos).",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "design": 1,
+        "produtividade": 2
+      },
+      "detectar": {
+        "plugin": "miro@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install miro@claude-plugins-official",
+          "mac": "claude plugin install miro@claude-plugins-official"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → miro."
+        }
+      ]
+    },
+    {
+      "id": "pixellab",
+      "nome": "PixelLab",
+      "categoria": "Arte e jogos",
+      "tipo": "mcp",
+      "resumo": "Pixel art por IA: personagens, animações, cenários e efeitos para jogos.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 60,
+        "estimado": true
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "pixel": 3,
+        "jogos": 3,
+        "arte": 2
+      },
+      "detectar": {
+        "mcp": "pixellab"
+      },
+      "passos": [
+        {
+          "tipo": "segredo",
+          "var": "PIXELLAB_API_KEY",
+          "texto": "Criar a conta em pixellab.ai e copiar a chave."
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http pixellab https://api.pixellab.ai/mcp -s user -H 'Authorization: Bearer ${PIXELLAB_API_KEY}'",
+          "mac": "claude mcp add --transport http pixellab https://api.pixellab.ai/mcp -s user -H 'Authorization: Bearer ${PIXELLAB_API_KEY}'",
+          "nota": "aspas simples mantêm o ${VAR} literal; o Claude Code troca pelo valor ao iniciar. Conferir com claude mcp list; aspas simples mantêm o ${VAR} literal; o Claude Code troca pelo valor ao iniciar. Conferir com claude mcp list"
+        }
+      ],
+      "verificar": true
+    },
+    {
+      "id": "higgsfield",
+      "nome": "Higgsfield",
+      "categoria": "Arte e jogos",
+      "tipo": "mcp",
+      "resumo": "Imagem, vídeo, voz e música por IA num lugar só (inclui publicar no TikTok).",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 80,
+        "estimado": true
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "video": 3,
+        "design": 2,
+        "social": 2,
+        "audio": 2,
+        "conteudo": 2
+      },
+      "detectar": {
+        "mcp": "higgsfield"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http higgsfield https://mcp.higgsfield.ai/mcp -s user",
+          "mac": "claude mcp add --transport http higgsfield https://mcp.higgsfield.ai/mcp -s user"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → higgsfield."
+        }
+      ]
+    },
+    {
+      "id": "tripo",
+      "nome": "Tripo (3D por IA)",
+      "categoria": "Arte e jogos",
+      "tipo": "cli",
+      "resumo": "Gera modelos 3D a partir de uma imagem ou texto. No plano grátis os modelos ficam públicos e sem uso comercial.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 0,
+        "nota": "créditos de API avulsos"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "3d": 3,
+        "jogos": 2,
+        "arte": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "passos": [
+        {
+          "tipo": "segredo",
+          "var": "TRIPO_API_KEY",
+          "texto": "Criar a chave em platform.tripo3d.ai (começa com tsk_) e comprar créditos de API."
+        },
+        {
+          "tipo": "manual",
+          "texto": "Usar o script tripo_3d.py do boost-design."
+        }
+      ]
+    },
+    {
+      "id": "unity",
+      "nome": "Unity",
+      "categoria": "Arte e jogos",
+      "tipo": "plugin",
+      "resumo": "Plugin oficial da Unity com skills de desenvolvimento de jogos.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 300,
+      "estimado": true,
+      "sinais": {
+        "jogos": 3,
+        "dev": 2,
+        "3d": 1
+      },
+      "detectar": {
+        "plugin": "unity@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install unity@claude-plugins-official",
+          "mac": "claude plugin install unity@claude-plugins-official"
+        }
+      ]
+    },
+    {
+      "id": "hyperframes",
+      "nome": "HyperFrames (vídeo)",
+      "categoria": "Vídeo",
+      "tipo": "plugin",
+      "resumo": "Cria vídeos animados, legendas e motion a partir de HTML; renderiza no seu PC, de graça.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 2737,
+      "sinais": {
+        "video": 3,
+        "conteudo": 2,
+        "social": 1,
+        "marketing": 1
+      },
+      "requisitos": [
+        "req-node",
+        "req-ffmpeg"
+      ],
+      "detectar": {
+        "plugin": "hyperframes@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install hyperframes@claude-plugins-official",
+          "mac": "claude plugin install hyperframes@claude-plugins-official"
+        },
+        {
+          "tipo": "cmd",
+          "win": "npx.cmd -y hyperframes telemetry disable",
+          "mac": "npx -y hyperframes telemetry disable"
+        }
+      ]
+    },
+    {
+      "id": "boost-video",
+      "nome": "Claude Boost: vídeo",
+      "categoria": "Vídeo",
+      "tipo": "plugin",
+      "resumo": "Receitas prontas para cortar, legendar, comprimir e juntar vídeos, mais o corte automático de silêncios.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "video": 3,
+        "conteudo": 2
+      },
+      "requisitos": [
+        "req-ffmpeg"
+      ],
+      "detectar": {
+        "plugin": "boost-video@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-video@claude-boost",
+          "mac": "claude plugin install boost-video@claude-boost"
+        }
+      ],
+      "kit": true
+    },
+    {
+      "id": "meta-ads",
+      "nome": "Meta Ads (oficial)",
+      "categoria": "Marketing",
+      "tipo": "conector",
+      "resumo": "Ler e gerenciar campanhas do Facebook e Instagram: métricas, orçamentos, criar e pausar anúncios.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "ads": 3,
+        "marketing": 3,
+        "social": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → Adicionar conector personalizado → URL https://mcp.facebook.com/ads → Conectar e escolher as contas de anúncio."
+        }
+      ]
+    },
+    {
+      "id": "boost-ads",
+      "nome": "Claude Boost: tráfego pago",
+      "categoria": "Marketing",
+      "tipo": "plugin",
+      "resumo": "7 skills de gestor de tráfego: diagnóstico, metas, estrutura, criativos, copy, auditor de políticas (Meta e OAB) e relatório.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 400,
+      "estimado": true,
+      "sinais": {
+        "ads": 3,
+        "marketing": 3,
+        "escrita": 1
+      },
+      "detectar": {
+        "plugin": "boost-ads@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-ads@claude-boost",
+          "mac": "claude plugin install boost-ads@claude-boost"
+        }
+      ],
+      "kit": true
+    },
+    {
+      "id": "postiz",
+      "nome": "Postiz (redes sociais)",
+      "categoria": "Marketing",
+      "tipo": "plugin",
+      "resumo": "Agendar e publicar posts no Instagram, TikTok, YouTube, X e outras, e ver os números.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "grátis hospedando o próprio servidor; o plano na nuvem é pago"
+      },
+      "tokens_fixos": 200,
+      "estimado": true,
+      "sinais": {
+        "social": 3,
+        "conteudo": 2,
+        "marketing": 2,
+        "automacao": 1
+      },
+      "detectar": {
+        "plugin": "postiz@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install postiz@claude-plugins-official",
+          "mac": "claude plugin install postiz@claude-plugins-official"
+        },
+        {
+          "tipo": "manual",
+          "texto": "Criar a conta no Postiz e conectar as redes."
+        }
+      ]
+    },
+    {
+      "id": "firecrawl",
+      "nome": "Firecrawl (pesquisa na web)",
+      "categoria": "Pesquisa",
+      "tipo": "plugin",
+      "resumo": "Lê sites inteiros, pesquisa na web e acha artigos científicos, entregando texto limpo para o Claude.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 180,
+      "sinais": {
+        "pesquisa": 3,
+        "marketing": 1,
+        "juridico": 1,
+        "estudos": 1
+      },
+      "detectar": {
+        "plugin": "firecrawl@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install firecrawl@claude-plugins-official",
+          "mac": "claude plugin install firecrawl@claude-plugins-official"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → firecrawl."
+        }
+      ]
+    },
+    {
+      "id": "skills-documentos",
+      "nome": "Documentos, PDF e planilhas",
+      "categoria": "Documentos",
+      "tipo": "nativo",
+      "resumo": "Já vem no Claude: lê e cria Word, PDF, Excel e apresentações; ótimo para contratos, peças e relatórios.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "docs": 3,
+        "juridico": 3,
+        "escrita": 2,
+        "dados": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Nada a instalar: é só pedir (ex.: 'revise este contrato em PDF')."
+        }
+      ]
+    },
+    {
+      "id": "zotero",
+      "nome": "Zotero",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "O Claude consulta sua biblioteca de referências e artigos do Zotero.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "estudos": 3,
+        "pesquisa": 2,
+        "juridico": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "mcp": "zotero"
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir o README de github.com/54yyyu/zotero-mcp (instala com uv e configura com 'zotero-mcp setup'). Conferir os comandos na versão atual antes."
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "nome": "GitHub",
+      "categoria": "Desenvolvimento",
+      "tipo": "plugin",
+      "resumo": "Issues, pull requests, revisões e repositórios do GitHub direto pelo Claude.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "dev": 3,
+        "web": 1
+      },
+      "requisitos": [
+        "req-git"
+      ],
+      "detectar": {
+        "plugin": "github@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "segredo",
+          "var": "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "texto": "Criar o token em github.com/settings/personal-access-tokens/new (fine-grained, só os repositórios necessários)."
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install github@claude-plugins-official",
+          "mac": "claude plugin install github@claude-plugins-official"
+        }
+      ]
+    },
+    {
+      "id": "supabase",
+      "nome": "Supabase",
+      "categoria": "Desenvolvimento",
+      "tipo": "plugin",
+      "resumo": "Banco de dados, login e armazenamento do seu app gerenciados pelo Claude.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 421,
+      "sinais": {
+        "dev": 3,
+        "web": 2,
+        "dados": 1
+      },
+      "detectar": {
+        "plugin": "supabase@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install supabase@claude-plugins-official",
+          "mac": "claude plugin install supabase@claude-plugins-official"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → supabase."
+        }
+      ]
+    },
+    {
+      "id": "vercel",
+      "nome": "Vercel",
+      "categoria": "Desenvolvimento",
+      "tipo": "mcp",
+      "resumo": "Publicar sites, ver logs e erros e configurar domínios na Vercel.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "web": 3,
+        "dev": 2
+      },
+      "detectar": {
+        "mcp": "vercel"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http vercel https://mcp.vercel.com -s user",
+          "mac": "claude mcp add --transport http vercel https://mcp.vercel.com -s user"
+        },
+        {
+          "tipo": "login",
+          "texto": "Autenticar pelo /mcp → vercel."
+        }
+      ]
+    },
+    {
+      "id": "playwright",
+      "nome": "Playwright (navegador)",
+      "categoria": "Desenvolvimento",
+      "tipo": "mcp",
+      "resumo": "O Claude abre e testa sites num navegador de verdade (clica, preenche, tira print).",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "web": 3,
+        "dev": 2,
+        "automacao": 1
+      },
+      "requisitos": [
+        "req-node"
+      ],
+      "detectar": {
+        "mcp": "playwright"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add playwright -s user -- npx -y @playwright/mcp@latest",
+          "mac": "claude mcp add playwright -s user -- npx -y @playwright/mcp@latest",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ]
+    },
+    {
+      "id": "claude-security",
+      "nome": "Claude Security",
+      "categoria": "Desenvolvimento",
+      "tipo": "plugin",
+      "resumo": "Varre o código atrás de falhas de segurança e propõe correções antes de você lançar o app.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 1944,
+      "sinais": {
+        "dev": 3,
+        "web": 2
+      },
+      "detectar": {
+        "plugin": "claude-security@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install claude-security@claude-plugins-official",
+          "mac": "claude plugin install claude-security@claude-plugins-official"
+        }
+      ]
+    },
+    {
+      "id": "stripe",
+      "nome": "Stripe",
+      "categoria": "Pagamentos",
+      "tipo": "plugin",
+      "resumo": "Cobranças, assinaturas e pagamentos com cartão pelo Stripe.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0,
+        "nota": "taxa por transação"
+      },
+      "tokens_fixos": 300,
+      "estimado": true,
+      "sinais": {
+        "financas": 2,
+        "dev": 2,
+        "vendas": 3
+      },
+      "detectar": {
+        "plugin": "stripe@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install stripe@claude-plugins-official",
+          "mac": "claude plugin install stripe@claude-plugins-official"
+        }
+      ]
+    },
+    {
+      "id": "mercadopago",
+      "nome": "Mercado Pago (Pix)",
+      "categoria": "Pagamentos",
+      "tipo": "plugin",
+      "resumo": "Cobrar por Pix, boleto e cartão pelo Mercado Pago.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0,
+        "nota": "taxa por transação"
+      },
+      "tokens_fixos": 300,
+      "estimado": true,
+      "sinais": {
+        "financas": 2,
+        "vendas": 3
+      },
+      "detectar": {
+        "plugin": "mercadopago@claude-plugins-official"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install mercadopago@claude-plugins-official",
+          "mac": "claude plugin install mercadopago@claude-plugins-official"
+        }
+      ]
+    },
+    {
+      "id": "tradingview",
+      "nome": "TradingView (mercado)",
+      "categoria": "Finanças",
+      "tipo": "mcp",
+      "resumo": "Preços, rankings e análise técnica de cripto, ações e futuros. Não é recomendação de investimento.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "financas": 3,
+        "cripto": 3,
+        "dados": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "mcp": "tradingview"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add tradingview -s user -- uvx --from tradingview-mcp-server tradingview-mcp",
+          "mac": "claude mcp add tradingview -s user -- uvx --from tradingview-mcp-server tradingview-mcp"
+        }
+      ]
+    },
+    {
+      "id": "n8n",
+      "nome": "n8n (automações 24h)",
+      "categoria": "Automação",
+      "tipo": "app",
+      "resumo": "Automações que rodam sozinhas mesmo com o PC desligado (precisa de um servidor pequeno).",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 35,
+        "estimado": true,
+        "nota": "servidor VPS"
+      },
+      "tokens_fixos": 100,
+      "estimado": true,
+      "sinais": {
+        "automacao": 3,
+        "produtividade": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Projeto à parte: contratar um VPS, instalar o n8n e ligar o n8n-mcp. Fazer com o consultor."
+        }
+      ]
+    },
+    {
+      "id": "rustdesk",
+      "nome": "RustDesk (acesso remoto)",
+      "categoria": "Automação",
+      "tipo": "app",
+      "resumo": "Acesso remoto grátis e de código aberto: para o consultor ajudar na sua máquina, sempre com a sua aprovação.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "remoto": 2
+      },
+      "detectar": {
+        "cmd": "rustdesk"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id RustDesk.RustDesk",
+          "mac": "brew install --cask rustdesk"
+        }
+      ]
+    }
+  ]
+}

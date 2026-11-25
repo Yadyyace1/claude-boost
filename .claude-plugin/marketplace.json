@@ -41,6 +41,12 @@
       "description": "Módulo de tráfego pago (Meta Ads): diagnóstico de campanha, metas, estrutura, criativos, copy, auditor de políticas (Meta e OAB para advocacia) e relatório para o cliente.",
       "category": "productivity",
       "source": "./plugins/boost-ads"
+    },
+    {
+      "name": "boost-onboarding",
+      "description": "Onboarding guiado: assistente no navegador pergunta como a pessoa trabalha, recomenda conectores, plugins e instaladores (custo e peso em tokens) e o Claude instala tudo item por item.",
+      "category": "productivity",
+      "source": "./plugins/boost-onboarding"
     }
   ]
 }
