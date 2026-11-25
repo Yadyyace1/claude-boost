@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 — 2026-11-25
+
+- **boost-onboarding (0.1.0, novo):** onboarding guiado para vender como serviço. A skill `/onboarding` detecta o PC e abre um assistente local no navegador (tema escuro, 3 etapas de perguntas). Um algoritmo explicável recomenda, entre 43 itens do catálogo, os conectores, plugins, MCPs e instaladores certos para a pessoa, com custo por mês, peso em tokens e o "por quê" de cada um. A pessoa ajusta a seleção, e o Claude gera o plano de instalação e o CLAUDE.md pessoal e instala item por item, com OK e sem segredos no chat. A marca é trocável em `dados/marca.json`.
+
 ## 0.3.0 — 2026-11-25
 
 Material novo, escrito com as nossas palavras a partir de referências que o João juntou.
