@@ -21,7 +21,7 @@ Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= toke
 Pré-requisitos e passo a passo completo no [guia de instalação](docs/GUIA-INSTALACAO.md). Resumo, no PowerShell:
 
 ```powershell
-claude plugin marketplace add <usuario-do-github>/claude-boost
+claude plugin marketplace add Yadyyace1/claude-boost
 ```
 
 ```powershell

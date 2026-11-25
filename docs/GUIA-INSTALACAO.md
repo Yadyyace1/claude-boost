@@ -23,7 +23,7 @@ git --version; node --version; uv --version; claude --version
 ## 2. Adicionar o kit
 
 ```powershell
-claude plugin marketplace add <usuario-do-github>/claude-boost
+claude plugin marketplace add Yadyyace1/claude-boost
 ```
 
 Se o repositório for **privado**, a pessoa precisa ter acesso a ele no GitHub e estar logada no git da máquina (o Git Credential Manager pede o login na primeira vez).
