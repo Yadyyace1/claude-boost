@@ -1,7 +1,7 @@
 // Onboarding completo, de ponta a ponta, sem terminal: detecta o PC, abre o assistente no navegador
 // e, depois da confirmação, a própria página instala tudo (modo --instalar do assistente.mjs).
 // Uso: node scripts/instalar.mjs [--respostas <perfil.json>]
-// É o que o "Instalar Claude Boost.exe" roda. A pasta da sessão fica em ~/.claude/boost-onboarding/<data-hora>.
+// É o que o "Spark.exe" roda. A pasta da sessão fica em ~/.claude/boost-onboarding/<data-hora>.
 import { spawn, execFileSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 import { homedir } from "node:os";

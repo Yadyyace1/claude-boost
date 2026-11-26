@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0 — 2026-11-26
+
+- **Nova marca: Spark.** O kit passa a se chamar Spark, com ícone novo (uma faísca âmbar). Os nomes técnicos (`boost-*`, `claude-boost`) continuam iguais, para não quebrar o que já está instalado. As pastas viram `~/Spark/Backups` e `~/Spark/Caixa de entrada`.
+- **Instalador `Spark.exe`** redesenhado: cabeçalho com degradê, etapas em cartões com animação de carregamento, botão arredondado, registro em "Ver detalhes" (abre sozinho se der erro). Sai em `Spark - Instalador`.
+- **boost-onboarding (0.6.0):**
+  - **Aba Personalização** (no lugar do Descobrir): o catálogo inteiro em cartões lado a lado, sem rolar a página; filtros de busca, ordem, origem, tipo, custo, dificuldade e categoria; **vibed** (o quanto combina com você, aprendendo com cada escolha) e **Spark score** (a nota geral); **inventário** à direita com os extras escolhidos, peso no limite e custo.
+  - **Catálogo de 52 para 84 itens:** conectores oficiais (Asana, Linear, Atlassian, monday, ClickUp, Box, Fireflies, HubSpot, Intercom, PayPal, Square, Cloudflare, Sentry, Netlify, Webflow, Hugging Face, Zapier) e MCPs (Shopify, Chrome DevTools, Memória, Fetch, Git, Hora, Pensamento em etapas, Desktop Commander, Exa, transcrição do YouTube, ElevenLabs, Apify, Pipedream, WhatsApp não oficial). Os que pedem conferência na hora vêm marcados.
+  - **6 áreas novas:** e-commerce, atendimento e vendas, saúde, educação, música e áudio, IA e automação. A área aceita quantas opções a pessoa quiser.
+  - **5 níveis de gasto de tokens**, de "economia máxima" ao **modo extremo** (uso total do Claude: teto de 60 mil tokens, o dobro de recomendações e regras no CLAUDE.md para usar o modelo mais capaz e subagentes). No plano grátis, o CLAUDE.md volta para "economizar".
+  - **Aparência:** os temas simulam o app do Claude de verdade (barra lateral, conversa, caixa de mensagem e o cenário animado), com prévia grande no claro e no escuro; a tela do assistente assume as cores do tema escolhido.
+  - **Instalação:** chat de **suporte** flutuante (dúvidas comuns na hora; perguntas livres vão para o Claude da própria pessoa, sem ferramentas nem conectores); **observações** por item (caixinha que abre o campo; vão para `observacoes.md` da sessão); botões **?** com explicações; tela final **"We got you."**
+  - **Tutorial** de boas-vindas (abre na primeira visita e volta pelo ? do topo), **ícones de usuário** e animações com `motion`.
+  - **Erros corrigidos:** o "Spark (núcleo)" falhava porque tentava registrar o kit pelo GitHub com o kit local já registrado (agora o plano pula esse passo); `winget` sem os aceites automáticos travava escondido; "já instalado" em português contava como erro; a regra de horas de uso passava por cima do modo extremo no plano Max; JSON com BOM (Bloco de Notas) quebrava o plano.
+  - **Segurança:** o servidor local confere o `Host` (contra DNS rebinding), exige o código secreto também nas leituras de dados pessoais, manda cabeçalhos de segurança (CSP, nosniff, sem iframe), compara o código em tempo constante e valida nomes de variável; nomes com aspas curvas não quebram mais o comando do PowerShell.
+
 ## 0.7.1 — 2026-11-26
 
 - **Instalador:** agora se chama **Boost.exe**, com ícone próprio (um raio âmbar num quadrado escuro, gerado por `instalador/gerar_icone.py`) no arquivo, na janela e no título. O `montar.ps1` tira da pasta o .exe com o nome antigo.

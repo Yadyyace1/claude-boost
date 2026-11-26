@@ -1,7 +1,7 @@
 {
   "name": "boost-temas",
   "version": "0.1.0",
-  "description": "Temas do Claude Boost para o app do Claude: 7 visuais (claro e escuro), dois com cenário animado. Troque com /tema.",
+  "description": "Temas do Spark para o app do Claude: 7 visuais (claro e escuro), dois com cenário animado. Troque com /tema.",
   "author": { "name": "João Vitor" },
   "license": "MIT",
   "userConfig": {

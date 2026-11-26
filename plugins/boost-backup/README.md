@@ -8,7 +8,7 @@ Backup e restauração das configurações do Claude Code num arquivo só. Serve
 
 ## Comandos
 
-- `/backup` cria `~/Claude Boost/Backups/claude-backup-<data>.json`.
+- `/backup` cria `~/Spark/Backups/claude-backup-<data>.json`.
 - `/restaurar` primeiro mostra o que vai mudar e só aplica depois do seu OK, guardando uma cópia do que for sobrescrito.
 
 No painel Hoje (`boost-painel`) há os botões **Fazer backup agora** e **Restaurar um backup**.

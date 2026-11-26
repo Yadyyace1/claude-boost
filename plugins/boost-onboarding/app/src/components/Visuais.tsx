@@ -37,7 +37,7 @@ export function PerfilResumo({ respostas, perguntas, perfil }: { respostas: Resp
         <Tooltip>
           <TooltipTrigger asChild>
             <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm", perfil.economiaAjustada ? "border-primary/50 bg-primary/10" : "bg-muted/40")}>
-              <Gauge className="size-3.5 text-primary" /> Economia {perfil.economia === "alta" ? "alta" : perfil.economia === "media" ? "equilibrada" : "baixa"}
+              <Gauge className="size-3.5 text-primary" /> {({ maxima: "Economia máxima", alta: "Economizando", media: "Uso equilibrado", baixa: "Uso generoso", extremo: "Modo extremo 🔥" } as Record<string, string>)[perfil.economia] ?? "Uso equilibrado"}
               {perfil.economiaAjustada && <Info className="size-3.5" />}
             </span>
           </TooltipTrigger>

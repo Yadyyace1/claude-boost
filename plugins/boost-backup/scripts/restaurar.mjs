@@ -1,6 +1,6 @@
 // Restaura um backup feito pelo backup.mjs. Uso: node restaurar.mjs <arquivo.json> [--aplicar]
 // Sem --aplicar só mostra o que mudaria (nada é alterado). Com --aplicar:
-//   1. guarda uma cópia do que vai ser sobrescrito em ~/Claude Boost/Backups/antes-de-restaurar-<data>/;
+//   1. guarda uma cópia do que vai ser sobrescrito em ~/Spark/Backups/antes-de-restaurar-<data>/;
 //   2. grava os arquivos (settings, CLAUDE.md, skills, memórias...);
 //   3. adiciona os marketplaces que faltam e instala os plugins (desligando os que estavam desligados);
 //   4. adiciona os MCPs que faltam (os de projeto só se a pasta do projeto existir neste computador);
@@ -16,7 +16,7 @@ const aplicar = args.includes("--aplicar");
 if (!arquivo || !existsSync(arquivo)) { console.error("uso: node restaurar.mjs <claude-backup-....json> [--aplicar]"); process.exit(1); }
 
 const b = JSON.parse(readFileSync(arquivo, "utf8"));
-if (b.formato !== "claude-boost-backup") { console.error("Este arquivo não é um backup do Claude Boost."); process.exit(1); }
+if (b.formato !== "claude-boost-backup") { console.error("Este arquivo não é um backup do Spark."); process.exit(1); }
 
 const casa = homedir();
 const dirClaude = join(casa, ".claude");
@@ -54,7 +54,7 @@ if (!aplicar) { console.log("\nNada foi alterado. Para restaurar de verdade, rod
 
 // 1 e 2: arquivos, com cópia do que vai ser sobrescrito
 const carimbo = new Date().toISOString().slice(0, 16).replace(/[-:]/g, "").replace("T", "-");
-const guarda = join(casa, "Claude Boost", "Backups", `antes-de-restaurar-${carimbo}`);
+const guarda = join(casa, "Spark", "Backups", `antes-de-restaurar-${carimbo}`);
 for (const [rel] of mudados) { const dest = join(guarda, rel); mkdirSync(dirname(dest), { recursive: true }); copyFileSync(join(dirClaude, rel), dest); }
 for (const [rel, txt] of [...novos, ...mudados]) { const dest = join(dirClaude, rel); mkdirSync(dirname(dest), { recursive: true }); writeFileSync(dest, txt); }
 console.log(`\n✓ ${novos.length + mudados.length} arquivos gravados${mudados.length ? ` (cópia do que existia em ${guarda})` : ""}`);

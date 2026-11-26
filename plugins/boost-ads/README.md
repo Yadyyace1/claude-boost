@@ -1,6 +1,6 @@
 # boost-ads
 
-Módulo de tráfego pago (Meta Ads: Facebook e Instagram) do Claude Boost. São 7 skills, uma por tarefa do dia a dia de quem gerencia anúncios:
+Módulo de tráfego pago (Meta Ads: Facebook e Instagram) do Spark. São 7 skills, uma por tarefa do dia a dia de quem gerencia anúncios:
 
 | Skill | Quando usar |
 |---|---|

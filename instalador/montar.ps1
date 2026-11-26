@@ -1,6 +1,6 @@
-# Monta a pasta para entregar: "Boost.exe" (com o ícone do raio, de gerar_icone.py) + a pasta kit (este repositório, sem .git e sem node_modules).
-# Uso (PowerShell, na raiz do repositório): powershell -ExecutionPolicy Bypass -File instalador\montar.ps1 [-Saida "D:\HD\Claude Boost - Instalador"]
-param([string]$Saida = (Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) "Claude Boost - Instalador"))
+# Monta a pasta para entregar: "Spark.exe" (com o ícone da faísca, de gerar_icone.py) + a pasta kit (este repositório, sem .git e sem node_modules).
+# Uso (PowerShell, na raiz do repositório): powershell -ExecutionPolicy Bypass -File instalador\montar.ps1 [-Saida "D:\HD\Spark - Instalador"]
+param([string]$Saida = (Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) "Spark - Instalador"))
 
 $ErrorActionPreference = "Stop"
 $repo = Split-Path $PSScriptRoot -Parent
@@ -8,14 +8,13 @@ $csc = Join-Path $env:WINDIR "Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 if (-not (Test-Path $csc)) { throw "Não achei o compilador C# do Windows em $csc" }
 
 New-Item -ItemType Directory -Force -Path $Saida | Out-Null
-$exe = Join-Path $Saida "Boost.exe"
-$antigo = Join-Path $Saida "Instalar Claude Boost.exe"  # nome antigo, até a v0.7
-if (Test-Path $antigo) { Remove-Item $antigo }
+$exe = Join-Path $Saida "Spark.exe"
+foreach ($velho in "Instalar Claude Boost.exe", "Boost.exe") { $v = Join-Path $Saida $velho; if (Test-Path $v) { Remove-Item $v } }  # nomes antigos
 $icone = Join-Path $PSScriptRoot "icone.ico"
 $png = Join-Path $PSScriptRoot "icone.png"
 $argsCsc = @("/nologo", "/target:winexe", "/optimize+", "/out:$exe", "/r:System.Windows.Forms.dll", "/r:System.Drawing.dll")
-if (Test-Path $icone) { $argsCsc += "/win32icon:$icone", "/resource:$icone,Boost.icone.ico" }
-if (Test-Path $png) { $argsCsc += "/resource:$png,Boost.icone.png" }
+if (Test-Path $icone) { $argsCsc += "/win32icon:$icone", "/resource:$icone,Spark.icone.ico" }
+if (Test-Path $png) { $argsCsc += "/resource:$png,Spark.icone.png" }
 $argsCsc += (Join-Path $PSScriptRoot "Instalador.cs")
 & $csc @argsCsc
 if ($LASTEXITCODE -ne 0) { throw "A compilação falhou." }

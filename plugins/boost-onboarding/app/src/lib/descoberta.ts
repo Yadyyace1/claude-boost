@@ -1,19 +1,21 @@
-// Algoritmo do modo descoberta (swipe): escolhe a próxima carta e aprende com cada "quero" ou "pular".
+// Algoritmos da aba Personalização: o "vibed" (o quanto o item combina com você, aprendendo com as escolhas)
+// e o Spark score (a qualidade geral do item, igual para todo mundo).
 //
-// 1. Cada carta começa com a nota do algoritmo principal (recomendar.mjs).
-// 2. Um "quero" soma afinidade nas etiquetas do item (×1,5 do peso dele); um "pular" subtrai (×1,0).
-//    Assim, gostar do Postiz puxa para cima tudo o que é de redes sociais e vídeo, e pular o Stripe
-//    empurra para baixo o resto de pagamentos.
-// 3. A próxima carta é a de maior nota ajustada, com um desconto para a mesma categoria das duas
-//    últimas cartas (para variar) e, a cada 4 cartas, uma carta de "exploração" de uma categoria ainda não vista.
-// 4. O "match" é a nota ajustada em relação à melhor carta do baralho (de 5% a 99%).
-import type { Avaliado } from "./tipos"
+// Vibed:
+// 1. Cada item começa com a nota do algoritmo principal (recomendar.mjs).
+// 2. Adicionar um item soma afinidade nas etiquetas dele (×1,5 do peso); "não curti" subtrai (×1,0).
+//    Assim, adicionar o Postiz puxa para cima tudo o que é de redes sociais e vídeo.
+// 3. O vibed é a nota ajustada em relação ao melhor item da lista (de 5% a 99%).
+//
+// Spark score (0 a 100): oficial +20, do kit +10, grátis +10 (freemium +5), fácil de instalar,
+// leve no uso (tokens fixos por sessão) e sem aviso de risco.
+import type { Avaliado, Item } from "./tipos"
 
 export type Escolha = { id: string; quer: boolean }
 
-export function afinidades(cartas: Avaliado[], escolhas: Escolha[]) {
+export function afinidades(itens: Avaliado[], escolhas: Escolha[]) {
   const af: Record<string, number> = {}
-  const porId = Object.fromEntries(cartas.map((c) => [c.item.id, c]))
+  const porId = Object.fromEntries(itens.map((c) => [c.item.id, c]))
   for (const e of escolhas) {
     const c = porId[e.id]
     if (!c) continue
@@ -28,26 +30,17 @@ export function notaAjustada(c: Avaliado, af: Record<string, number>) {
   return c.nota + extra
 }
 
-export const match = (nota: number, melhor: number) => Math.round(Math.min(99, Math.max(5, (nota / Math.max(melhor, 1)) * 92)))
+export const vibed = (nota: number, melhor: number) => Math.round(Math.min(99, Math.max(5, (nota / Math.max(melhor, 1)) * 92)))
 
-export function proxima(cartas: Avaliado[], escolhas: Escolha[]): { carta: Avaliado; nota: number; explorando: boolean } | null {
-  const vistas = new Set(escolhas.map((e) => e.id))
-  const restantes = cartas.filter((c) => !vistas.has(c.item.id))
-  if (!restantes.length) return null
-  const af = afinidades(cartas, escolhas)
-  const porId = Object.fromEntries(cartas.map((c) => [c.item.id, c]))
-  const ultimas = escolhas.slice(-2).map((e) => porId[e.id]?.item.categoria)
-  const categoriasVistas = new Set(escolhas.map((e) => porId[e.id]?.item.categoria))
-
-  const explorando = escolhas.length > 0 && escolhas.length % 4 === 3
-  const pool = explorando ? restantes.filter((c) => !categoriasVistas.has(c.item.categoria)) : []
-  const base = pool.length ? pool : restantes
-
-  let melhor = base[0]
-  let melhorNota = -Infinity
-  for (const c of base) {
-    const n = notaAjustada(c, af) - (ultimas.includes(c.item.categoria) ? 2 : 0)
-    if (n > melhorNota) { melhor = c; melhorNota = n }
-  }
-  return { carta: melhor, nota: notaAjustada(melhor, af), explorando: pool.length > 0 }
+export function sparkScore(it: Item) {
+  let s = 50
+  if (it.oficial) s += 20
+  if (it.kit) s += 10
+  if (it.custo?.tipo === "gratis") s += 10
+  else if (it.custo?.tipo === "freemium") s += 5
+  s -= ((it.dificuldade ?? 1) - 1) * 8
+  s -= Math.min(20, (it.tokens_fixos ?? 0) / 150)
+  if (it.aviso) s -= 6
+  if (it.verificar) s -= 4
+  return Math.round(Math.max(0, Math.min(100, s)))
 }

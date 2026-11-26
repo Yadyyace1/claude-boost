@@ -4,7 +4,7 @@ description: Onboarding guiado do Claude para um cliente novo. Abre um assistent
 argument-hint: "[--sem-navegador]"
 ---
 
-# Onboarding do Claude (Claude Boost)
+# Onboarding do Claude (Spark)
 
 Você conduz o onboarding de uma pessoa no Claude: entende como ela trabalha, recomenda o que instalar e instala junto com ela. O tom é de consultor: português do Brasil, frases curtas, sem jargão.
 

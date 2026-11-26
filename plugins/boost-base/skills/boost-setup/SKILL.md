@@ -1,11 +1,11 @@
 ---
 name: boost-setup
-description: Checagem e configuração inicial do Claude Boost na máquina — confere git, node e uv, instala a status line (contexto, limite de 5h e da semana) e lista os MCPs ligados. Use quando o usuário digitar /boost-setup ou pedir para "configurar o kit", "instalar a status line" ou "ver se está tudo certo".
+description: Checagem e configuração inicial do Spark na máquina — confere git, node e uv, instala a status line (contexto, limite de 5h e da semana) e lista os MCPs ligados. Use quando o usuário digitar /boost-setup ou pedir para "configurar o kit", "instalar a status line" ou "ver se está tudo certo".
 argument-hint: "[statusline | checar]"
 disable-model-invocation: true
 ---
 
-# Setup do Claude Boost
+# Setup do Spark
 
 Argumento recebido: $ARGUMENTS (vazio = fazer tudo; `statusline` = só a status line; `checar` = só a checagem, sem alterar nada).
 

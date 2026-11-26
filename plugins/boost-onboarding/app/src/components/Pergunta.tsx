@@ -4,6 +4,7 @@ import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { iconeOpcao } from "@/lib/icones"
+import { AVATARES, Avatar } from "@/lib/avatares"
 import type { Pergunta as P, Respostas } from "@/lib/tipos"
 
 type Props = { q: P; respostas: Respostas; mudar: (id: string, v: Respostas[string]) => void; erro?: string }
@@ -40,6 +41,20 @@ export function Pergunta({ q, respostas, mudar, erro }: Props) {
 
       {q.tipo === "texto" && (
         <Input className="max-w-xl h-11" placeholder={q.placeholder} value={(valor as string) ?? ""} onChange={(e) => mudar(q.id, e.target.value)} />
+      )}
+
+      {q.tipo === "avatar" && (
+        <div className="flex flex-wrap gap-3" role="radiogroup" aria-label={q.titulo}>
+          {AVATARES.map((a) => {
+            const on = valor === a.id
+            return (
+              <button key={a.id} type="button" role="radio" aria-checked={on} aria-label={a.nome} title={a.nome} onClick={() => mudar(q.id, a.id)}
+                className={cn("rounded-full p-1 transition-all outline-none hover:scale-110 focus-visible:ring-[3px] focus-visible:ring-ring/50", on ? "ring-2 ring-primary scale-110" : "opacity-80 hover:opacity-100")}>
+                <Avatar id={a.id} className="size-12" />
+              </button>
+            )
+          })}
+        </div>
       )}
 
       {q.tipo === "faixa" && (

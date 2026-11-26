@@ -10,6 +10,11 @@
           "placeholder": "Ex.: Bia"
         },
         {
+          "id": "avatar",
+          "tipo": "avatar",
+          "titulo": "Escolha o seu ícone"
+        },
+        {
           "id": "area",
           "tipo": "multi",
           "titulo": "Com o que você trabalha?",
@@ -134,6 +139,76 @@
                 "conteudo": 2,
                 "social": 1,
                 "audio": 1
+              }
+            },
+            {
+              "valor": "ecommerce",
+              "rotulo": "Loja e e-commerce",
+              "descricao": "produtos, pedidos, pagamentos",
+              "icone": "store",
+              "sinais": {
+                "ecommerce": 3,
+                "vendas": 3,
+                "marketing": 1
+              }
+            },
+            {
+              "valor": "atendimento",
+              "rotulo": "Atendimento e vendas",
+              "descricao": "clientes, CRM, WhatsApp",
+              "icone": "headset",
+              "sinais": {
+                "atendimento": 3,
+                "vendas": 2,
+                "comunicacao": 2
+              }
+            },
+            {
+              "valor": "saude",
+              "rotulo": "Saúde e bem-estar",
+              "descricao": "consultório, artigos, pacientes",
+              "icone": "heart-pulse",
+              "sinais": {
+                "pesquisa": 2,
+                "docs": 2,
+                "estudos": 1
+              },
+              "flags": {
+                "sensivel": true
+              }
+            },
+            {
+              "valor": "educacao",
+              "rotulo": "Educação e aulas",
+              "descricao": "professor, cursos, material",
+              "icone": "presentation",
+              "sinais": {
+                "estudos": 2,
+                "docs": 2,
+                "conteudo": 2,
+                "design": 1
+              }
+            },
+            {
+              "valor": "musica",
+              "rotulo": "Música e áudio",
+              "descricao": "produção, voz, podcast",
+              "icone": "music",
+              "sinais": {
+                "musica": 3,
+                "audio": 3,
+                "conteudo": 1
+              }
+            },
+            {
+              "valor": "ia",
+              "rotulo": "IA e automação",
+              "descricao": "agentes, integrações, modelos",
+              "icone": "cpu",
+              "sinais": {
+                "ia": 3,
+                "automacao": 3,
+                "dev": 1
               }
             }
           ]
@@ -707,21 +782,38 @@
         {
           "id": "economia",
           "tipo": "unico",
-          "titulo": "Quanto você quer economizar tokens (o limite de uso do Claude)?",
+          "titulo": "Quanto do seu limite de uso você quer gastar?",
           "opcoes": [
             {
+              "valor": "maxima",
+              "rotulo": "Economia máxima",
+              "descricao": "o mínimo ligado; respostas enxutas"
+            },
+            {
               "valor": "alta",
-              "rotulo": "Muito",
+              "rotulo": "Economizar",
               "descricao": "meu limite acaba rápido"
             },
             {
               "valor": "media",
-              "rotulo": "Equilibrado"
+              "rotulo": "Equilibrado",
+              "descricao": "o padrão recomendado"
             },
             {
               "valor": "baixa",
-              "rotulo": "Pouco",
+              "rotulo": "Generoso",
               "descricao": "prefiro tudo ligado"
+            },
+            {
+              "valor": "extremo",
+              "rotulo": "Modo extremo",
+              "descricao": "uso total do Claude, sem economizar",
+              "sinais": {
+                "ia": 1
+              },
+              "itens": [
+                "modo-extremo"
+              ]
             }
           ]
         },

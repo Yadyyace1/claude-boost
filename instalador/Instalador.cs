@@ -1,4 +1,4 @@
-// Boost: o instalador do Claude Boost para Windows. Prepara o computador, instala o Claude Code, faz o login,
+// Spark: o instalador do Spark para Windows. Prepara o computador, instala o Claude Code, faz o login,
 // registra o kit desta pasta e abre o assistente no navegador, que instala o resto.
 // Compilado com o compilador C# que já vem no Windows (C# 5, .NET Framework 4.x): ver montar.ps1.
 using System;
@@ -17,14 +17,14 @@ class Instalador : Form
         "Preparar o computador (Git e Node.js)",
         "Claude Code",
         "Entrar na sua conta do Claude",
-        "Registrar o kit Boost",
+        "Registrar o kit Spark",
         "Escolher e instalar (no navegador)",
     };
 
-    readonly Label[] marcas = new Label[NOMES.Length];
-    readonly Label[] rotulos = new Label[NOMES.Length];
+    readonly Etapas etapas = new Etapas(NOMES);
     readonly TextBox registro = new TextBox();
-    readonly Button botao = new Button();
+    readonly Botao botao = new Botao();
+    readonly Label detalhes = new Label();
     readonly Barra barra = new Barra();
     readonly string pastaBase = AppDomain.CurrentDomain.BaseDirectory;
     readonly string pastaKit;
@@ -65,45 +65,47 @@ class Instalador : Form
     Instalador()
     {
         pastaKit = Path.Combine(pastaBase, "kit");
-        Text = "Boost · Instalação";
-        var ico = Recurso("Boost.icone.ico");
+        Text = "Spark · Instalação";
+        var ico = Recurso("Spark.icone.ico");
         if (ico != null) Icon = new Icon(ico);
-        Width = 680; Height = 600;
+        ClientSize = new Size(640, 560);
         FormBorderStyle = FormBorderStyle.FixedSingle; MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = FUNDO; ForeColor = TEXTO;
         Font = new Font("Segoe UI", 10f);
+        DoubleBuffered = true;
 
-        var png = Recurso("Boost.icone.png");
-        if (png != null) Controls.Add(new PictureBox { Image = Image.FromStream(png), SizeMode = PictureBoxSizeMode.Zoom, Left = 28, Top = 22, Width = 40, Height = 40 });
-        var titulo = new Label { Text = "Boost", Font = new Font("Segoe UI Semibold", 20f), ForeColor = TEXTO, AutoSize = true, Left = 74, Top = 22 };
-        var sub = new Label { Text = "Vamos deixar o seu Claude pronto. Você só confirma e entra nas suas contas.", ForeColor = SUAVE, AutoSize = true, Left = 30, Top = 70 };
-        Controls.Add(titulo); Controls.Add(sub);
+        // Cabeçalho: degradê quente com o ícone e uma linha de brilho âmbar embaixo.
+        var png = Recurso("Spark.icone.png");
+        var cabeca = new Cabecalho(png != null ? Image.FromStream(png) : null) { Left = 0, Top = 0, Width = 640, Height = 120 };
+        Controls.Add(cabeca);
 
-        var painel = new Panel { Left = 28, Top = 100, Width = 608, Height = 200, BackColor = CARTAO };
-        for (int i = 0; i < NOMES.Length; i++)
-        {
-            marcas[i] = new Label { Text = "○", Left = 16, Top = 16 + i * 36, Width = 26, Font = new Font("Segoe UI", 12f), ForeColor = SUAVE };
-            rotulos[i] = new Label { Text = NOMES[i], Left = 46, Top = 18 + i * 36, Width = 540, ForeColor = TEXTO };
-            painel.Controls.Add(marcas[i]); painel.Controls.Add(rotulos[i]);
-        }
-        Controls.Add(painel);
+        etapas.Left = 28; etapas.Top = 140; etapas.Width = 584; etapas.Height = NOMES.Length * 52 + 12;
+        Controls.Add(etapas);
 
-        barra.Left = 28; barra.Top = 312; barra.Width = 608; barra.Height = 6; barra.Maximum = NOMES.Length;
+        barra.Left = 28; barra.Top = etapas.Bottom + 16; barra.Width = 584; barra.Height = 6; barra.Maximum = NOMES.Length;
         Controls.Add(barra);
 
-        registro.Left = 28; registro.Top = 330; registro.Width = 608; registro.Height = 170;
+        detalhes.Text = "▸ Ver detalhes"; detalhes.AutoSize = true; detalhes.Left = 26; detalhes.Top = barra.Bottom + 14;
+        detalhes.ForeColor = SUAVE; detalhes.Cursor = Cursors.Hand;
+        detalhes.Click += delegate { MostrarDetalhes(!registro.Visible); };
+        Controls.Add(detalhes);
+
+        registro.Left = 28; registro.Top = detalhes.Bottom + 8; registro.Width = 584; registro.Height = 150;
         registro.Multiline = true; registro.ReadOnly = true; registro.ScrollBars = ScrollBars.Vertical;
         registro.BackColor = CARTAO; registro.ForeColor = SUAVE; registro.BorderStyle = BorderStyle.None;
-        registro.Font = new Font("Consolas", 9f);
+        registro.Font = new Font("Consolas", 9f); registro.Visible = false;
         registro.HandleCreated += delegate { SetWindowTheme(registro.Handle, "DarkMode_Explorer", null); };
         Controls.Add(registro);
 
-        botao.Text = "Começar"; botao.Left = 496; botao.Top = 512; botao.Width = 140; botao.Height = 36;
-        botao.FlatStyle = FlatStyle.Flat; botao.BackColor = DESTAQUE; botao.ForeColor = Color.FromArgb(26, 18, 6);
-        botao.FlatAppearance.BorderSize = 0; botao.Font = new Font("Segoe UI Semibold", 10f);
+        var rodape = new Label { Text = "Nada é instalado sem o seu OK. Senhas e chaves nunca passam pelo chat.", ForeColor = Color.FromArgb(120, 112, 100), AutoSize = true, Font = new Font("Segoe UI", 8.5f) };
+        Controls.Add(rodape);
+
+        botao.Text = "Começar"; botao.Width = 150; botao.Height = 40;
         botao.Click += delegate { if (terminou) Close(); else Comecar(); };
         Controls.Add(botao);
+        PosicionarRodape(rodape);
+        Resize += delegate { PosicionarRodape(rodape); };
 
         Escrever("Pasta do kit: " + pastaKit);
         if (!Directory.Exists(pastaKit))
@@ -123,19 +125,33 @@ class Instalador : Form
 
     void Marcar(int i, string simbolo, Color cor)
     {
-        NaJanela(delegate { marcas[i].Text = simbolo; marcas[i].ForeColor = cor; rotulos[i].ForeColor = cor == SUAVE ? TEXTO : cor; });
+        int estado = simbolo == "✓" ? 2 : simbolo == "✗" ? 3 : simbolo == "…" ? 1 : 0;
+        NaJanela(delegate { etapas.Definir(i, estado); });
+    }
+
+    void MostrarDetalhes(bool mostrar)
+    {
+        registro.Visible = mostrar;
+        detalhes.Text = mostrar ? "▾ Esconder detalhes" : "▸ Ver detalhes";
+        ClientSize = new Size(640, mostrar ? 720 : 560);
+    }
+
+    void PosicionarRodape(Label rodape)
+    {
+        botao.Left = ClientSize.Width - 28 - botao.Width; botao.Top = ClientSize.Height - 24 - botao.Height;
+        rodape.Left = 28; rodape.Top = botao.Top + (botao.Height - rodape.Height) / 2;
     }
 
     bool Confirmar(string mensagem)
     {
         var r = DialogResult.No;
-        NaJanela(delegate { r = MessageBox.Show(this, mensagem, "Boost", MessageBoxButtons.YesNo, MessageBoxIcon.Question); });
+        NaJanela(delegate { r = MessageBox.Show(this, mensagem, "Spark", MessageBoxButtons.YesNo, MessageBoxIcon.Question); });
         return r == DialogResult.Yes;
     }
 
     void Avisar(string mensagem)
     {
-        NaJanela(delegate { MessageBox.Show(this, mensagem, "Boost", MessageBoxButtons.OK, MessageBoxIcon.Information); });
+        NaJanela(delegate { MessageBox.Show(this, mensagem, "Spark", MessageBoxButtons.OK, MessageBoxIcon.Information); });
     }
 
     // ---------- processos ----------
@@ -229,6 +245,7 @@ class Instalador : Form
         {
             Marcar(atual, "✗", Color.FromArgb(239, 107, 107));
             Escrever("PAROU: " + e.Message);
+            NaJanela(delegate { MostrarDetalhes(true); });
             Avisar("A instalação parou nesta etapa:\n" + NOMES[atual] + "\n\n" + e.Message + "\n\nVocê pode abrir o instalador de novo: ele continua de onde parou.");
         }
         finally
@@ -323,7 +340,157 @@ class Instalador : Form
     }
 }
 
-// Barra de progresso fina, desenhada à mão (a do Windows fica branca no tema escuro).
+
+// ---------- desenho da janela ----------
+static class Desenho
+{
+    public static System.Drawing.Drawing2D.GraphicsPath Arredondado(RectangleF r, float raio)
+    {
+        var p = new System.Drawing.Drawing2D.GraphicsPath();
+        float d = Math.Max(1f, raio * 2);
+        p.AddArc(r.X, r.Y, d, d, 180, 90);
+        p.AddArc(r.Right - d, r.Y, d, d, 270, 90);
+        p.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
+        p.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
+        p.CloseFigure();
+        return p;
+    }
+    public static readonly Color FUNDO = Color.FromArgb(20, 19, 17);
+    public static readonly Color CARTAO = Color.FromArgb(31, 29, 26);
+    public static readonly Color TEXTO = Color.FromArgb(240, 233, 220);
+    public static readonly Color SUAVE = Color.FromArgb(168, 158, 142);
+    public static readonly Color AMBAR = Color.FromArgb(224, 163, 59);
+    public static readonly Color VERDE = Color.FromArgb(76, 195, 138);
+    public static readonly Color VERMELHO = Color.FromArgb(239, 107, 107);
+}
+
+// Cabeçalho com degradê quente, o ícone, o nome e uma linha de brilho âmbar.
+class Cabecalho : Control
+{
+    readonly Image icone;
+    public Cabecalho(Image icone) { this.icone = icone; DoubleBuffered = true; }
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        var g = e.Graphics;
+        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+        using (var f = new System.Drawing.Drawing2D.LinearGradientBrush(ClientRectangle, Color.FromArgb(48, 38, 24), Desenho.FUNDO, 20f)) g.FillRectangle(f, ClientRectangle);
+        using (var halo = new System.Drawing.Drawing2D.GraphicsPath())
+        {
+            halo.AddEllipse(-10, -30, 170, 170);
+            using (var b = new System.Drawing.Drawing2D.PathGradientBrush(halo) { CenterColor = Color.FromArgb(70, 224, 163, 59), SurroundColors = new[] { Color.FromArgb(0, 224, 163, 59) } })
+                g.FillPath(b, halo);
+        }
+        if (icone != null) g.DrawImage(icone, 28, 28, 64, 64);
+        using (var t = new Font("Segoe UI Semibold", 22f)) using (var b = new SolidBrush(Desenho.TEXTO)) g.DrawString("Spark", t, b, 104, 24);
+        using (var s = new Font("Segoe UI", 10f)) using (var b = new SolidBrush(Desenho.SUAVE))
+            g.DrawString("Vamos deixar o seu Claude pronto. Você só confirma e entra nas suas contas.", s, b, 107, 68);
+        var faixa = new Rectangle(0, Height - 2, Width, 2);
+        using (var linha = new System.Drawing.Drawing2D.LinearGradientBrush(faixa, Color.Transparent, Desenho.AMBAR, 0f))
+        {
+            linha.InterpolationColors = new System.Drawing.Drawing2D.ColorBlend
+            {
+                Colors = new[] { Color.FromArgb(0, 224, 163, 59), Color.FromArgb(200, 224, 163, 59), Color.FromArgb(0, 224, 163, 59) },
+                Positions = new[] { 0f, 0.35f, 1f },
+            };
+            g.FillRectangle(linha, faixa);
+        }
+    }
+}
+
+// As etapas em cartões: número, carregando (arco girando), feito ou erro.
+class Etapas : Control
+{
+    readonly string[] nomes;
+    readonly int[] estado; // 0 a fazer, 1 rodando, 2 feito, 3 erro
+    readonly System.Windows.Forms.Timer giro = new System.Windows.Forms.Timer { Interval = 40 };
+    int angulo;
+    public Etapas(string[] nomes)
+    {
+        this.nomes = nomes; estado = new int[nomes.Length]; DoubleBuffered = true;
+        giro.Tick += delegate { angulo = (angulo + 12) % 360; Invalidate(); };
+    }
+    public void Definir(int i, int e)
+    {
+        estado[i] = e;
+        bool algumRodando = false;
+        foreach (var x in estado) if (x == 1) algumRodando = true;
+        giro.Enabled = algumRodando;
+        Invalidate();
+    }
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        var g = e.Graphics;
+        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+        g.Clear(Desenho.FUNDO);
+        var meio = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+        using (var fonte = new Font("Segoe UI", 10.5f))
+        using (var fonteN = new Font("Segoe UI Semibold", 9.5f))
+        {
+            for (int i = 0; i < nomes.Length; i++)
+            {
+                var r = new RectangleF(0.5f, i * 52 + 0.5f, Width - 1, 44);
+                int st = estado[i];
+                Color borda = st == 1 ? Color.FromArgb(150, Desenho.AMBAR) : st == 2 ? Color.FromArgb(90, Desenho.VERDE) : st == 3 ? Color.FromArgb(140, Desenho.VERMELHO) : Color.FromArgb(46, 43, 38);
+                using (var caminho = Desenho.Arredondado(r, 10))
+                using (var fundo = new SolidBrush(st == 2 ? Color.FromArgb(28, 38, 31) : Desenho.CARTAO))
+                using (var lapis = new Pen(borda, 1f)) { g.FillPath(fundo, caminho); g.DrawPath(lapis, caminho); }
+                var c = new RectangleF(14, r.Y + 10, 24, 24);
+                if (st == 2)
+                {
+                    using (var b = new SolidBrush(Desenho.VERDE)) g.FillEllipse(b, c);
+                    using (var p = new Pen(Color.White, 2.2f)) g.DrawLines(p, new[] { new PointF(c.X + 6.5f, c.Y + 12.5f), new PointF(c.X + 10.5f, c.Y + 16.5f), new PointF(c.X + 17.5f, c.Y + 8.5f) });
+                }
+                else if (st == 3)
+                {
+                    using (var b = new SolidBrush(Desenho.VERMELHO)) g.FillEllipse(b, c);
+                    using (var p = new Pen(Color.White, 2.2f)) { g.DrawLine(p, c.X + 8, c.Y + 8, c.X + 16, c.Y + 16); g.DrawLine(p, c.X + 16, c.Y + 8, c.X + 8, c.Y + 16); }
+                }
+                else if (st == 1)
+                {
+                    using (var p = new Pen(Color.FromArgb(60, Desenho.AMBAR), 2.6f)) g.DrawEllipse(p, c);
+                    using (var p = new Pen(Desenho.AMBAR, 2.6f)) g.DrawArc(p, c, angulo, 100);
+                }
+                else
+                {
+                    using (var p = new Pen(Color.FromArgb(80, Desenho.SUAVE), 1.4f)) g.DrawEllipse(p, c);
+                    using (var b = new SolidBrush(Desenho.SUAVE)) g.DrawString((i + 1).ToString(), fonteN, b, c, meio);
+                }
+                using (var b = new SolidBrush(st == 0 ? Color.FromArgb(205, 198, 186) : st == 3 ? Desenho.VERMELHO : Desenho.TEXTO))
+                    g.DrawString(nomes[i], fonte, b, 52, r.Y + 12);
+            }
+        }
+    }
+}
+
+// Botão âmbar arredondado, que clareia com o mouse em cima e fica cinza desligado.
+class Botao : Button
+{
+    bool sobre;
+    public Botao()
+    {
+        SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
+        FlatStyle = FlatStyle.Flat; FlatAppearance.BorderSize = 0; Font = new Font("Segoe UI Semibold", 10.5f); Cursor = Cursors.Hand;
+    }
+    protected override void OnMouseEnter(EventArgs e) { sobre = true; Invalidate(); base.OnMouseEnter(e); }
+    protected override void OnMouseLeave(EventArgs e) { sobre = false; Invalidate(); base.OnMouseLeave(e); }
+    protected override void OnEnabledChanged(EventArgs e) { Invalidate(); base.OnEnabledChanged(e); }
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        var g = e.Graphics;
+        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+        g.Clear(Parent != null ? Parent.BackColor : Desenho.FUNDO);
+        var cor = !Enabled ? Color.FromArgb(70, 66, 60) : sobre ? Color.FromArgb(240, 184, 86) : Desenho.AMBAR;
+        using (var caminho = Desenho.Arredondado(new RectangleF(0.5f, 0.5f, Width - 1, Height - 1), Height / 2f - 1))
+        using (var b = new SolidBrush(cor)) g.FillPath(b, caminho);
+        var meio = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+        using (var b = new SolidBrush(Enabled ? Color.FromArgb(26, 18, 6) : Desenho.SUAVE)) g.DrawString(Text, Font, b, new RectangleF(0, 0, Width, Height), meio);
+    }
+}
+
+// Barra de progresso fina e arredondada (a do Windows fica branca no tema escuro).
 class Barra : Control
 {
     int valor, maximo = 1;
@@ -332,8 +499,15 @@ class Barra : Control
     public Barra() { DoubleBuffered = true; }
     protected override void OnPaint(PaintEventArgs e)
     {
-        e.Graphics.Clear(Color.FromArgb(31, 29, 26));
-        int w = (int)((long)Width * Math.Min(valor, maximo) / maximo);
-        using (var b = new SolidBrush(Color.FromArgb(224, 163, 59))) e.Graphics.FillRectangle(b, 0, 0, w, Height);
+        var g = e.Graphics;
+        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        g.Clear(Desenho.FUNDO);
+        float raio = (Height - 1) / 2f;
+        using (var trilho = Desenho.Arredondado(new RectangleF(0, 0, Width - 1, Height - 1), raio))
+        using (var b = new SolidBrush(Desenho.CARTAO)) g.FillPath(b, trilho);
+        float w = (float)(Width - 1) * Math.Min(valor, maximo) / maximo;
+        if (w >= Height)
+            using (var cheio = Desenho.Arredondado(new RectangleF(0, 0, w, Height - 1), raio))
+            using (var b = new SolidBrush(Desenho.AMBAR)) g.FillPath(b, cheio);
     }
 }

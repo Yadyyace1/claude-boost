@@ -1,6 +1,6 @@
 ---
 name: diagnostico
-description: Entrevista de onboarding do Claude Boost — entende quem é a pessoa e como ela trabalha, recomenda os módulos do kit e gera o CLAUDE.md pessoal dela (~/.claude/CLAUDE.md). Use quando o usuário digitar /diagnostico ou pedir para "configurar o Claude para mim", "fazer o onboarding" ou "montar meu CLAUDE.md".
+description: Entrevista de onboarding do Spark — entende quem é a pessoa e como ela trabalha, recomenda os módulos do kit e gera o CLAUDE.md pessoal dela (~/.claude/CLAUDE.md). Use quando o usuário digitar /diagnostico ou pedir para "configurar o Claude para mim", "fazer o onboarding" ou "montar meu CLAUDE.md".
 argument-hint: "[observações iniciais, opcional]"
 disable-model-invocation: true
 ---

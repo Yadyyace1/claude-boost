@@ -1,6 +1,6 @@
-BOOST - INSTALADOR DO CLAUDE BOOST
+SPARK - INSTALADOR
 
-1. Dê dois cliques em "Boost.exe" (o ícone do raio).
+1. Dê dois cliques em "Spark.exe" (o ícone da faísca).
    O Windows pode mostrar "O Windows protegeu o computador" (o programa ainda não tem
    assinatura digital). Clique em "Mais informações" e depois em "Executar assim mesmo".
 

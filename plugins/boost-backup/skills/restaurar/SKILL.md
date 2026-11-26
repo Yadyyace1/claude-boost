@@ -6,7 +6,7 @@ argument-hint: "[caminho do claude-backup-....json]"
 
 # Restaurar as configurações do Claude Code
 
-1. **Achar o arquivo.** Se a pessoa não deu o caminho, liste `~/Claude Boost/Backups/` (os mais novos primeiro) e pergunte qual usar. Se ela trouxe de outro lugar (pendrive, Drive), peça o caminho.
+1. **Achar o arquivo.** Se a pessoa não deu o caminho, liste `~/Spark/Backups/` (os mais novos primeiro) e pergunte qual usar. Se ela trouxe de outro lugar (pendrive, Drive), peça o caminho.
 
 2. **Simular primeiro** (não muda nada):
 
@@ -22,7 +22,7 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/restaurar.mjs" "<arquivo>"
 node "${CLAUDE_PLUGIN_ROOT}/scripts/restaurar.mjs" "<arquivo>" --aplicar
 ```
 
-   O script guarda uma cópia do que for sobrescrito em `~/Claude Boost/Backups/antes-de-restaurar-<data>/`, então dá para voltar atrás.
+   O script guarda uma cópia do que for sobrescrito em `~/Spark/Backups/antes-de-restaurar-<data>/`, então dá para voltar atrás.
 
 4. **Segredos:** o script lista as variáveis (`BOOST_...`) que precisam da chave de cada serviço. Mostre o comando de cada uma com `COLE_AQUI` e peça para a pessoa rodar **no terminal dela**. Nunca peça para colar a chave no chat. Se ela colar, avise que ficou registrada na conversa e sugira gerar uma chave nova no serviço.
 

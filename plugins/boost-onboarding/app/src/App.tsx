@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { ArrowLeft, ArrowRight, Bot, Check, CheckCircle2, ClipboardCheck, Compass, Loader2, Moon, Palette, RotateCcw, Sun, Wand2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, Check, CheckCircle2, ClipboardCheck, Loader2, Moon, Palette, RotateCcw, SlidersHorizontal, Sun, Wand2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -15,11 +15,18 @@ import { Recomendacao } from "@/components/Recomendacao"
 import { ItemDetalhes } from "@/components/ItemDetalhes"
 import { Resumo } from "@/components/Resumo"
 import { Revisao } from "@/components/Revisao"
-import { Descobrir } from "@/components/Descobrir"
+import { Personalizacao } from "@/components/Personalizacao"
 import { Aparencia, APARENCIA_PADRAO, sugestoesDeAtalho, type EscolhaAparencia, type TemaPreview } from "@/components/Aparencia"
 import { GanhosPorCategoria, PerfilResumo } from "@/components/Visuais"
 import { Instalacao } from "@/components/Instalacao"
 import { postar } from "@/lib/api"
+import { LogoSpark } from "@/components/Logo"
+import { Suporte } from "@/components/Suporte"
+import { motion } from "motion/react"
+import { Tutorial, tutorialJaVisto } from "@/components/Tutorial"
+import { Avatar } from "@/lib/avatares"
+import { CircleHelp } from "lucide-react"
+import { coresDoTema } from "@/components/SimulacaoClaude"
 
 const OBRIGATORIAS = ["area", "nivel", "preferencia", "economia", "sensivel"]
 const MEMORIA = "boost-onboarding-v2"
@@ -35,14 +42,14 @@ export default function App() {
   const [erros, setErros] = useState<Record<string, string>>({})
   const [rec, setRec] = useState<Rec | null>(null)
   const [selecao, setSelecao] = useState<Set<string>>(new Set())
-  const [cartas, setCartas] = useState<Avaliado[] | null>(null)
   const [escolhas, setEscolhas] = useState<Escolha[]>([])
   const [aberto, setAberto] = useState<Avaliado | null>(null)
   const [enviando, setEnviando] = useState(false)
   const [pronto, setPronto] = useState(false)
   const [instalando, setInstalando] = useState(false)
+  const [tutorial, setTutorial] = useState(() => !tutorialJaVisto())
 
-  const setVisual = (v: Visual) => { setVisualEstado(v); aplicarVisual(v) }
+  const setVisual = (v: Visual) => setVisualEstado(v)
 
   // Carrega catálogo, perguntas, marca, temas, ambiente e o perfil pré-preenchido (se o consultor mandou).
   useEffect(() => {
@@ -55,11 +62,17 @@ export default function App() {
       if (salvo?.etapa) setEtapa(Math.min(salvo.etapa, perguntas.etapas.length))
       const v = lerVisual(marca?.cor ?? "#E0A33B")
       setVisualEstado(v)
-      aplicarVisual(v)
       document.title = `${marca?.nome ?? "Claude"} · Onboarding`
       setDados({ catalogo, perguntas, marca, ambiente, temas })
     })
   }, [])
+
+  // A tela usa as cores do tema escolhido (simula o app do Claude), ou o visual próprio do assistente.
+  useEffect(() => {
+    const t = visual.seguirTema !== false && ap.tema ? dados?.temas.find((x) => x.id === ap.tema) : undefined
+    if (t && !t.claro && visual.modo === "claro") { aplicarVisual(visual); return }
+    aplicarVisual(visual, t ? { ...coresDoTema(t, visual.modo), destaque: t.destaque } : null)
+  }, [visual, ap.tema, dados])
 
   useEffect(() => {
     if (dados && !pronto) localStorage.setItem(MEMORIA, JSON.stringify({ respostas, ap, etapa: Math.min(etapa, dados.perguntas.etapas.length) }))
@@ -73,9 +86,16 @@ export default function App() {
   const IDX_REC = nEtapas + 1
   const IDX_DESC = nEtapas + 2
   const IDX_REV = nEtapas + 3
-  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Aparência", "Recomendação", "Descobrir", "Revisão"] : []
+  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Aparência", "Recomendação", "Personalização", "Revisão"] : []
   const porId = useMemo(() => Object.fromEntries((dados?.catalogo.itens ?? []).map((i) => [i.id, i])) as Record<string, Item>, [dados])
   const avaliados = useMemo(() => (rec ? (Object.values(rec.grupos).flat() as Avaliado[]) : []), [rec])
+  const todosAvaliados = useMemo(() => {
+    if (!dados || !rec) return [] as Avaliado[]
+    const ja = new Set(avaliados.map((a) => a.item.id))
+    const resto = dados.catalogo.itens.filter((i) => i.tipo !== "requisito" && !ja.has(i.id))
+      .map((item) => ({ item, nota: 0.5, motivos: [], avisos: item.aviso ? [item.aviso] : [], instalado: false }) as Avaliado)
+    return [...avaliados, ...resto]
+  }, [dados, rec, avaliados])
   const totais = useMemo(
     () => (dados && rec ? calcular([...selecao], dados.catalogo, dados.ambiente, { avaliados }) : null),
     [selecao, rec, dados, avaliados],
@@ -119,11 +139,7 @@ export default function App() {
       r.grupos.essenciais = [...r.grupos.essenciais, ...extras]
       setRec(r)
       setSelecao(new Set([...r.selecao, ...extras.map((e) => e.item.id)]))
-      setCartas(null)
       setEscolhas([])
-    }
-    if (i === IDX_DESC && rec && !cartas) {
-      setCartas([...rec.grupos.opcionais, ...rec.grupos.fora_orcamento].filter((a) => !selecao.has(a.item.id)))
     }
     setEtapa(i)
   }
@@ -140,19 +156,6 @@ export default function App() {
       if (n.has(id)) n.delete(id)
       else n.add(id)
       return n
-    })
-  }
-
-  function escolher(e: Escolha) {
-    setEscolhas((l) => [...l, e])
-    if (e.quer) setSelecao((s) => new Set([...s, e.id]))
-  }
-
-  function desfazer() {
-    setEscolhas((l) => {
-      const ultima = l.at(-1)
-      if (ultima?.quer) setSelecao((s) => { const n = new Set(s); n.delete(ultima.id); return n })
-      return l.slice(0, -1)
     })
   }
 
@@ -188,20 +191,21 @@ export default function App() {
   }
 
   const nome = typeof respostas.nome === "string" && respostas.nome ? respostas.nome : ""
+  const usuario = { nome, avatar: respostas.avatar as string | undefined }
   const orcamento = Number(respostas.orcamento ?? 0)
   const itensSelecionados = [...(totais?.requisitos ?? []), ...selecao].map((id) => porId[id]).filter(Boolean)
   const categorias = [...new Set(dados.catalogo.itens.filter((i) => i.tipo !== "requisito").map((i) => i.categoria))]
-  const IconeEtapa = etapa < nEtapas ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : [Palette, Wand2, Compass, ClipboardCheck][etapa - nEtapas]
+  const IconeEtapa = etapa < nEtapas ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : [Palette, Wand2, SlidersHorizontal, ClipboardCheck][etapa - nEtapas]
   const SUBTITULOS: Record<number, string> = {
     [IDX_AP]: "Escolha a cara do seu Claude: o tema do app, a tela inicial como dashboard e o visual desta tela.",
     [IDX_REC]: "Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar, e em Detalhes para ver como é instalado.",
-    [IDX_DESC]: "Descubra o que mais combina com você: arraste para a direita o que quiser e para a esquerda o que não quiser.",
+    [IDX_DESC]: "Filtre o catálogo inteiro e dê Spark no que quiser. O vibed aprende com cada escolha, e o inventário à direita guarda os extras.",
     [IDX_REV]: "É isto que vai acontecer. Nada é instalado sem o seu OK, e senhas e chaves nunca passam pelo chat.",
   }
 
   if (instalando) {
     return (
-      <Casca marca={dados.marca} visual={visual} setVisual={setVisual}>
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 lg:px-8">
           <header className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight">Instalação</h1>
@@ -215,10 +219,10 @@ export default function App() {
 
   if (pronto) {
     return (
-      <Casca marca={dados.marca} visual={visual} setVisual={setVisual}>
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
         <div className="mx-auto max-w-xl px-4 py-20 text-center space-y-5">
           <CheckCircle2 className="mx-auto size-14 text-primary" />
-          <h1 className="text-3xl font-semibold">Tudo certo{nome ? `, ${nome}` : ""}!</h1>
+          <h1 className="text-4xl font-bold tracking-tight">We got you{nome ? `, ${nome}` : ""}.</h1>
           <p className="text-muted-foreground">Suas escolhas foram enviadas. Pode fechar esta aba e voltar para o Claude: ele vai instalar {selecao.size} itens, um por vez, e pedir o seu OK em cada passo.</p>
           <ol className="mx-auto max-w-sm space-y-2 text-left text-sm">
             {["O Claude mostra o plano e começa pelos programas que faltam.", "Quando um item pedir login ou chave, ele explica onde clicar.", "No fim, ele aplica o seu tema, abre o painel Hoje e escreve o seu CLAUDE.md."].map((t, i) => (
@@ -233,9 +237,9 @@ export default function App() {
   const temResumo = etapa >= IDX_REC && rec && totais
 
   return (
-    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100} visual={visual} setVisual={setVisual}>
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[220px_1fr] lg:px-8">
-        <nav aria-label="Etapas" className="hidden lg:block">
+    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
+      <div className={cn("mx-auto grid gap-8 px-4 py-8 lg:px-8", etapa === IDX_DESC ? "max-w-[1600px] py-5" : "max-w-7xl lg:grid-cols-[220px_1fr]")}>
+        <nav aria-label="Etapas" className={cn("hidden", etapa !== IDX_DESC && "lg:block")}>
           <div className="sticky top-24">
             <ol className="space-y-1">
               {titulos.map((t, i) => {
@@ -268,15 +272,15 @@ export default function App() {
           </div>
         </nav>
 
-        <main className="min-w-0">
-          <header className="mb-8 flex items-start gap-4">
+        <motion.main key={etapa} className="min-w-0" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: "easeOut" }}>
+          <header className={cn("flex items-start gap-4", etapa === IDX_DESC ? "mb-4" : "mb-8")}>
             <span className="hidden sm:grid size-14 shrink-0 place-items-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/30">
               <IconeEtapa className="size-7" />
             </span>
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Etapa {etapa + 1} de {titulos.length}</p>
               <h1 className="text-3xl font-semibold tracking-tight">
-                {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : etapa === IDX_DESC ? "Descubra mais" : titulos[etapa]}
+                {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : etapa === IDX_DESC ? "Personalização" : titulos[etapa]}
               </h1>
               <p className="text-muted-foreground max-w-2xl">
                 {etapa < nEtapas ? "Responda do seu jeito: dá para mudar tudo no final. As respostas ficam salvas neste navegador." : SUBTITULOS[etapa]}
@@ -297,8 +301,10 @@ export default function App() {
 
           {etapa === IDX_AP && <Aparencia temas={dados.temas} ap={ap} setAp={setAp} visual={visual} setVisual={setVisual} respostas={respostas} />}
 
-          {etapa === IDX_DESC && cartas && (
-            <Descobrir cartas={cartas} escolhas={escolhas} escolher={escolher} desfazer={desfazer} detalhes={setAberto} />
+          {etapa === IDX_DESC && rec && totais && (
+            <Personalizacao itens={todosAvaliados} selecao={selecao} alternar={alternar} escolhas={escolhas} setEscolhas={setEscolhas}
+              detalhes={setAberto} teto={rec.teto} tokens={totais.totais.tokens_fixos} mensal={totais.totais.mensal_brl} orcamento={orcamento}
+              voltar={() => irPara(IDX_REC)} revisar={() => irPara(IDX_REV)} />
           )}
 
           {temResumo && etapa !== IDX_DESC && (
@@ -324,7 +330,7 @@ export default function App() {
                   requisitos={totais.requisitos.map((id) => porId[id]?.nome ?? id)}
                   acao={
                     etapa === IDX_REC
-                      ? { rotulo: "Descobrir mais", onClick: () => irPara(IDX_DESC), desativado: false }
+                      ? { rotulo: "Personalizar", onClick: () => irPara(IDX_DESC), desativado: false }
                       : { rotulo: enviando ? "Enviando…" : "Confirmar e instalar", onClick: confirmar, desativado: enviando }
                   }
                 />
@@ -332,21 +338,22 @@ export default function App() {
             </div>
           )}
 
-          <Separator className="my-10" />
-          <div className="flex items-center justify-between gap-4 pb-10">
+          {etapa !== IDX_DESC && <Separator className="my-10" />}
+          <div className={cn("flex items-center justify-between gap-4 pb-10", etapa === IDX_DESC && "hidden")}>
             <Button variant="outline" onClick={() => irPara(etapa - 1)} disabled={etapa === 0}><ArrowLeft /> Voltar</Button>
             {etapa < IDX_REV && (
               <Button onClick={avancar}>
-                {etapa === IDX_AP ? "Ver minha recomendação" : etapa === IDX_REC ? "Descobrir mais" : etapa === IDX_DESC ? "Revisar" : "Continuar"} <ArrowRight />
+                {etapa === IDX_AP ? "Ver minha recomendação" : etapa === IDX_REC ? "Personalizar" : etapa === IDX_DESC ? "Revisar" : "Continuar"} <ArrowRight />
               </Button>
             )}
             {etapa === IDX_REV && (
               <Button onClick={confirmar} disabled={enviando}>{enviando ? <Loader2 className="animate-spin" /> : <Check />} Confirmar e instalar</Button>
             )}
           </div>
-        </main>
+        </motion.main>
       </div>
 
+      <Tutorial aberto={tutorial} setAberto={setTutorial} />
       <ItemDetalhes
         a={aberto}
         aberto={!!aberto}
@@ -360,14 +367,15 @@ export default function App() {
   )
 }
 
-function Casca({ marca, progresso, visual, setVisual, children }: { marca: Marca; progresso?: number; visual: Visual; setVisual: (v: Visual) => void; children: React.ReactNode }) {
+type Usuario = { nome: string; avatar?: string }
+function Casca({ marca, progresso, visual, setVisual, usuario, abrirTutorial, children }: { marca: Marca; progresso?: number; visual: Visual; setVisual: (v: Visual) => void; usuario?: Usuario; abrirTutorial?: () => void; children: React.ReactNode }) {
   const escuro = visual.modo === "escuro"
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 lg:px-8">
           <div className="flex items-center gap-3">
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground font-semibold">{marca.nome?.[0] ?? "C"}</span>
+            <LogoSpark className="size-9" />
             <div className="leading-tight">
               <div className="font-medium">{marca.nome}</div>
               <div className="text-xs text-muted-foreground">{marca.subtitulo}</div>
@@ -375,13 +383,16 @@ function Casca({ marca, progresso, visual, setVisual, children }: { marca: Marca
           </div>
           <div className="flex items-center gap-4">
             {progresso != null && <Progress value={progresso} className="hidden h-1.5 w-40 sm:block" aria-label="Progresso" />}
+            {abrirTutorial && <Button variant="ghost" size="icon" aria-label="Abrir o tutorial" title="Tutorial" onClick={abrirTutorial}><CircleHelp /></Button>}
             <Button variant="ghost" size="icon" aria-label={escuro ? "Mudar para o modo claro" : "Mudar para o modo escuro"} onClick={() => setVisual({ ...visual, modo: escuro ? "claro" : "escuro" })}>
               {escuro ? <Sun /> : <Moon />}
             </Button>
+            {usuario && (usuario.avatar || usuario.nome) && <span className="flex items-center gap-2 border-l pl-4 text-sm"><Avatar id={usuario.avatar} nome={usuario.nome} /><span className="hidden md:inline">{usuario.nome}</span></span>}
           </div>
         </div>
       </header>
       {children}
+      <Suporte />
       {marca.rodape && <footer className="border-t py-6 text-center text-xs text-muted-foreground">{marca.rodape}</footer>}
     </div>
   )

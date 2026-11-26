@@ -12,7 +12,7 @@ Rode o script do plugin (só lê as configurações; grava um arquivo novo):
 node "${CLAUDE_PLUGIN_ROOT}/scripts/backup.mjs" $ARGUMENTS
 ```
 
-- Por padrão o arquivo vai para `~/Claude Boost/Backups/claude-backup-<data>.json`.
+- Por padrão o arquivo vai para `~/Spark/Backups/claude-backup-<data>.json`.
 - **Segredos:** chaves e tokens dos MCPs NÃO vão em texto puro: viram `${VARIAVEL}` e ficam listados no arquivo para preencher na restauração. Assim o backup pode ir para um pendrive, o Google Drive ou o OneDrive com tranquilidade.
 - Só use `--com-segredos` se a pessoa pedir explicitamente, e avise: aí o arquivo contém as chaves e deve ser guardado como uma senha (nada de nuvem compartilhada).
 - O login da conta (`.credentials.json`), as conversas, o cache e os arquivos `.env` nunca entram.

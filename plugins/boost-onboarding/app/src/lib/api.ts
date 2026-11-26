@@ -15,7 +15,7 @@ export async function postar<T = unknown>(caminho: string, corpo: unknown = {}):
 }
 
 export async function pegar<T = unknown>(caminho: string): Promise<T | null> {
-  const r = await fetch(caminho).catch(() => null)
+  const r = await fetch(caminho, { headers: { "X-Boost-Token": token() } }).catch(() => null)
   return r && r.ok ? ((await r.json()) as T) : null
 }
 

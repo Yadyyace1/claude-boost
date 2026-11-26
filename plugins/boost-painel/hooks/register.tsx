@@ -3,7 +3,7 @@ import type { EngineInterface, Register, SessionContextUsage, SessionRateLimit }
 
 import type { Arquivo, Caixa, Contagem, Lembrete, Projeto, Uso } from '../types'
 
-// O painel "Hoje": o menu inicial do Claude Boost, ao lado do chat.
+// O painel "Hoje": o menu inicial do Spark, ao lado do chat.
 const PAINEL = 'boost-hoje'
 const uso = atom({ plugin: 'boost-painel', key: 'uso' } as const, { contexto: null, cincoHoras: null, semana: null, reset5h: null } as Uso, { shape: 'uso-1' })
 const lembretes = atom({ plugin: 'boost-painel', key: 'lembretes' } as const, [] as Lembrete[], { shape: 'lembretes-1' })
@@ -54,7 +54,7 @@ function tamanho(bytes: number) {
 
 async function pastaDaCaixa($: EngineInterface) {
   const casa = (await $.env.get('USERPROFILE')) || (await $.env.get('HOME')) || ''
-  return `${casa}${casa.includes('\\') ? '\\' : '/'}Claude Boost${casa.includes('\\') ? '\\' : '/'}Caixa de entrada`
+  return `${casa}${casa.includes('\\') ? '\\' : '/'}Spark${casa.includes('\\') ? '\\' : '/'}Caixa de entrada`
 }
 
 async function lerCaixa($: EngineInterface) {
@@ -120,7 +120,7 @@ export const register: Register = (on, options) => {
   const atalhos = String(options.atalhos ?? '').split('|').map(s => s.trim()).filter(Boolean).slice(0, 6)
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'painel', description: 'Abre o painel Hoje do Claude Boost' })
+    await $.command.register({ name: 'painel', description: 'Abre o painel Hoje do Spark' })
     await $.command.register({ name: 'lembrete', description: 'Anota um lembrete no painel Hoje (ex.: /lembrete ligar para o Renan)' })
     const agora = await $.clock.now()
     await carregarLembretes($)

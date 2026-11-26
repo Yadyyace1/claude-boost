@@ -1,4 +1,4 @@
-# Claude Boost
+# Spark
 
 Kit para turbinar o **Claude Code**: o que já foi testado e funciona, num pacote só. Ele traz práticas para gastar menos tokens, um setup no Windows sem dor de cabeça, os conectores que valem a pena e módulos prontos por perfil de uso.
 
@@ -23,7 +23,7 @@ Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= toke
 
 ## Instalar sem terminal (Windows)
 
-Na pasta **Claude Boost - Instalador** (montada por `instalador/montar.ps1`), dê dois cliques em **Boost.exe** (o ícone do raio). Ele:
+Na pasta **Spark - Instalador** (montada por `instalador/montar.ps1`), dê dois cliques em **Spark.exe** (o ícone da faísca). Ele:
 
 1. confere o Git e o Node.js e instala o que faltar;
 2. instala o Claude Code;

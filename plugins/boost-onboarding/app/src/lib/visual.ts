@@ -2,7 +2,13 @@
 
 export type Modo = "escuro" | "claro"
 export type Padrao = "nenhum" | "pontos" | "grade" | "brilho"
-export type Visual = { modo: Modo; cor: string; padrao: Padrao }
+export type Visual = { modo: Modo; cor: string; padrao: Padrao; seguirTema?: boolean }
+
+/** As cores de um tema do Claude (de dados/temas.json) para a tela inteira imitar o app. */
+export type PaletaTela = { fundo: string; lateral: string; cartao: string; elevado: string; texto: string; secundario: string; suave: string; destaque: string }
+
+const VARS_TEMA = ["--background", "--card", "--popover", "--foreground", "--card-foreground", "--popover-foreground", "--muted", "--muted-foreground",
+  "--secondary", "--secondary-foreground", "--accent", "--accent-foreground", "--border", "--input"]
 
 export const CORES = [
   { nome: "Âmbar", cor: "#E0A33B" },
@@ -30,7 +36,7 @@ export function lerVisual(padrao: string): Visual {
   } catch {
     /* sem visual salvo */
   }
-  return { modo: "escuro", cor: padrao, padrao: "brilho" }
+  return { modo: "escuro", cor: padrao, padrao: "brilho", seguirTema: true }
 }
 
 /** Texto escuro ou claro sobre a cor de destaque, pelo contraste. */
@@ -44,12 +50,18 @@ function textoSobre(hex: string) {
   return lum > 0.35 ? "#1a1206" : "#ffffff"
 }
 
-export function aplicarVisual(v: Visual) {
+export function aplicarVisual(v: Visual, paleta?: PaletaTela | null) {
   const html = document.documentElement
   html.classList.toggle("dark", v.modo === "escuro")
-  html.style.setProperty("--primary", v.cor)
-  html.style.setProperty("--ring", v.cor)
-  html.style.setProperty("--primary-foreground", textoSobre(v.cor))
+  const cor = paleta ? paleta.destaque : v.cor
+  html.style.setProperty("--primary", cor)
+  html.style.setProperty("--ring", cor)
+  html.style.setProperty("--primary-foreground", textoSobre(cor))
+  if (paleta) {
+    const valores = [paleta.fundo, paleta.cartao, paleta.cartao, paleta.texto, paleta.texto, paleta.texto, paleta.elevado, paleta.suave,
+      paleta.elevado, paleta.texto, paleta.elevado, paleta.texto, `${paleta.suave}33`, `${paleta.suave}40`]
+    VARS_TEMA.forEach((n, i) => html.style.setProperty(n, valores[i]))
+  } else VARS_TEMA.forEach((n) => html.style.removeProperty(n))
   document.body.classList.remove("padrao-pontos", "padrao-grade", "padrao-brilho")
   if (v.padrao !== "nenhum") document.body.classList.add(`padrao-${v.padrao}`)
   localStorage.setItem(CHAVE, JSON.stringify(v))

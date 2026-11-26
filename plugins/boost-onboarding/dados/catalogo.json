@@ -23,7 +23,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id OpenJS.NodeJS.LTS",
+          "win": "winget install -e --id OpenJS.NodeJS.LTS --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install node"
         }
       ]
@@ -49,7 +49,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id astral-sh.uv",
+          "win": "winget install -e --id astral-sh.uv --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install uv"
         }
       ]
@@ -75,7 +75,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id Git.Git",
+          "win": "winget install -e --id Git.Git --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "xcode-select --install"
         }
       ]
@@ -101,7 +101,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id Oven-sh.Bun",
+          "win": "winget install -e --id Oven-sh.Bun --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install oven-sh/bun/bun"
         }
       ]
@@ -127,14 +127,14 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id Gyan.FFmpeg",
+          "win": "winget install -e --id Gyan.FFmpeg --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install ffmpeg"
         }
       ]
     },
     {
       "id": "boost-base",
-      "nome": "Claude Boost (núcleo)",
+      "nome": "Spark (núcleo)",
       "categoria": "Economia e base",
       "tipo": "plugin",
       "resumo": "O núcleo do kit: dicas para gastar menos tokens, documentação sempre atualizada (Context7), checagem de segurança e status line com o uso do limite.",
@@ -196,7 +196,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id rtk-ai.rtk",
+          "win": "winget install -e --id rtk-ai.rtk --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install rtk"
         },
         {
@@ -859,7 +859,7 @@
     },
     {
       "id": "boost-video",
-      "nome": "Claude Boost: vídeo",
+      "nome": "Spark: vídeo",
       "categoria": "Vídeo",
       "tipo": "plugin",
       "resumo": "Receitas prontas para cortar, legendar, comprimir e juntar vídeos, mais o corte automático de silêncios.",
@@ -922,7 +922,7 @@
     },
     {
       "id": "boost-ads",
-      "nome": "Claude Boost: tráfego pago",
+      "nome": "Spark: tráfego pago",
       "categoria": "Marketing",
       "tipo": "plugin",
       "resumo": "7 skills de gestor de tráfego: diagnóstico, metas, estrutura, criativos, copy, auditor de políticas (Meta e OAB) e relatório.",
@@ -1418,7 +1418,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id RustDesk.RustDesk",
+          "win": "winget install -e --id RustDesk.RustDesk --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install --cask rustdesk"
         }
       ]
@@ -1495,7 +1495,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id Twitch.TwitchCLI",
+          "win": "winget install -e --id Twitch.TwitchCLI --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install twitchdev/twitch/twitch-cli"
         },
         {
@@ -1626,7 +1626,7 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "winget install -e --id BlenderFoundation.Blender",
+          "win": "winget install -e --id BlenderFoundation.Blender --accept-source-agreements --accept-package-agreements --disable-interactivity",
           "mac": "brew install --cask blender"
         },
         {
@@ -1723,6 +1723,996 @@
           "tipo": "cmd",
           "win": "claude plugin install boost-backup@claude-boost",
           "mac": "claude plugin install boost-backup@claude-boost"
+        }
+      ]
+    },
+    {
+      "id": "asana",
+      "nome": "Asana",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Criar e acompanhar tarefas e projetos do Asana pelo chat.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 3,
+        "gestao": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Asana\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "linear",
+      "nome": "Linear",
+      "categoria": "Desenvolvimento",
+      "tipo": "conector",
+      "resumo": "Abrir, buscar e atualizar issues e projetos do Linear.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "dev": 2,
+        "produtividade": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Linear\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "atlassian",
+      "nome": "Atlassian (Jira e Confluence)",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Tickets do Jira e páginas do Confluence: buscar, criar e resumir.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 2,
+        "dev": 2,
+        "docs": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Atlassian (Jira e Confluence)\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "monday",
+      "nome": "monday.com",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Quadros, itens e atualizações do monday.com.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 3,
+        "gestao": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"monday.com\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "clickup",
+      "nome": "ClickUp",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Tarefas, listas e documentos do ClickUp.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 3
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"ClickUp\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "box",
+      "nome": "Box",
+      "categoria": "Documentos",
+      "tipo": "conector",
+      "resumo": "Buscar e ler arquivos guardados no Box.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "docs": 3,
+        "produtividade": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Box\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "fireflies",
+      "nome": "Fireflies",
+      "categoria": "Produtividade",
+      "tipo": "conector",
+      "resumo": "Transcrições e resumos das suas reuniões gravadas.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "produtividade": 2,
+        "comunicacao": 2,
+        "atendimento": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Fireflies\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "hubspot",
+      "nome": "HubSpot",
+      "categoria": "Vendas e atendimento",
+      "tipo": "conector",
+      "resumo": "CRM: contatos, negócios e empresas do HubSpot.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "vendas": 3,
+        "marketing": 2,
+        "atendimento": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"HubSpot\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "intercom",
+      "nome": "Intercom",
+      "categoria": "Vendas e atendimento",
+      "tipo": "conector",
+      "resumo": "Conversas e tickets de suporte do Intercom.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "atendimento": 3,
+        "comunicacao": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Intercom\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "paypal",
+      "nome": "PayPal",
+      "categoria": "Pagamentos",
+      "tipo": "conector",
+      "resumo": "Faturas, pagamentos e relatórios do PayPal.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "vendas": 2,
+        "ecommerce": 2,
+        "financas": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"PayPal\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "square",
+      "nome": "Square",
+      "categoria": "Pagamentos",
+      "tipo": "conector",
+      "resumo": "Vendas, catálogo e clientes do Square.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "vendas": 2,
+        "ecommerce": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Square\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "shopify-dev",
+      "nome": "Shopify (desenvolvimento)",
+      "categoria": "E-commerce",
+      "tipo": "mcp",
+      "resumo": "Documentação e APIs da Shopify para criar e ajustar lojas e apps.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "ecommerce": 3,
+        "dev": 2
+      },
+      "detectar": {
+        "mcp": "shopify-dev"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add shopify-dev -s user -- npx -y @shopify/dev-mcp@latest",
+          "mac": "claude mcp add shopify-dev -s user -- npx -y @shopify/dev-mcp@latest",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "nome": "Cloudflare",
+      "categoria": "Desenvolvimento",
+      "tipo": "conector",
+      "resumo": "Workers, DNS e páginas da Cloudflare.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "dev": 2,
+        "web": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Cloudflare\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "sentry",
+      "nome": "Sentry",
+      "categoria": "Desenvolvimento",
+      "tipo": "conector",
+      "resumo": "Erros e alertas dos seus apps, com o contexto para corrigir.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "dev": 3
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Sentry\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "netlify",
+      "nome": "Netlify",
+      "categoria": "Desenvolvimento",
+      "tipo": "conector",
+      "resumo": "Publicar e acompanhar sites na Netlify.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "web": 3,
+        "dev": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Netlify\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "webflow",
+      "nome": "Webflow",
+      "categoria": "Design",
+      "tipo": "conector",
+      "resumo": "Páginas, CMS e publicação de sites no Webflow.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "web": 3,
+        "design": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Webflow\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "huggingface",
+      "nome": "Hugging Face",
+      "categoria": "IA e automação",
+      "tipo": "conector",
+      "resumo": "Buscar modelos, datasets e Spaces de IA do Hugging Face.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "ia": 3,
+        "dev": 2,
+        "pesquisa": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Hugging Face\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "zapier",
+      "nome": "Zapier",
+      "categoria": "Automação",
+      "tipo": "conector",
+      "resumo": "Disparar ações em milhares de apps pelo Zapier.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "automacao": 3,
+        "ia": 1,
+        "produtividade": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Zapier\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "chrome-devtools",
+      "nome": "Chrome DevTools",
+      "categoria": "Desenvolvimento",
+      "tipo": "mcp",
+      "resumo": "O Claude inspeciona páginas no Chrome: console, rede e desempenho.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 1800,
+      "estimado": true,
+      "sinais": {
+        "web": 3,
+        "dev": 2
+      },
+      "detectar": {
+        "mcp": "chrome-devtools"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add chrome-devtools -s user -- npx -y chrome-devtools-mcp@latest",
+          "mac": "claude mcp add chrome-devtools -s user -- npx -y chrome-devtools-mcp@latest",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ]
+    },
+    {
+      "id": "memoria",
+      "nome": "Memória (grafo)",
+      "categoria": "Economia e base",
+      "tipo": "mcp",
+      "resumo": "Memória de longo prazo em grafo: o Claude guarda fatos entre sessões.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 500,
+      "estimado": true,
+      "sinais": {
+        "produtividade": 1,
+        "ia": 2
+      },
+      "detectar": {
+        "mcp": "memory"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add memory -s user -- npx -y @modelcontextprotocol/server-memory",
+          "mac": "claude mcp add memory -s user -- npx -y @modelcontextprotocol/server-memory",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ]
+    },
+    {
+      "id": "fetch",
+      "nome": "Fetch (ler páginas)",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "Lê qualquer página da web e converte em texto para o Claude.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 200,
+      "estimado": true,
+      "sinais": {
+        "pesquisa": 2,
+        "web": 1
+      },
+      "detectar": {
+        "mcp": "fetch"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add fetch -s user -- uvx mcp-server-fetch",
+          "mac": "claude mcp add fetch -s user -- uvx mcp-server-fetch",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-uv"
+      ]
+    },
+    {
+      "id": "git-mcp",
+      "nome": "Git (histórico)",
+      "categoria": "Desenvolvimento",
+      "tipo": "mcp",
+      "resumo": "Consultar histórico, diffs e branches de repositórios Git.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 500,
+      "estimado": true,
+      "sinais": {
+        "dev": 2
+      },
+      "detectar": {
+        "mcp": "git"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add git -s user -- uvx mcp-server-git",
+          "mac": "claude mcp add git -s user -- uvx mcp-server-git",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-uv",
+        "req-git"
+      ]
+    },
+    {
+      "id": "tempo",
+      "nome": "Hora e fusos",
+      "categoria": "Produtividade",
+      "tipo": "mcp",
+      "resumo": "Hora certa e conversão de fusos horários (bom para agendar com gente de fora).",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "produtividade": 1
+      },
+      "detectar": {
+        "mcp": "time"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add time -s user -- uvx mcp-server-time",
+          "mac": "claude mcp add time -s user -- uvx mcp-server-time",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-uv"
+      ]
+    },
+    {
+      "id": "pensamento",
+      "nome": "Pensamento em etapas",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Ajuda o Claude a quebrar problemas difíceis em etapas revisáveis.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 300,
+      "estimado": true,
+      "sinais": {
+        "ia": 2,
+        "dev": 1,
+        "pesquisa": 1
+      },
+      "detectar": {
+        "mcp": "sequential-thinking"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add sequential-thinking -s user -- npx -y @modelcontextprotocol/server-sequential-thinking",
+          "mac": "claude mcp add sequential-thinking -s user -- npx -y @modelcontextprotocol/server-sequential-thinking",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ]
+    },
+    {
+      "id": "desktop-commander",
+      "nome": "Desktop Commander",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "O Claude mexe em arquivos e roda programas no seu PC com mais liberdade (modo avançado).",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 2500,
+      "estimado": true,
+      "sinais": {
+        "ia": 2,
+        "automacao": 2,
+        "dev": 1
+      },
+      "detectar": {
+        "mcp": "desktop-commander"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add desktop-commander -s user -- npx -y @wonderwhy-er/desktop-commander@latest",
+          "mac": "claude mcp add desktop-commander -s user -- npx -y @wonderwhy-er/desktop-commander@latest",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ],
+      "aviso": "dá muito poder ao Claude no seu computador: use com a autonomia em 'cauteloso' no começo"
+    },
+    {
+      "id": "exa",
+      "nome": "Exa (busca para IA)",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "Busca na web feita para IA: artigos, empresas e código, com fontes.",
+      "oficial": false,
+      "local": false,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 400,
+      "estimado": true,
+      "sinais": {
+        "pesquisa": 3
+      },
+      "detectar": {
+        "mcp": "exa"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http exa https://mcp.exa.ai/mcp",
+          "mac": "claude mcp add --transport http exa https://mcp.exa.ai/mcp",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "verificar": true
+    },
+    {
+      "id": "youtube-transcricao",
+      "nome": "Transcrição do YouTube",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "Pega a transcrição de vídeos do YouTube para resumir e estudar.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 200,
+      "estimado": true,
+      "sinais": {
+        "estudos": 2,
+        "pesquisa": 2,
+        "video": 1,
+        "conteudo": 1
+      },
+      "detectar": {
+        "mcp": "youtube-transcript"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add youtube-transcript -s user -- npx -y @kimtaeyoon83/mcp-server-youtube-transcript",
+          "mac": "claude mcp add youtube-transcript -s user -- npx -y @kimtaeyoon83/mcp-server-youtube-transcript",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ],
+      "verificar": true
+    },
+    {
+      "id": "elevenlabs",
+      "nome": "ElevenLabs (voz)",
+      "categoria": "Vídeo",
+      "tipo": "mcp",
+      "resumo": "Vozes realistas, narração e efeitos sonoros por IA.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "créditos grátis por mês; planos pagos para mais"
+      },
+      "tokens_fixos": 900,
+      "estimado": true,
+      "sinais": {
+        "audio": 3,
+        "musica": 2,
+        "video": 1,
+        "conteudo": 1
+      },
+      "detectar": {
+        "mcp": "elevenlabs"
+      },
+      "passos": [
+        {
+          "tipo": "segredo",
+          "var": "ELEVENLABS_API_KEY",
+          "texto": "Crie a chave em elevenlabs.io → Profile → API Keys."
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add elevenlabs -s user -e ELEVENLABS_API_KEY=$env:ELEVENLABS_API_KEY -- uvx elevenlabs-mcp",
+          "mac": "claude mcp add elevenlabs -s user -e ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY -- uvx elevenlabs-mcp"
+        }
+      ],
+      "requisitos": [
+        "req-uv"
+      ],
+      "verificar": true
+    },
+    {
+      "id": "apify",
+      "nome": "Apify (raspagem)",
+      "categoria": "Automação",
+      "tipo": "mcp",
+      "resumo": "Milhares de robôs prontos para extrair dados de sites, redes e lojas.",
+      "oficial": false,
+      "local": false,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "créditos grátis por mês"
+      },
+      "tokens_fixos": 800,
+      "estimado": true,
+      "sinais": {
+        "automacao": 2,
+        "pesquisa": 2,
+        "marketing": 1,
+        "ecommerce": 1
+      },
+      "detectar": {
+        "mcp": "apify"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http apify https://mcp.apify.com",
+          "mac": "claude mcp add --transport http apify https://mcp.apify.com",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "verificar": true
+    },
+    {
+      "id": "pipedream",
+      "nome": "Pipedream (2.500+ apps)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Um conector que liga o Claude a milhares de apps (Google Sheets, Trello, Discord...).",
+      "oficial": false,
+      "local": false,
+      "terceiros": true,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "automacao": 3,
+        "ia": 2,
+        "produtividade": 1
+      },
+      "detectar": {
+        "mcp": "pipedream"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add --transport http pipedream https://mcp.pipedream.net/v2",
+          "mac": "claude mcp add --transport http pipedream https://mcp.pipedream.net/v2",
+          "nota": "no Windows rodar pelo PowerShell"
+        }
+      ],
+      "verificar": true
+    },
+    {
+      "id": "whatsapp-mcp",
+      "nome": "WhatsApp (não oficial)",
+      "categoria": "Comunicação",
+      "tipo": "mcp",
+      "resumo": "Ler e responder conversas do WhatsApp pelo Claude, a partir do WhatsApp Web.",
+      "oficial": false,
+      "local": true,
+      "terceiros": true,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "comunicacao": 3,
+        "atendimento": 3,
+        "vendas": 1
+      },
+      "aviso": "não é oficial do WhatsApp: use num número de teste antes e nunca com dados sigilosos",
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir o passo a passo de github.com/lharries/whatsapp-mcp (precisa do Go e do uv) junto com o consultor."
+        }
+      ]
+    },
+    {
+      "id": "modo-extremo",
+      "nome": "Modo extremo",
+      "categoria": "Economia e base",
+      "tipo": "nativo",
+      "resumo": "O Claude no máximo: o modelo mais capaz, raciocínio profundo, subagentes em paralelo e verificações completas, sem economizar tokens.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0,
+        "nota": "gasta o limite bem mais rápido"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "ia": 2,
+        "dev": 1
+      },
+      "aviso": "indicado para o plano Max: no Pro ou no grátis o limite acaba em pouco tempo",
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No Claude, digite /model e escolha o modelo mais capaz (Opus)."
+        },
+        {
+          "tipo": "manual",
+          "texto": "Peça tarefas grandes de uma vez e deixe o Claude usar subagentes; o seu CLAUDE.md já recebe as regras do modo extremo."
         }
       ]
     }

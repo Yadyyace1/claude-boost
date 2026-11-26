@@ -4,7 +4,7 @@
 /plugin install boost-temas --marketplace Yadyyace1/claude-boost
 ```
 
-Temas do Claude Boost para o app do Claude (desktop e celular): sete visuais completos, cada um com modo claro e escuro, menos o Synthwave, que é só escuro.
+Temas do Spark para o app do Claude (desktop e celular): sete visuais completos, cada um com modo claro e escuro, menos o Synthwave, que é só escuro.
 
 | Tema | Clima |
 |---|---|

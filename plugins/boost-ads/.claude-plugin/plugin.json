@@ -1,7 +1,7 @@
 {
   "name": "boost-ads",
   "version": "0.1.0",
-  "description": "Módulo de tráfego pago do Claude Boost (Meta Ads): diagnóstico de campanha, metas, estrutura, criativos, copy, auditoria de políticas (Meta e OAB) e relatório para o cliente.",
+  "description": "Módulo de tráfego pago do Spark (Meta Ads): diagnóstico de campanha, metas, estrutura, criativos, copy, auditoria de políticas (Meta e OAB) e relatório para o cliente.",
   "author": {
     "name": "João Vitor"
   },

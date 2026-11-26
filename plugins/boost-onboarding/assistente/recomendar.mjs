@@ -1,8 +1,8 @@
-// Algoritmo de recomendação do Claude Boost Onboarding.
+// Algoritmo de recomendação do Spark Onboarding.
 // Roda igual no navegador (assistente, ao vivo) e no Node (testes e plano).
 // Determinístico e explicável: cada item recebe uma nota com os motivos que a formaram.
 
-export const TETO_TOKENS = { alta: 3000, media: 7000, baixa: 15000 };
+export const TETO_TOKENS = { maxima: 1500, alta: 3000, media: 7000, baixa: 15000, extremo: 60000 };
 
 const FRASES = {
   dev: "você programa", web: "você cria sites", design: "você trabalha com design",
@@ -16,6 +16,8 @@ const FRASES = {
   produtividade: "você organiza agenda e tarefas", remoto: "você quer comandar o PC de longe",
   economia: "economiza o seu limite de uso", vendas: "você cobra clientes",
   stream: "você faz lives", vtuber: "você usa avatar virtual",
+  ecommerce: "você vende online", atendimento: "você atende clientes", musica: "você trabalha com música",
+  ia: "você gosta de IA e automação", gestao: "você gerencia projetos",
 };
 
 const PESO = { impulso: 6, essencial: 8 };
@@ -41,9 +43,11 @@ export function lerPerfil(respostas, perguntas) {
     }
   }
   // Economia: o plano e as horas de uso podem exigir mais economia do que a pessoa escolheu.
-  const ORDEM_ECO = ["baixa", "media", "alta"];
+  const ORDEM_ECO = ["extremo", "baixa", "media", "alta", "maxima"];
   let economia = respostas.economia || "media";
-  const minimos = [flags.economia_min, Number(respostas.horas) >= 6 ? "media" : null].filter(Boolean);
+  // Muitas horas por dia pedem economia, menos nos planos Max e Team (que aguentam o uso intenso).
+  const planoForte = ["max", "team"].includes(respostas.plano);
+  const minimos = [flags.economia_min, Number(respostas.horas) >= 6 && !planoForte ? "media" : null].filter(Boolean);
   for (const m of minimos) if (ORDEM_ECO.indexOf(m) > ORDEM_ECO.indexOf(economia)) economia = m;
 
   return {
@@ -113,7 +117,8 @@ export function recomendar(respostas, catalogo, perguntas, ambiente = {}) {
   // (no mínimo 5, para sempre sobrar espaço para descobertas novas).
   const candidatos = avaliados.filter((a) => !a.item.essencial && a.nota >= CORTE.recomendado && !a.tecnicoDemais);
   const jaUsados = candidatos.filter((a) => a.jaUsa).length;
-  const vagasNovas = Math.max(MAX_RECOMENDADOS - jaUsados, 5);
+  // No modo extremo cabem o dobro de recomendações.
+  const vagasNovas = Math.max((p.economia === "extremo" ? MAX_RECOMENDADOS * 2 : MAX_RECOMENDADOS) - jaUsados, 5);
 
   const grupos = { essenciais: [], recomendados: [], opcionais: [], fora_orcamento: [] };
   let gasto = 0;

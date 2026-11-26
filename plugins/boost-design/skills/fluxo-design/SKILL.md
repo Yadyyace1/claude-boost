@@ -1,6 +1,6 @@
 ---
 name: fluxo-design
-description: Fluxo de trabalho de design do Claude Boost — editar imagem com o Photopea (camadas, texto, recorte, exportar), gerar pixel art com o PixelLab (personagens, sprites, tiles, animação) e criar peças no Canva. Use quando o usuário pedir para criar ou editar imagem, arte, post, logo, sprite, pixel art, tirar fundo ou redimensionar imagem.
+description: Fluxo de trabalho de design do Spark — editar imagem com o Photopea (camadas, texto, recorte, exportar), gerar pixel art com o PixelLab (personagens, sprites, tiles, animação) e criar peças no Canva. Use quando o usuário pedir para criar ou editar imagem, arte, post, logo, sprite, pixel art, tirar fundo ou redimensionar imagem.
 ---
 
 # Fluxo de design

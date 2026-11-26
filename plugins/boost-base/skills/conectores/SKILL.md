@@ -1,6 +1,6 @@
 ---
 name: conectores
-description: Guia de conectores e servidores MCP testados no Claude Boost — quais ligar (Gmail, Google Calendar, Google Drive, Notion, Canva, Vercel), onde autorizar no app e como adicionar MCPs avulsos pelo PowerShell. Use quando o usuário perguntar como ligar o Claude ao e-mail, agenda, Drive, Notion, Canva ou a outro serviço, ou "quais conectores vale a pena".
+description: Guia de conectores e servidores MCP testados no Spark — quais ligar (Gmail, Google Calendar, Google Drive, Notion, Canva, Vercel), onde autorizar no app e como adicionar MCPs avulsos pelo PowerShell. Use quando o usuário perguntar como ligar o Claude ao e-mail, agenda, Drive, Notion, Canva ou a outro serviço, ou "quais conectores vale a pena".
 ---
 
 # Conectores e MCPs

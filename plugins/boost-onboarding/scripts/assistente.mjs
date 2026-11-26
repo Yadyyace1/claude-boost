@@ -10,7 +10,7 @@
 import { createServer } from "node:http";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync, appendFileSync } from "node:fs";
 import { spawn, execFileSync } from "node:child_process";
-import { randomBytes } from "node:crypto";
+import { randomBytes, timingSafeEqual } from "node:crypto";
 import { dirname, join, normalize, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir, platform } from "node:os";
@@ -34,12 +34,18 @@ const PERMITIDOS = ["assistente", "dados"];
 const DIST = join(raiz, "app", "dist");
 const temApp = existsSync(join(DIST, "index.html"));
 
+const SEGURANCA = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "no-referrer",
+  "X-Frame-Options": "DENY",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
+};
 function servir(res, arquivo) {
-  res.writeHead(200, { "Content-Type": TIPOS[extname(arquivo)] || "application/octet-stream", "Cache-Control": "no-store" });
+  res.writeHead(200, { "Content-Type": TIPOS[extname(arquivo)] || "application/octet-stream", "Cache-Control": "no-store", ...SEGURANCA });
   res.end(readFileSync(arquivo));
 }
 function json(res, status, obj) {
-  res.writeHead(status, { "Content-Type": TIPOS[".json"], "Cache-Control": "no-store" });
+  res.writeHead(status, { "Content-Type": TIPOS[".json"], "Cache-Control": "no-store", ...SEGURANCA });
   res.end(JSON.stringify(obj));
 }
 function lerCorpo(req) {
@@ -63,7 +69,9 @@ function gerarPlano() {
 
 const variaveisDoPlano = () => new Set((plano?.itens ?? []).flatMap((i) => i.passos.filter((p) => p.tipo === "segredo").map((p) => p.variavel)));
 
+const NOME_VALIDO = /^[A-Z][A-Z0-9_]{1,63}$/;
 function segredoSalvo(nome) {
+  if (!NOME_VALIDO.test(nome)) return false;
   if (process.env[nome]) return true;
   if (!win) return false;
   try {
@@ -100,7 +108,7 @@ async function executarItem(id) {
     const r = await rodar(p.comando);
     resultados.push({ comando: p.comando, ...r });
     // "já instalado / já existe" não é erro para a pessoa
-    if (r.codigo !== 0 && !/already|já (está|existe)|exists/i.test(r.saida)) return { ok: false, resultados };
+    if (r.codigo !== 0 && !/already|exists|já (está|existe)|já instalad|pacote existente|nenhuma atualiza|no (available|applicable) upgrade/i.test(r.saida)) return { ok: false, resultados };
   }
   if (item.desligar_depois) resultados.push({ comando: item.desligar_depois, ...(await rodar(item.desligar_depois)) });
   return { ok: true, resultados };
@@ -129,13 +137,94 @@ function aplicarClaudeMd() {
   return { ok: true, arquivo: arq };
 }
 
-const autorizado = (req) => req.headers["x-boost-token"] === TOKEN;
+// ---------- chat de suporte ----------
+// Usa o Claude Code da própria pessoa (já logado), sem nenhuma ferramenta, conector, plugin ou hook:
+// ele só conversa. Uma pergunta por vez, resposta curta, em português.
+let ajudando = false;
+const SUPORTE = `Você é o suporte do Spark, um assistente que instala e configura o Claude Code no computador de pessoas leigas.
+Responda em português do Brasil, curto (até 6 frases ou uma lista curta), simples e sem jargão; explique termos técnicos em meia frase.
+Você NÃO roda comandos nem mexe no computador: explique o que a pessoa deve clicar ou fazer nesta página.
+Regras:
+- Nunca peça senha, chave, token ou código no chat. Chaves vão no campo protegido do cartão do item ("Cole a chave aqui" → Salvar); ficam só no computador da pessoa.
+- Logins e conectores: o botão "Abrir" do cartão leva à página certa; depois a pessoa clica em "Já fiz".
+- "Instalar os automáticos" instala de uma vez o que não precisa da pessoa. Item com erro: "Ver o que aconteceu" mostra a saída; "Tentar de novo" repete.
+- Nada aqui apaga as configurações da pessoa: plugins e conectores são acrescentados, e o CLAUDE.md recebe um texto no fim, com cópia de segurança antes.
+- Depois de terminar, a pessoa fecha e abre o app do Claude para os plugins, temas e o painel carregarem.
+- Se não souber, diga que não sabe e sugira falar com o consultor. Não invente comandos.`;
+
+function contextoDoPlano(extra) {
+  const linhas = (plano?.itens ?? []).map((i) => {
+    const passos = i.passos.map((p) => p.tipo === "cmd" ? `cmd: ${p.comando}` : `${p.tipo}: ${p.texto ?? p.variavel ?? ""}`).join(" | ");
+    return `- ${i.nome} (${i.tipo}): ${i.resumo}${i.aviso ? ` Aviso: ${i.aviso}` : ""} Passos: ${passos}`;
+  });
+  return `${linhas.length ? `
+
+Itens do plano desta pessoa:
+${linhas.join("\n")}` : ""}${extra ? `
+
+O que a página mostra agora:
+${extra}` : ""}`;
+}
+
+function perguntarAoClaude(pergunta, historico, extra) {
+  return new Promise((ok) => {
+    const sistema = join(saida, "suporte-sistema.md");
+    if (!existsSync(saida)) mkdirSync(saida, { recursive: true });
+    writeFileSync(sistema, SUPORTE + contextoDoPlano(extra));
+    const conversa = historico.map((m) => `${m.quem === "eu" ? "Pessoa" : "Suporte"}: ${m.texto}`).join("\n");
+    const entrada = `${conversa ? `Conversa até aqui:
+${conversa}
+
+` : ""}Pergunta da pessoa: ${pergunta}`;
+    const a = ["-p", "--model", "haiku", "--tools", "", "--strict-mcp-config", "--setting-sources", "project", "--no-session-persistence",
+      "--output-format", "text", "--system-prompt-file", sistema];
+    const p = spawn(win ? "claude.exe" : "claude", a, { cwd: saida, windowsHide: true, env: process.env });
+    let texto = "", erro = "";
+    const limite = setTimeout(() => { p.kill(); }, 120000);
+    p.stdout.on("data", (d) => { texto += d; });
+    p.stderr.on("data", (d) => { erro = (erro + d).slice(-500); });
+    p.on("close", (c) => { clearTimeout(limite); ok(c === 0 && texto.trim() ? { ok: true, resposta: texto.trim() } : { ok: false, erro: erro.trim() || "o Claude não respondeu" }); });
+    p.on("error", (e) => { clearTimeout(limite); ok({ ok: false, erro: String(e.message) }); });
+    p.stdin.end(entrada);
+  });
+}
+
+// Observações que a pessoa escreve nos cartões: ficam num arquivo da sessão (para o consultor ler depois).
+function salvarObservacoes(obs) {
+  if (!existsSync(saida)) mkdirSync(saida, { recursive: true });
+  const nomes = Object.fromEntries((plano?.itens ?? []).map((i) => [i.id, i.nome]));
+  const linhas = Object.entries(obs).filter(([, t]) => String(t).trim()).map(([id, t]) => `## ${nomes[id] ?? id}
+
+${String(t).trim().slice(0, 4000)}
+`);
+  writeFileSync(join(saida, "observacoes.md"), `# Observações da instalação
+
+${linhas.join("\n") || "(nenhuma)\n"}`);
+  return { ok: true, arquivo: join(saida, "observacoes.md") };
+}
+
+function autorizado(req) {
+  const t = Buffer.from(String(req.headers["x-boost-token"] ?? ""));
+  const certo = Buffer.from(TOKEN);
+  return t.length === certo.length && timingSafeEqual(t, certo);
+}
+// Só aceita pedidos endereçados a este computador: bloqueia sites que tentam se passar por "localhost" (DNS rebinding).
+function hostValido(req) {
+  const h = String(req.headers.host ?? "").toLowerCase();
+  const p = servidor.address()?.port;
+  return h === `127.0.0.1:${p}` || h === `localhost:${p}`;
+}
 
 const servidor = createServer(async (req, res) => {
+  if (!hostValido(req)) { res.writeHead(421); return res.end(); }
   const url = new URL(req.url, "http://127.0.0.1");
+  // Dados pessoais (respostas, ambiente, plano) só com o código secreto desta execução.
+  const PROTEGIDOS = ["/ambiente.json", "/respostas.json", "/plano"];
+  if (req.method === "GET" && PROTEGIDOS.includes(url.pathname) && !autorizado(req)) return json(res, 403, { erro: "código inválido" });
 
   if (req.method === "POST") {
     if (!autorizado(req) && (modoInstalar || url.pathname !== "/confirmar")) return json(res, 403, { erro: "código inválido" });
+    // /ajuda e /observacoes também exigem o código, em qualquer modo (a regra acima já cobre: só /confirmar escapa fora do modo instalação).
     let corpo;
     try { corpo = await lerCorpo(req); } catch { return json(res, 400, { erro: "json inválido" }); }
 
@@ -148,7 +237,17 @@ const servidor = createServer(async (req, res) => {
       try { gerarPlano(); } catch (e) { return json(res, 500, { erro: `não consegui montar o plano: ${e.message}` }); }
       return json(res, 200, { ok: true, instalar: true });
     }
+    if (url.pathname === "/ajuda") {
+      const pergunta = String(corpo.pergunta ?? "").trim().slice(0, 2000);
+      if (!pergunta) return json(res, 400, { erro: "pergunta vazia" });
+      if (ajudando) return json(res, 409, { erro: "ainda respondendo a pergunta anterior" });
+      const historico = (Array.isArray(corpo.historico) ? corpo.historico : []).slice(-6)
+        .map((m) => ({ quem: m?.quem === "eu" ? "eu" : "suporte", texto: String(m?.texto ?? "").slice(0, 1500) }));
+      ajudando = true;
+      try { return json(res, 200, await perguntarAoClaude(pergunta, historico, String(corpo.contexto ?? "").slice(0, 3000))); } finally { ajudando = false; }
+    }
     if (!modoInstalar || !plano) return json(res, 404, {});
+    if (url.pathname === "/observacoes") return json(res, 200, salvarObservacoes(corpo.observacoes && typeof corpo.observacoes === "object" ? corpo.observacoes : {}));
 
     if (url.pathname === "/executar") {
       const id = String(corpo.id ?? "");
@@ -180,11 +279,11 @@ const servidor = createServer(async (req, res) => {
     res.writeHead(404); return res.end();
   }
   if (url.pathname === "/ambiente.json") {
-    res.writeHead(200, { "Content-Type": TIPOS[".json"] });
+    res.writeHead(200, { "Content-Type": TIPOS[".json"], "Cache-Control": "no-store", ...SEGURANCA });
     return res.end(ambienteArq && existsSync(ambienteArq) ? readFileSync(ambienteArq) : "{}");
   }
   if (url.pathname === "/respostas.json") {
-    res.writeHead(200, { "Content-Type": TIPOS[".json"] });
+    res.writeHead(200, { "Content-Type": TIPOS[".json"], "Cache-Control": "no-store", ...SEGURANCA });
     return res.end(respostasArq && existsSync(respostasArq) ? readFileSync(respostasArq) : "{}");
   }
   if (url.pathname === "/modo") return json(res, 200, { instalar: modoInstalar });

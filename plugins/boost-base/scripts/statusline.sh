@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Boost — status line
+# Spark — status line
 # Mostra: modelo │ pasta │ ctx NN% │ 5h NN% │ sem NN%   (ou o custo em US$ para quem usa API)
 # Lê o JSON que o Claude Code manda pela entrada padrão. Não precisa de jq nem de Python.
 

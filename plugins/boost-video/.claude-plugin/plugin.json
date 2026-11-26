@@ -1,7 +1,7 @@
 {
   "name": "boost-video",
   "version": "0.2.0",
-  "description": "Módulo de vídeo do Claude Boost: receitas de FFmpeg para cortar, comprimir, legendar, juntar e converter vídeos, mais transcrição local com Whisper.",
+  "description": "Módulo de vídeo do Spark: receitas de FFmpeg para cortar, comprimir, legendar, juntar e converter vídeos, mais transcrição local com Whisper.",
   "author": {
     "name": "João Vitor"
   },

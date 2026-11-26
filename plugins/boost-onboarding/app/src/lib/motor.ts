@@ -26,7 +26,7 @@ export async function carregar() {
     temas: ((temas as { temas?: TemaPreview[] }).temas ?? []) as TemaPreview[],
     catalogo: catalogo as Catalogo,
     perguntas: perguntas as Perguntas,
-    marca: { nome: "Claude Boost", subtitulo: "Vamos montar o seu Claude", ...(marca as Partial<Marca>) } as Marca,
+    marca: { nome: "Spark", subtitulo: "Vamos montar o seu Claude", ...(marca as Partial<Marca>) } as Marca,
     ambiente: ambiente as Ambiente,
     preenchidas: preenchidas as Respostas,
   }

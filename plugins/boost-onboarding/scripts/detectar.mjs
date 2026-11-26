@@ -34,6 +34,12 @@ try {
   plugins = JSON.parse(lista).filter((p) => p.enabled !== false).map((p) => p.id);
 } catch {}
 
+// Marketplaces já registrados (o instalador .exe registra o kit da própria pasta).
+let marketplaces = [];
+try {
+  marketplaces = JSON.parse(claude(["plugin", "marketplace", "list", "--json"])).map((m) => m.name);
+} catch {}
+
 // Nomes dos MCPs do usuário (sem ler valores: tokens e cabeçalhos ficam de fora).
 let mcps = [];
 try {
@@ -51,6 +57,7 @@ const ambiente = {
   claude_code: versao,
   comandos,
   plugins,
+  marketplaces,
   mcps,
 };
 

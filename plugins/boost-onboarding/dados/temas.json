@@ -5,17 +5,24 @@
       "nome": "Âmbar",
       "descricao": "Quente e acolhedor: madeira, cobre e luz de abajur.",
       "cena": null,
+      "cenaSvg": null,
       "soEscuro": false,
       "escuro": {
         "fundo": "#17130e",
+        "lateral": "#1e1913",
         "cartao": "#252019",
+        "elevado": "#2c261e",
         "texto": "#f3e9da",
+        "secundario": "#d3c6b1",
         "suave": "#a99a84"
       },
       "claro": {
         "fundo": "#f3ece1",
+        "lateral": "#f7f1e7",
         "cartao": "#fbf7f0",
+        "elevado": "#fbf7f0",
         "texto": "#2a2016",
+        "secundario": "#574634",
         "suave": "#6e5c48"
       },
       "destaque": "#d98a1c",
@@ -30,11 +37,15 @@
       "nome": "Synthwave",
       "descricao": "Neon dos anos 80: pôr do sol roxo e grade em movimento.",
       "cena": "synthwave",
+      "cenaSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1600 1000\" preserveAspectRatio=\"xMidYMid slice\">\n<defs>\n<linearGradient id=\"ceu\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n<stop offset=\"0\" stop-color=\"#120b1f\"/>\n<stop offset=\"0.55\" stop-color=\"#2a1145\"/>\n<stop offset=\"0.62\" stop-color=\"#4a1554\"/>\n<stop offset=\"1\" stop-color=\"#120b1f\"/>\n</linearGradient>\n<linearGradient id=\"sol\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n<stop offset=\"0\" stop-color=\"#ffb347\"/>\n<stop offset=\"1\" stop-color=\"#ff4fd8\"/>\n</linearGradient>\n</defs>\n<style>\n.grade { animation: andar 9s linear infinite; }\n.brilho { animation: pulsar 14s ease-in-out infinite; }\n@keyframes andar { from { transform: translateY(0); } to { transform: translateY(50px); } }\n@keyframes pulsar { 0%, 100% { opacity: 0.32; } 50% { opacity: 0.42; } }\n</style>\n<rect width=\"1600\" height=\"1000\" fill=\"url(#ceu)\"/>\n<!-- sol baixo no horizonte -->\n<g class=\"brilho\" opacity=\"0.36\">\n<circle cx=\"1260\" cy=\"610\" r=\"170\" fill=\"url(#sol)\"/>\n<rect x=\"1080\" y=\"560\" width=\"360\" height=\"9\" fill=\"#2a1145\"/>\n<rect x=\"1080\" y=\"585\" width=\"360\" height=\"11\" fill=\"#2a1145\"/>\n<rect x=\"1080\" y=\"612\" width=\"360\" height=\"14\" fill=\"#2a1145\"/>\n</g>\n<rect x=\"0\" y=\"618\" width=\"1600\" height=\"382\" fill=\"#120b1f\"/>\n<!-- grade em perspectiva -->\n<g stroke=\"#ff4fd8\" stroke-width=\"1.5\" opacity=\"0.28\">\n<line x1=\"800\" y1=\"620\" x2=\"-900\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"-400\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"100\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"500\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"800\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"1100\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"1500\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"2000\" y2=\"1000\"/>\n<line x1=\"800\" y1=\"620\" x2=\"2500\" y2=\"1000\"/>\n</g>\n<g class=\"grade\" stroke=\"#9d7bff\" stroke-width=\"1.5\" opacity=\"0.26\">\n<line x1=\"0\" y1=\"630\" x2=\"1600\" y2=\"630\"/>\n<line x1=\"0\" y1=\"650\" x2=\"1600\" y2=\"650\"/>\n<line x1=\"0\" y1=\"680\" x2=\"1600\" y2=\"680\"/>\n<line x1=\"0\" y1=\"720\" x2=\"1600\" y2=\"720\"/>\n<line x1=\"0\" y1=\"770\" x2=\"1600\" y2=\"770\"/>\n<line x1=\"0\" y1=\"830\" x2=\"1600\" y2=\"830\"/>\n<line x1=\"0\" y1=\"900\" x2=\"1600\" y2=\"900\"/>\n<line x1=\"0\" y1=\"980\" x2=\"1600\" y2=\"980\"/>\n<line x1=\"0\" y1=\"1030\" x2=\"1600\" y2=\"1030\"/>\n</g>\n</svg>",
       "soEscuro": true,
       "escuro": {
         "fundo": "#120b1f",
+        "lateral": "#181029",
         "cartao": "#1f1533",
+        "elevado": "#241939",
         "texto": "#f6ecff",
+        "secundario": "#d6c3f0",
         "suave": "#a993c9"
       },
       "claro": null,
@@ -50,17 +61,24 @@
       "nome": "Floresta",
       "descricao": "Verdes calmos de mata e musgo, bom para longas sessões.",
       "cena": null,
+      "cenaSvg": null,
       "soEscuro": false,
       "escuro": {
         "fundo": "#0f1712",
+        "lateral": "#141f18",
         "cartao": "#19261e",
+        "elevado": "#1d2b22",
         "texto": "#e6f1e9",
+        "secundario": "#bdd1c3",
         "suave": "#93aa9a"
       },
       "claro": {
         "fundo": "#eef3ec",
+        "lateral": "#f3f7f1",
         "cartao": "#f9fbf7",
+        "elevado": "#f9fbf7",
         "texto": "#1c2a20",
+        "secundario": "#3f5446",
         "suave": "#55695b"
       },
       "destaque": "#3f8f5a",
@@ -75,17 +93,24 @@
       "nome": "Oceano",
       "descricao": "Azuis profundos com ondas lentas ao fundo.",
       "cena": "oceano",
+      "cenaSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1600 1000\" preserveAspectRatio=\"xMidYMid slice\">\n<style>\n.fundo { fill: #0b1520; }\n.o1 { fill: #12304a; opacity: 0.55; animation: mar 26s ease-in-out infinite alternate; }\n.o2 { fill: #164064; opacity: 0.45; animation: mar 34s ease-in-out infinite alternate-reverse; }\n.o3 { fill: #1d5582; opacity: 0.35; animation: mar 42s ease-in-out infinite alternate; }\n@media (prefers-color-scheme: light) {\n.fundo { fill: #eaf2f8; }\n.o1 { fill: #cfe3f2; opacity: 0.7; }\n.o2 { fill: #b7d5ec; opacity: 0.55; }\n.o3 { fill: #9ec6e6; opacity: 0.45; }\n}\n@keyframes mar { from { transform: translateX(-60px); } to { transform: translateX(60px); } }\n</style>\n<rect class=\"fundo\" width=\"1600\" height=\"1000\"/>\n<!-- tres camadas de ondas no pe da tela -->\n<path class=\"o1\" d=\"M-200 760 C 100 720 300 800 600 760 S 1100 720 1400 760 S 1800 800 1900 770 V 1000 H -200 Z\"/>\n<path class=\"o2\" d=\"M-200 830 C 150 800 350 870 650 830 S 1150 790 1450 830 S 1800 860 1900 840 V 1000 H -200 Z\"/>\n<path class=\"o3\" d=\"M-200 900 C 200 870 400 940 700 905 S 1200 870 1500 900 S 1800 930 1900 915 V 1000 H -200 Z\"/>\n</svg>",
       "soEscuro": false,
       "escuro": {
         "fundo": "#0b1520",
+        "lateral": "#0f1c29",
         "cartao": "#132331",
+        "elevado": "#172838",
         "texto": "#e4f0fa",
+        "secundario": "#b8cde0",
         "suave": "#8ea7bd"
       },
       "claro": {
         "fundo": "#eaf2f8",
+        "lateral": "#f0f6fb",
         "cartao": "#f7fbfe",
+        "elevado": "#f7fbfe",
         "texto": "#10263a",
+        "secundario": "#33506b",
         "suave": "#4a6680"
       },
       "destaque": "#2b8fd6",
@@ -100,17 +125,24 @@
       "nome": "Caderno",
       "descricao": "Papel de dia e papel à luz de abajur à noite.",
       "cena": null,
+      "cenaSvg": null,
       "soEscuro": false,
       "escuro": {
         "fundo": "#1f1a15",
+        "lateral": "#28221b",
         "cartao": "#312a22",
+        "elevado": "#3a3229",
         "texto": "#f0e7d7",
+        "secundario": "#cfc4b2",
         "suave": "#aca08d"
       },
       "claro": {
         "fundo": "#efe6d3",
+        "lateral": "#f4ecdc",
         "cartao": "#faf5e9",
+        "elevado": "#faf5e9",
         "texto": "#2a241d",
+        "secundario": "#544a3d",
         "suave": "#6a5f50"
       },
       "destaque": "#2f5d8c",
@@ -125,17 +157,24 @@
       "nome": "Grafite",
       "descricao": "Neutro e minimalista: cinzas limpos e um azul discreto.",
       "cena": null,
+      "cenaSvg": null,
       "soEscuro": false,
       "escuro": {
         "fundo": "#141414",
+        "lateral": "#1b1b1b",
         "cartao": "#222222",
+        "elevado": "#272727",
         "texto": "#ededed",
+        "secundario": "#c4c4c4",
         "suave": "#9a9a9a"
       },
       "claro": {
         "fundo": "#f2f2f2",
+        "lateral": "#f7f7f7",
         "cartao": "#fcfcfc",
+        "elevado": "#fcfcfc",
         "texto": "#1a1a1a",
+        "secundario": "#444444",
         "suave": "#5c5c5c"
       },
       "destaque": "#6e8efb",
@@ -150,17 +189,24 @@
       "nome": "Azul Royal",
       "descricao": "Azul royal com pêssego: forte, divertido e com personalidade.",
       "cena": null,
+      "cenaSvg": null,
       "soEscuro": false,
       "escuro": {
         "fundo": "#0e1230",
+        "lateral": "#131840",
         "cartao": "#181e4c",
+        "elevado": "#1c2353",
         "texto": "#eef1ff",
+        "secundario": "#c5ccef",
         "suave": "#9aa3d6"
       },
       "claro": {
         "fundo": "#fbeee2",
+        "lateral": "#fdf3ea",
         "cartao": "#fffaf5",
+        "elevado": "#fffaf5",
         "texto": "#1a1f3d",
+        "secundario": "#3b4470",
         "suave": "#555e8a"
       },
       "destaque": "#2b4bc7",

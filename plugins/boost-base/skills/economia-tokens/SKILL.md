@@ -1,6 +1,6 @@
 ---
 name: economia-tokens
-description: Use quando o usuário quiser gastar menos tokens, render mais o limite do plano, deixar o Claude mais rápido ou entender por que a sessão ficou cara ou lenta ("tá gastando muito", "acabou meu limite", "contexto cheio", "economizar tokens"). Traz as práticas do Claude Boost para economizar contexto e uso.
+description: Use quando o usuário quiser gastar menos tokens, render mais o limite do plano, deixar o Claude mais rápido ou entender por que a sessão ficou cara ou lenta ("tá gastando muito", "acabou meu limite", "contexto cheio", "economizar tokens"). Traz as práticas do Spark para economizar contexto e uso.
 ---
 
 # Economia de tokens

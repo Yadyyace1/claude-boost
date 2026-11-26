@@ -16,7 +16,7 @@ const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] :
 const comSegredos = args.includes("--com-segredos");
 const casa = homedir();
 const dirClaude = join(casa, ".claude");
-const saidaDir = opt("--saida", join(casa, "Claude Boost", "Backups"));
+const saidaDir = opt("--saida", join(casa, "Spark", "Backups"));
 const win = platform() === "win32";
 
 const TEXTO = /\.(md|json|txt|ts|tsx|js|mjs|cjs|sh|ps1|ya?ml|toml|css|svg)$/i;

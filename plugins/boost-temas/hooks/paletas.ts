@@ -1,4 +1,4 @@
-// As paletas dos temas do Claude Boost. Cada uma vira um tema completo com makeColors (claro e escuro).
+// As paletas dos temas do Spark. Cada uma vira um tema completo com makeColors (claro e escuro).
 export type Paleta = {
   id: string
   nome: string

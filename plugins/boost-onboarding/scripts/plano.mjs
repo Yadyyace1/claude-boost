@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const pasta = process.argv[2];
 if (!pasta || !existsSync(join(pasta, "selecao.json"))) { console.error("uso: node scripts/plano.mjs <pasta com selecao.json>"); process.exit(1); }
-const ler = (f) => JSON.parse(readFileSync(f, "utf8"));
+const ler = (f) => JSON.parse(readFileSync(f, "utf8").replace(/^﻿/, "")); // aceita JSON salvo pelo Bloco de Notas (com BOM)
 const catalogo = ler(join(raiz, "dados", "catalogo.json"));
 const perguntas = ler(join(raiz, "dados", "perguntas.json"));
 const sel = ler(join(pasta, "selecao.json"));
@@ -23,11 +23,23 @@ const ids = [...new Set([...(sel.requisitos || []), ...sel.selecao])].filter((id
 const itens = ids.map((id) => porId[id]).sort((a, b) => peso(a) - peso(b));
 const desligados = new Set(sel.desligados || []);
 
+// Marketplace já registrado (pelo instalador .exe, a partir da pasta do kit): não registra de novo pelo GitHub.
+// Era o erro do "Spark (núcleo)": o add tentava baixar o repositório privado com o kit local já no lugar.
+const jaRegistrados = new Set(amb.marketplaces || []);
+const pularPasso = (cmd) => {
+  const m = cmd && cmd.match(/plugin marketplace add (\S+)/);
+  if (!m) return false;
+  const nome = m[1].split("/").pop().replace(/\.git$/, "");
+  return jaRegistrados.has(nome);
+};
+
 const plano = itens.map((it, n) => ({
   ordem: n + 1, id: it.id, nome: it.nome, tipo: it.tipo, resumo: it.resumo,
   desligar_depois: desligados.has(it.id) && it.tipo === "plugin" ? `claude plugin disable ${it.detectar?.plugin || it.id}` : null,
   aviso: it.aviso || null, conferir: !!it.verificar,
-  passos: (it.passos || []).map((p) => ({ tipo: p.tipo, comando: p[so] || p.win || null, texto: p.texto || null, variavel: p.var || null, nota: p.nota || null })),
+  passos: (it.passos || [])
+    .map((p) => ({ tipo: p.tipo, comando: p[so] || p.win || null, texto: p.texto || null, variavel: p.var || null, nota: p.nota || null }))
+    .filter((p) => !(p.tipo === "cmd" && pularPasso(p.comando))),
 }));
 
 // Aparência escolhida no assistente: configura o tema e o painel logo depois de instalar.
@@ -36,7 +48,7 @@ const ap = r.aparencia || {};
 function configurar(plugin, valores) {
   const json = JSON.stringify(valores);
   const comando = so === "win"
-    ? `'${json.replace(/'/g, "''")}' | claude plugin configure ${plugin} --values-stdin`
+    ? `'${json.replace(/['\u2018\u2019\u201A\u201B]/g, (c) => c + c)}' | claude plugin configure ${plugin} --values-stdin`
     : `printf '%s' '${json.replace(/'/g, "'\\''")}' | claude plugin configure ${plugin} --values-stdin`;
   return { tipo: "cmd", comando, texto: null, variavel: null, nota: "grava as escolhas da etapa Aparência" };
 }
@@ -97,8 +109,16 @@ if (AUTONOMIA[r.autonomia]) cm += `- Autonomia: ${AUTONOMIA[r.autonomia]}\n`;
 if (r.equipe === "pequena" || r.equipe === "empresa") cm += `- Trabalho em equipe: escreva mensagens, documentos e commits de um jeito que outras pessoas entendam sem contexto.\n`;
 if (r.sensivel === "sim" || [].concat(r.area || []).includes("juridico")) cm += `- Lido com dados sigilosos: nunca envie dados de clientes para serviços de terceiros sem me perguntar, e não cole dados pessoais em buscas na web.\n`;
 if ([].concat(r.area || []).includes("juridico")) cm += `- Em textos jurídicos, cite a fonte (lei, artigo, súmula) e avise quando algo precisar de conferência humana. Em publicidade de advocacia, siga o Provimento 205/2021 da OAB.\n`;
-const economiaAlta = r.economia === "alta" || r.plano === "free";
-cm += `- Economia de uso: ${economiaAlta ? "meu limite acaba rápido; prefira o modelo mais barato que resolva e respostas enxutas" : "equilibre qualidade e consumo"}.\n`;
+const ECONOMIA = {
+  maxima: "economia máxima: use o modelo mais barato que resolva, respostas bem curtas, leia só o necessário e não rode subagentes sem eu pedir",
+  alta: "meu limite acaba rápido; prefira o modelo mais barato que resolva e respostas enxutas",
+  media: "equilibre qualidade e consumo",
+  baixa: "pode gastar à vontade quando melhorar o resultado",
+  extremo: "MODO EXTREMO: use o modelo mais capaz, pense a fundo nas tarefas difíceis, divida trabalho grande em subagentes em paralelo, rode as verificações completas (testes, build, revisão) e não economize tokens",
+};
+// No plano grátis o limite não aguenta: vira "economizar", mesmo se a pessoa pediu mais.
+const eco = r.plano === "free" && ["media", "baixa", "extremo"].includes(r.economia) ? "alta" : r.economia || "media";
+cm += `- Economia de uso: ${ECONOMIA[eco] ?? ECONOMIA.media}.\n`;
 cm += `\n# Ferramentas instaladas no onboarding\n\n${instalados.map((n) => `- ${n}`).join("\n")}\n`;
 writeFileSync(join(pasta, "claude-md-sugerido.md"), cm);
 

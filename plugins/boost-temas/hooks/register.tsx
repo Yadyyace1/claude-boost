@@ -10,7 +10,7 @@ const CENAS = {
 }
 
 function montar(p: Paleta, comCena: boolean): ThemeSetArgs {
-  const definicao: Parameters<typeof makeColors>[0] = { label: `Claude Boost: ${p.nome}`, roles: p.roles, dark: { gray: { anchors: p.dark as never } } }
+  const definicao: Parameters<typeof makeColors>[0] = { label: `Spark: ${p.nome}`, roles: p.roles, dark: { gray: { anchors: p.dark as never } } }
   if (p.light) definicao.light = { gray: { anchors: p.light as never } }
   else (definicao as { only?: 'dark' }).only = 'dark'
   const { theme } = makeColors(definicao)
@@ -38,7 +38,7 @@ export const register: Register = (on, options) => {
   const comCena = options.cenario !== false
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'tema', description: 'Troca o tema do Claude Boost (ex.: /tema oceano). Sem nome, lista os temas.' })
+    await $.command.register({ name: 'tema', description: 'Troca o tema do Spark (ex.: /tema oceano). Sem nome, lista os temas.' })
     await aplicar($, String(options.tema ?? 'ambar'), comCena)
     return next(e)
   })

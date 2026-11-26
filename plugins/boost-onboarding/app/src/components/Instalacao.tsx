@@ -9,6 +9,12 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import { pegar, postar, type ItemPlano, type Plano, type ResultadoItem } from "@/lib/api"
+import { motion } from "motion/react"
+import { Ajuda } from "./Ajuda"
+import { Faisca } from "./Logo"
+import { definirContextoSuporte } from "./Suporte"
+
+const OBS = "spark-observacoes-v1"
 
 type Status = "pendente" | "rodando" | "ok" | "erro" | "feito"
 
@@ -33,6 +39,21 @@ export function Instalacao({ nome }: { nome: string }) {
   const [rodandoTudo, setRodandoTudo] = useState(false)
   const [mdAplicado, setMdAplicado] = useState(false)
   const [fim, setFim] = useState(false)
+  const [obs, setObs] = useState<Record<string, string>>(() => { try { return JSON.parse(localStorage.getItem(OBS) || "{}") } catch { return {} } })
+
+  // As observações ficam no navegador enquanto a pessoa escreve e vão para a pasta da sessão ao concluir.
+  useEffect(() => { localStorage.setItem(OBS, JSON.stringify(obs)) }, [obs])
+
+  // O suporte sabe o que está acontecendo: itens com erro (e o começo da saída) e o que falta.
+  useEffect(() => {
+    if (!plano) return
+    const linhas = plano.itens.map((i) => {
+      const st = status[i.id]
+      const erro = st === "erro" ? ` — erro: ${(saidas[i.id]?.erro ?? saidas[i.id]?.resultados?.at(-1)?.saida ?? "").slice(0, 240)}` : ""
+      return `${i.nome}: ${st}${erro}`
+    })
+    definirContextoSuporte(`Tela de instalação.\n${linhas.join("\n")}`)
+  }, [plano, status, saidas])
 
   useEffect(() => {
     pegar<Plano>("plano").then((p) => {
@@ -100,6 +121,8 @@ export function Instalacao({ nome }: { nome: string }) {
   }
 
   async function concluir() {
+    if (Object.values(obs).some((t) => t.trim())) await postar("observacoes", { observacoes: obs }).catch(() => undefined)
+    localStorage.removeItem(OBS)
     await postar("fim").catch(() => undefined)
     setFim(true)
   }
@@ -107,8 +130,12 @@ export function Instalacao({ nome }: { nome: string }) {
   if (fim) {
     return (
       <div className="mx-auto max-w-xl space-y-5 py-16 text-center">
-        <PartyPopper className="mx-auto size-14 text-primary" />
-        <h2 className="text-3xl font-semibold">Seu Claude está pronto{nome ? `, ${nome}` : ""}!</h2>
+        <motion.div className="relative mx-auto grid size-20 place-items-center" initial={{ scale: 0, rotate: -30 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 220, damping: 12 }}>
+          <span className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
+          <Faisca className="relative size-14 text-primary" />
+        </motion.div>
+        <motion.h2 className="text-5xl font-bold tracking-tight" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>We got you{nome ? `, ${nome}` : ""}.</motion.h2>
+        <motion.p className="text-lg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}>Seu Claude está pronto. <PartyPopper className="inline size-5 text-primary" /></motion.p>
         <p className="text-muted-foreground">Feche e abra de novo o app do Claude (ou digite <code>/reload-plugins</code>) para ver o tema e o painel Hoje.</p>
         <div className="mx-auto max-w-sm space-y-2 text-left text-sm">
           {[["/tema", "troca o visual (ex.: /tema synthwave)"], ["/painel", "abre o painel Hoje"], ["/lembrete", "anota um lembrete no painel"], ["/onboarding", "refaz este assistente quando quiser"]].map(([c, d]) => (
@@ -135,13 +162,15 @@ export function Instalacao({ nome }: { nome: string }) {
             salvarSegredo={salvarSegredo}
             instalar={() => instalar(it)}
             marcarFeito={() => setStatus((s) => ({ ...s, [it.id]: "feito" }))}
+            observacao={obs[it.id]}
+            setObservacao={(t) => setObs((o) => ({ ...o, [it.id]: t }))}
             sistema={plano.sistema}
           />
         ))}
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base"><FileText className="size-4 text-primary" /> Suas preferências no Claude (CLAUDE.md)</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-base"><FileText className="size-4 text-primary" /> Suas preferências no Claude (CLAUDE.md) <Ajuda titulo="O que é o CLAUDE.md">Um arquivo de texto que o Claude lê no começo de toda conversa: é onde ficam as suas preferências (idioma, jeito de responder, cuidados com dados). Aplicar só acrescenta no fim, com uma cópia de segurança antes.</Ajuda></CardTitle>
             <CardDescription>O Claude lê este texto em toda conversa. Ele entra no fim do seu CLAUDE.md, sem apagar nada, e fazemos uma cópia de segurança antes.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -155,7 +184,7 @@ export function Instalacao({ nome }: { nome: string }) {
 
       <aside className="h-fit space-y-4 xl:sticky xl:top-24">
         <Card className="gap-4">
-          <CardHeader><CardTitle className="text-base">Andamento</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-1.5 text-base">Andamento <Ajuda titulo="Como instalar">Comece por <b>Instalar os automáticos</b>: instala de uma vez tudo o que não precisa de você. Depois siga os cartões que pedem chave ou login. No fim, clique em <b>Concluir</b> e reabra o app do Claude.</Ajuda></CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <div className="text-3xl font-semibold tabular-nums">{concluidos}<span className="text-sm font-normal text-muted-foreground"> de {total}</span></div>
             <Progress value={(concluidos / Math.max(total, 1)) * 100} className="h-1.5" />
@@ -172,7 +201,7 @@ export function Instalacao({ nome }: { nome: string }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Instalar {automaticos.length} itens agora?</DialogTitle>
-            <DialogDescription>O Claude Boost vai rodar os comandos de instalação destes itens no seu computador, um por vez:</DialogDescription>
+            <DialogDescription>O Spark vai rodar os comandos de instalação destes itens no seu computador, um por vez:</DialogDescription>
           </DialogHeader>
           <ul className="max-h-60 list-disc space-y-1 overflow-auto pl-5 text-sm">{automaticos.map((i) => <li key={i.id}>{i.nome}</li>)}</ul>
           <DialogFooter>
@@ -196,6 +225,8 @@ type CartaoProps = {
   instalar: () => void
   marcarFeito: () => void
   sistema: string
+  observacao?: string
+  setObservacao: (texto: string) => void
 }
 
 const SELO: Record<Status, { texto: string; classe: string }> = {
@@ -206,7 +237,8 @@ const SELO: Record<Status, { texto: string; classe: string }> = {
   erro: { texto: "deu erro", classe: "border-rose-500/40 text-rose-400" },
 }
 
-function CartaoItem({ it, status, saida, segredos, valores, setValor, salvarSegredo, instalar, marcarFeito }: CartaoProps) {
+function CartaoItem({ it, status, saida, segredos, valores, setValor, salvarSegredo, instalar, marcarFeito, observacao, setObservacao }: CartaoProps) {
+  const [comObs, setComObs] = useState(!!observacao)
   const pronto = status === "ok" || status === "feito"
   const faltaSegredo = segredosDe(it).some((v) => !segredos[v])
   const instalado = !!saida?.ok
@@ -235,7 +267,7 @@ function CartaoItem({ it, status, saida, segredos, valores, setValor, salvarSegr
             const salvo = segredos[p.variavel!]
             return (
               <div key={i} className="space-y-2 rounded-lg border border-dashed p-3">
-                <div className="flex items-center gap-2 text-sm"><KeyRound className="size-4 text-primary" /> Chave <code className="text-xs">{p.variavel}</code> {salvo && <Badge variant="outline" className="border-emerald-500/40 text-emerald-400">salva</Badge>}</div>
+                <div className="flex items-center gap-2 text-sm"><KeyRound className="size-4 text-primary" /> Chave <code className="text-xs">{p.variavel}</code> <Ajuda titulo="Onde fica a chave">A chave é salva como variável do Windows, só no seu usuário deste computador. Ela não vai para o chat, para o Claude nem para a internet: só o programa que precisa dela lê.</Ajuda> {salvo && <Badge variant="outline" className="border-emerald-500/40 text-emerald-400">salva</Badge>}</div>
                 <p className="text-xs text-muted-foreground">{p.texto} Ela fica só no seu computador e não passa pelo chat.</p>
                 {!salvo && (
                   <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); salvarSegredo(p.variavel!) }}>
@@ -268,6 +300,17 @@ function CartaoItem({ it, status, saida, segredos, valores, setValor, salvarSegr
             <Button size="sm" variant="secondary" onClick={marcarFeito}><CheckCircle2 /> Já fiz</Button>
           )}
         </div>
+
+        <label className="flex w-fit cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+          <input type="checkbox" className="accent-[var(--primary)]" checked={comObs} onChange={(e) => setComObs(e.target.checked)} />
+          Adicionar uma observação
+        </label>
+        {comObs && (
+          <motion.textarea initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} rows={3} maxLength={4000}
+            value={observacao ?? ""} onChange={(e) => setObservacao(e.target.value)}
+            placeholder="Ex.: instalei mas o login pediu outra conta; ver com o consultor. (Não escreva senhas ou chaves aqui.)"
+            className="w-full resize-y rounded-lg border bg-background/60 p-2.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50" aria-label={`Observação sobre ${it.nome}`} />
+        )}
 
         {saida && (saida.resultados?.length || saida.erro) && (
           <details className="group text-xs">

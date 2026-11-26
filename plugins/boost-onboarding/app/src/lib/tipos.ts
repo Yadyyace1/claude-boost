@@ -27,7 +27,7 @@ export type Catalogo = { versao: string; itens: Item[] }
 export type Opcao = { valor: string; rotulo: string; descricao?: string; icone?: string; sinais?: Record<string, number>; itens?: string[]; flags?: Record<string, boolean> }
 export type Pergunta = {
   id: string
-  tipo: "texto" | "multi" | "unico" | "faixa"
+  tipo: "texto" | "multi" | "unico" | "faixa" | "avatar"
   titulo: string
   placeholder?: string
   max?: number

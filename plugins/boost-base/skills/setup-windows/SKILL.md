@@ -1,6 +1,6 @@
 ---
 name: setup-windows
-description: Use ao instalar ou configurar ferramentas no Windows para o Claude Code — registrar servidor MCP (`claude mcp add`), MCP que não conecta ou "Failed to connect", npx/npm/node/python/uv que não funciona, erro de PowerShell (&&, npm.ps1 bloqueado), PATH que não atualizou depois do winget. Traz as pegadinhas do Windows já resolvidas no Claude Boost.
+description: Use ao instalar ou configurar ferramentas no Windows para o Claude Code — registrar servidor MCP (`claude mcp add`), MCP que não conecta ou "Failed to connect", npx/npm/node/python/uv que não funciona, erro de PowerShell (&&, npm.ps1 bloqueado), PATH que não atualizou depois do winget. Traz as pegadinhas do Windows já resolvidas no Spark.
 ---
 
 # Setup no Windows: pegadinhas já resolvidas
