@@ -12,8 +12,7 @@
         {
           "id": "area",
           "tipo": "multi",
-          "max": 2,
-          "titulo": "Com o que você trabalha? (até 2)",
+          "titulo": "Com o que você trabalha?",
           "opcoes": [
             {
               "valor": "dev",
