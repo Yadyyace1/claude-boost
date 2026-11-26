@@ -38,6 +38,12 @@ node scripts/simular.mjs                         # 3 perfis de exemplo
 node scripts/simular.mjs respostas.json ambiente.json
 ```
 
+## Perfis prontos
+
+`dados/perfis/*.json` traz respostas prontas por tipo de cliente (ex.: `streamer-dev.json`, para streamer que programa: Twitch, OBS, VTuber). O consultor copia, ajusta o nome e passa com `--respostas` para o assistente abrir já marcado. Os perfis de clientes reais ficam fora do repositório (ficha do cliente).
+
+Área de **Streaming e lives** no catálogo: OBS (MCP de comunidade, via WebSocket), Twitch CLI (oficial), cortes da live (VOD → Shorts com auto-editor, Whisper e HyperFrames), overlays e alertas em HTML para o OBS, VTuber (modelo VRM + controle por VMC/OSC no VSeeFace ou no Warudo) e Blender.
+
 ## Personalizar para vender (marca própria)
 
 - `dados/marca.json`: nome, subtítulo, cor de destaque, nome do consultor e texto do rodapé. É a única coisa que muda para outra marca.

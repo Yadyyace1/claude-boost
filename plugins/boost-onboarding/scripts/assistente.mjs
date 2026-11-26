@@ -1,5 +1,5 @@
 // Abre o assistente de onboarding no navegador e espera a confirmação.
-// Uso: node scripts/assistente.mjs --saida <pasta> [--ambiente <ambiente.json>] [--porta 0] [--sem-abrir]
+// Uso: node scripts/assistente.mjs --saida <pasta> [--ambiente <ambiente.json>] [--respostas <perfil.json>] [--porta 0] [--sem-abrir]
 // Grava <pasta>/selecao.json quando a pessoa confirma e então encerra.
 // Escuta só em 127.0.0.1 e só serve os arquivos do próprio plugin.
 import { createServer } from "node:http";
@@ -15,6 +15,7 @@ const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] :
 const saida = opt("--saida");
 if (!saida) { console.error("uso: node scripts/assistente.mjs --saida <pasta>"); process.exit(1); }
 const ambienteArq = opt("--ambiente");
+const respostasArq = opt("--respostas"); // respostas pré-preenchidas pelo consultor (perfil pronto)
 const porta = Number(opt("--porta", 0));
 const LIMITE_MIN = 45;
 
@@ -52,6 +53,10 @@ const servidor = createServer((req, res) => {
   if (url.pathname === "/ambiente.json") {
     res.writeHead(200, { "Content-Type": TIPOS[".json"] });
     return res.end(ambienteArq && existsSync(ambienteArq) ? readFileSync(ambienteArq) : "{}");
+  }
+  if (url.pathname === "/respostas.json") {
+    res.writeHead(200, { "Content-Type": TIPOS[".json"] });
+    return res.end(respostasArq && existsSync(respostasArq) ? readFileSync(respostasArq) : "{}");
   }
   const rel = normalize(decodeURIComponent(url.pathname)).replace(/^[\\/]+/, "");
   const pasta = rel.split(/[\\/]/)[0];

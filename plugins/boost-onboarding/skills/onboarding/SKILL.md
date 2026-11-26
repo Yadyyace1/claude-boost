@@ -34,6 +34,7 @@ Rode em segundo plano (ele fica esperando a pessoa confirmar no navegador):
 node "${CLAUDE_PLUGIN_ROOT}/scripts/assistente.mjs" --saida "<pasta-da-sessao>" --ambiente "<pasta-da-sessao>/ambiente.json"
 ```
 
+- **Perfil pronto:** se o consultor já preencheu as respostas do cliente (um JSON no mesmo formato, ex.: `dados/perfis/streamer-dev.json`), acrescente `--respostas <arquivo>`. O assistente abre com tudo marcado e a pessoa só confere e ajusta.
 - Ele imprime `ASSISTENTE http://127.0.0.1:<porta>/` e abre o navegador padrão. Passe o endereço para a pessoa, caso não abra.
 - Quando ela confirma, imprime `CONFIRMADO <arquivo>` e encerra. Se passar de 45 minutos, encerra com `TEMPO ESGOTADO`.
 - Enquanto espera, diga em uma frase o que ela vai ver: 3 etapas de perguntas e no fim as recomendações, que ela pode marcar e desmarcar.

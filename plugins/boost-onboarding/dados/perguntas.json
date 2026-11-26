@@ -3,19 +3,140 @@
     {
       "titulo": "Sobre você",
       "perguntas": [
-        {"id": "nome", "tipo": "texto", "titulo": "Como você quer que o Claude te chame?", "placeholder": "Ex.: Bia"},
         {
-          "id": "area", "tipo": "multi", "max": 2, "titulo": "Com o que você trabalha? (até 2)",
+          "id": "nome",
+          "tipo": "texto",
+          "titulo": "Como você quer que o Claude te chame?",
+          "placeholder": "Ex.: Bia"
+        },
+        {
+          "id": "area",
+          "tipo": "multi",
+          "max": 2,
+          "titulo": "Com o que você trabalha? (até 2)",
           "opcoes": [
-            {"valor": "dev", "rotulo": "Desenvolvimento", "descricao": "sites, apps, sistemas", "icone": "code", "sinais": {"dev": 3, "web": 2, "economia": 1}},
-            {"valor": "design", "rotulo": "Design", "descricao": "marca, telas, peças", "icone": "palette", "sinais": {"design": 3, "arte": 1, "web": 1}},
-            {"valor": "marketing", "rotulo": "Marketing e tráfego", "descricao": "anúncios, funis, campanhas", "icone": "speakerphone", "sinais": {"marketing": 3, "ads": 3, "social": 2, "escrita": 1}},
-            {"valor": "conteudo", "rotulo": "Conteúdo e vídeo", "descricao": "reels, YouTube, posts", "icone": "movie", "sinais": {"video": 3, "conteudo": 3, "social": 2, "audio": 1}},
-            {"valor": "juridico", "rotulo": "Advocacia e jurídico", "descricao": "peças, contratos, pesquisa", "icone": "scale", "sinais": {"juridico": 3, "docs": 3, "pesquisa": 2, "escrita": 2}, "flags": {"sensivel": true}},
-            {"valor": "jogos", "rotulo": "Jogos e arte", "descricao": "pixel art, 3D, game dev", "icone": "device-gamepad-2", "sinais": {"jogos": 3, "arte": 2, "pixel": 2, "3d": 1, "dev": 1}},
-            {"valor": "financas", "rotulo": "Finanças e investimentos", "descricao": "carteira, mercado, planilhas", "icone": "coin", "sinais": {"financas": 3, "dados": 2, "cripto": 1}},
-            {"valor": "estudos", "rotulo": "Estudos e pesquisa", "descricao": "faculdade, mestrado, artigos", "icone": "school", "sinais": {"estudos": 3, "pesquisa": 3, "docs": 1}},
-            {"valor": "gestao", "rotulo": "Gestão e negócios", "descricao": "equipe, clientes, vendas", "icone": "briefcase", "sinais": {"produtividade": 3, "docs": 2, "comunicacao": 2, "vendas": 2, "dados": 1}}
+            {
+              "valor": "dev",
+              "rotulo": "Desenvolvimento",
+              "descricao": "sites, apps, sistemas",
+              "icone": "code",
+              "sinais": {
+                "dev": 3,
+                "web": 2,
+                "economia": 1
+              }
+            },
+            {
+              "valor": "design",
+              "rotulo": "Design",
+              "descricao": "marca, telas, peças",
+              "icone": "palette",
+              "sinais": {
+                "design": 3,
+                "arte": 1,
+                "web": 1
+              }
+            },
+            {
+              "valor": "marketing",
+              "rotulo": "Marketing e tráfego",
+              "descricao": "anúncios, funis, campanhas",
+              "icone": "speakerphone",
+              "sinais": {
+                "marketing": 3,
+                "ads": 3,
+                "social": 2,
+                "escrita": 1
+              }
+            },
+            {
+              "valor": "conteudo",
+              "rotulo": "Conteúdo e vídeo",
+              "descricao": "reels, YouTube, posts",
+              "icone": "movie",
+              "sinais": {
+                "video": 3,
+                "conteudo": 3,
+                "social": 2,
+                "audio": 1
+              }
+            },
+            {
+              "valor": "juridico",
+              "rotulo": "Advocacia e jurídico",
+              "descricao": "peças, contratos, pesquisa",
+              "icone": "scale",
+              "sinais": {
+                "juridico": 3,
+                "docs": 3,
+                "pesquisa": 2,
+                "escrita": 2
+              },
+              "flags": {
+                "sensivel": true
+              }
+            },
+            {
+              "valor": "jogos",
+              "rotulo": "Jogos e arte",
+              "descricao": "pixel art, 3D, game dev",
+              "icone": "device-gamepad-2",
+              "sinais": {
+                "jogos": 3,
+                "arte": 2,
+                "pixel": 2,
+                "3d": 1,
+                "dev": 1
+              }
+            },
+            {
+              "valor": "financas",
+              "rotulo": "Finanças e investimentos",
+              "descricao": "carteira, mercado, planilhas",
+              "icone": "coin",
+              "sinais": {
+                "financas": 3,
+                "dados": 2,
+                "cripto": 1
+              }
+            },
+            {
+              "valor": "estudos",
+              "rotulo": "Estudos e pesquisa",
+              "descricao": "faculdade, mestrado, artigos",
+              "icone": "school",
+              "sinais": {
+                "estudos": 3,
+                "pesquisa": 3,
+                "docs": 1
+              }
+            },
+            {
+              "valor": "gestao",
+              "rotulo": "Gestão e negócios",
+              "descricao": "equipe, clientes, vendas",
+              "icone": "briefcase",
+              "sinais": {
+                "produtividade": 3,
+                "docs": 2,
+                "comunicacao": 2,
+                "vendas": 2,
+                "dados": 1
+              }
+            },
+            {
+              "valor": "stream",
+              "rotulo": "Streaming e lives",
+              "descricao": "Twitch, YouTube, VTuber",
+              "icone": "broadcast",
+              "sinais": {
+                "stream": 3,
+                "video": 2,
+                "conteudo": 2,
+                "social": 1,
+                "audio": 1
+              }
+            }
           ]
         }
       ]
@@ -24,43 +145,286 @@
       "titulo": "Seu dia a dia",
       "perguntas": [
         {
-          "id": "tarefas", "tipo": "multi", "titulo": "O que você mais quer que o Claude faça?",
+          "id": "tarefas",
+          "tipo": "multi",
+          "titulo": "O que você mais quer que o Claude faça?",
           "opcoes": [
-            {"valor": "escrever", "rotulo": "Escrever textos e documentos", "sinais": {"escrita": 2, "docs": 2}},
-            {"valor": "planilhas", "rotulo": "Planilhas e relatórios", "sinais": {"dados": 3, "docs": 1}},
-            {"valor": "imagens", "rotulo": "Criar imagens e artes", "sinais": {"design": 2, "arte": 2}},
-            {"valor": "video", "rotulo": "Editar vídeos", "sinais": {"video": 3, "conteudo": 1}},
-            {"valor": "redes", "rotulo": "Postar nas redes", "sinais": {"social": 3, "conteudo": 1}},
-            {"valor": "anuncios", "rotulo": "Anúncios pagos", "sinais": {"ads": 3, "marketing": 2}},
-            {"valor": "programar", "rotulo": "Programar e criar sites", "sinais": {"dev": 3, "web": 2}},
-            {"valor": "pesquisar", "rotulo": "Pesquisar na internet", "sinais": {"pesquisa": 3}},
-            {"valor": "agenda", "rotulo": "Organizar agenda e e-mail", "sinais": {"produtividade": 3, "comunicacao": 1}},
-            {"valor": "automatizar", "rotulo": "Automatizar tarefas repetidas", "sinais": {"automacao": 3}},
-            {"valor": "cobrar", "rotulo": "Cobrar clientes", "sinais": {"vendas": 3, "financas": 1}},
-            {"valor": "estudar", "rotulo": "Estudar e revisar", "sinais": {"estudos": 3}}
+            {
+              "valor": "escrever",
+              "rotulo": "Escrever textos e documentos",
+              "sinais": {
+                "escrita": 2,
+                "docs": 2
+              }
+            },
+            {
+              "valor": "planilhas",
+              "rotulo": "Planilhas e relatórios",
+              "sinais": {
+                "dados": 3,
+                "docs": 1
+              }
+            },
+            {
+              "valor": "imagens",
+              "rotulo": "Criar imagens e artes",
+              "sinais": {
+                "design": 2,
+                "arte": 2
+              }
+            },
+            {
+              "valor": "video",
+              "rotulo": "Editar vídeos",
+              "sinais": {
+                "video": 3,
+                "conteudo": 1
+              }
+            },
+            {
+              "valor": "redes",
+              "rotulo": "Postar nas redes",
+              "sinais": {
+                "social": 3,
+                "conteudo": 1
+              }
+            },
+            {
+              "valor": "anuncios",
+              "rotulo": "Anúncios pagos",
+              "sinais": {
+                "ads": 3,
+                "marketing": 2
+              }
+            },
+            {
+              "valor": "programar",
+              "rotulo": "Programar e criar sites",
+              "sinais": {
+                "dev": 3,
+                "web": 2
+              }
+            },
+            {
+              "valor": "pesquisar",
+              "rotulo": "Pesquisar na internet",
+              "sinais": {
+                "pesquisa": 3
+              }
+            },
+            {
+              "valor": "agenda",
+              "rotulo": "Organizar agenda e e-mail",
+              "sinais": {
+                "produtividade": 3,
+                "comunicacao": 1
+              }
+            },
+            {
+              "valor": "automatizar",
+              "rotulo": "Automatizar tarefas repetidas",
+              "sinais": {
+                "automacao": 3
+              }
+            },
+            {
+              "valor": "cobrar",
+              "rotulo": "Cobrar clientes",
+              "sinais": {
+                "vendas": 3,
+                "financas": 1
+              }
+            },
+            {
+              "valor": "estudar",
+              "rotulo": "Estudar e revisar",
+              "sinais": {
+                "estudos": 3
+              }
+            },
+            {
+              "valor": "lives",
+              "rotulo": "Fazer lives e streams",
+              "sinais": {
+                "stream": 3
+              }
+            },
+            {
+              "valor": "cortes",
+              "rotulo": "Cortes e clipes das lives",
+              "sinais": {
+                "video": 2,
+                "stream": 2,
+                "social": 1
+              }
+            }
           ]
         },
         {
-          "id": "ferramentas", "tipo": "multi", "titulo": "Quais destas ferramentas você já usa?",
+          "id": "ferramentas",
+          "tipo": "multi",
+          "titulo": "Quais destas ferramentas você já usa?",
           "opcoes": [
-            {"valor": "gmail", "rotulo": "Gmail", "itens": ["gmail"]},
-            {"valor": "gcal", "rotulo": "Google Agenda", "itens": ["gcal"]},
-            {"valor": "gdrive", "rotulo": "Google Drive", "itens": ["gdrive"]},
-            {"valor": "notion", "rotulo": "Notion", "itens": ["notion"]},
-            {"valor": "obsidian", "rotulo": "Obsidian", "itens": ["obsidian"]},
-            {"valor": "slack", "rotulo": "Slack", "itens": ["slack"]},
-            {"valor": "telegram", "rotulo": "Telegram", "itens": ["telegram"]},
-            {"valor": "figma", "rotulo": "Figma", "itens": ["figma"]},
-            {"valor": "canva", "rotulo": "Canva", "itens": ["canva"]},
-            {"valor": "miro", "rotulo": "Miro", "itens": ["miro"]},
-            {"valor": "metaads", "rotulo": "Gerenciador de Anúncios da Meta", "itens": ["meta-ads", "boost-ads"]},
-            {"valor": "github", "rotulo": "GitHub", "itens": ["github"]},
-            {"valor": "supabase", "rotulo": "Supabase", "itens": ["supabase"]},
-            {"valor": "vercel", "rotulo": "Vercel", "itens": ["vercel"]},
-            {"valor": "stripe", "rotulo": "Stripe", "itens": ["stripe"]},
-            {"valor": "mercadopago", "rotulo": "Mercado Pago", "itens": ["mercadopago"]},
-            {"valor": "zotero", "rotulo": "Zotero", "itens": ["zotero"]},
-            {"valor": "unity", "rotulo": "Unity", "itens": ["unity"]}
+            {
+              "valor": "gmail",
+              "rotulo": "Gmail",
+              "itens": [
+                "gmail"
+              ]
+            },
+            {
+              "valor": "gcal",
+              "rotulo": "Google Agenda",
+              "itens": [
+                "gcal"
+              ]
+            },
+            {
+              "valor": "gdrive",
+              "rotulo": "Google Drive",
+              "itens": [
+                "gdrive"
+              ]
+            },
+            {
+              "valor": "notion",
+              "rotulo": "Notion",
+              "itens": [
+                "notion"
+              ]
+            },
+            {
+              "valor": "obsidian",
+              "rotulo": "Obsidian",
+              "itens": [
+                "obsidian"
+              ]
+            },
+            {
+              "valor": "slack",
+              "rotulo": "Slack",
+              "itens": [
+                "slack"
+              ]
+            },
+            {
+              "valor": "telegram",
+              "rotulo": "Telegram",
+              "itens": [
+                "telegram"
+              ]
+            },
+            {
+              "valor": "figma",
+              "rotulo": "Figma",
+              "itens": [
+                "figma"
+              ]
+            },
+            {
+              "valor": "canva",
+              "rotulo": "Canva",
+              "itens": [
+                "canva"
+              ]
+            },
+            {
+              "valor": "miro",
+              "rotulo": "Miro",
+              "itens": [
+                "miro"
+              ]
+            },
+            {
+              "valor": "metaads",
+              "rotulo": "Gerenciador de Anúncios da Meta",
+              "itens": [
+                "meta-ads",
+                "boost-ads"
+              ]
+            },
+            {
+              "valor": "github",
+              "rotulo": "GitHub",
+              "itens": [
+                "github"
+              ]
+            },
+            {
+              "valor": "supabase",
+              "rotulo": "Supabase",
+              "itens": [
+                "supabase"
+              ]
+            },
+            {
+              "valor": "vercel",
+              "rotulo": "Vercel",
+              "itens": [
+                "vercel"
+              ]
+            },
+            {
+              "valor": "stripe",
+              "rotulo": "Stripe",
+              "itens": [
+                "stripe"
+              ]
+            },
+            {
+              "valor": "mercadopago",
+              "rotulo": "Mercado Pago",
+              "itens": [
+                "mercadopago"
+              ]
+            },
+            {
+              "valor": "zotero",
+              "rotulo": "Zotero",
+              "itens": [
+                "zotero"
+              ]
+            },
+            {
+              "valor": "unity",
+              "rotulo": "Unity",
+              "itens": [
+                "unity"
+              ]
+            },
+            {
+              "valor": "obs",
+              "rotulo": "OBS Studio",
+              "itens": [
+                "obs",
+                "overlays-obs"
+              ]
+            },
+            {
+              "valor": "twitch",
+              "rotulo": "Twitch",
+              "itens": [
+                "twitch-cli"
+              ]
+            },
+            {
+              "valor": "vtuber",
+              "rotulo": "VTuber (avatar 3D: VSeeFace, Warudo, VRoid)",
+              "itens": [
+                "vtuber"
+              ],
+              "sinais": {
+                "vtuber": 3,
+                "3d": 1
+              }
+            },
+            {
+              "valor": "blender",
+              "rotulo": "Blender",
+              "itens": [
+                "blender"
+              ]
+            }
           ]
         }
       ]
@@ -69,49 +433,129 @@
       "titulo": "Preferências",
       "perguntas": [
         {
-          "id": "nivel", "tipo": "unico", "titulo": "Qual o seu nível com computador e programação?",
+          "id": "nivel",
+          "tipo": "unico",
+          "titulo": "Qual o seu nível com computador e programação?",
           "opcoes": [
-            {"valor": "1", "rotulo": "Iniciante", "descricao": "uso o básico"},
-            {"valor": "2", "rotulo": "Intermediário", "descricao": "instalo programas sem medo"},
-            {"valor": "3", "rotulo": "Avançado", "descricao": "uso terminal e código"}
+            {
+              "valor": "1",
+              "rotulo": "Iniciante",
+              "descricao": "uso o básico"
+            },
+            {
+              "valor": "2",
+              "rotulo": "Intermediário",
+              "descricao": "instalo programas sem medo"
+            },
+            {
+              "valor": "3",
+              "rotulo": "Avançado",
+              "descricao": "uso terminal e código"
+            }
           ]
         },
         {
-          "id": "preferencia", "tipo": "unico", "titulo": "Você prefere ferramentas locais ou na nuvem?",
+          "id": "preferencia",
+          "tipo": "unico",
+          "titulo": "Você prefere ferramentas locais ou na nuvem?",
           "opcoes": [
-            {"valor": "local", "rotulo": "Locais e grátis", "descricao": "mesmo que mais lentas"},
-            {"valor": "misto", "rotulo": "Misto", "descricao": "pago quando vale muito"},
-            {"valor": "nuvem", "rotulo": "Nuvem", "descricao": "o que for mais rápido"}
-          ]
-        },
-        {"id": "orcamento", "tipo": "faixa", "titulo": "Quanto você topa gastar por mês com serviços extras (além do Claude)?", "min": 0, "max": 500, "passo": 25, "padrao": 50, "prefixo": "R$ "},
-        {
-          "id": "economia", "tipo": "unico", "titulo": "Quanto você quer economizar tokens (o limite de uso do Claude)?",
-          "opcoes": [
-            {"valor": "alta", "rotulo": "Muito", "descricao": "meu limite acaba rápido"},
-            {"valor": "media", "rotulo": "Equilibrado"},
-            {"valor": "baixa", "rotulo": "Pouco", "descricao": "prefiro tudo ligado"}
-          ]
-        },
-        {
-          "id": "sensivel", "tipo": "unico", "titulo": "Você lida com dados sigilosos (clientes, processos, saúde)?",
-          "opcoes": [
-            {"valor": "sim", "rotulo": "Sim", "flags": {"sensivel": true}},
-            {"valor": "nao", "rotulo": "Não"}
-          ]
-        },
-        {
-          "id": "remoto", "tipo": "unico", "titulo": "Quer mandar tarefas para o PC pelo celular?",
-          "opcoes": [
-            {"valor": "sim", "rotulo": "Sim", "sinais": {"remoto": 3}},
-            {"valor": "nao", "rotulo": "Não"}
+            {
+              "valor": "local",
+              "rotulo": "Locais e grátis",
+              "descricao": "mesmo que mais lentas"
+            },
+            {
+              "valor": "misto",
+              "rotulo": "Misto",
+              "descricao": "pago quando vale muito"
+            },
+            {
+              "valor": "nuvem",
+              "rotulo": "Nuvem",
+              "descricao": "o que for mais rápido"
+            }
           ]
         },
         {
-          "id": "estilo", "tipo": "unico", "titulo": "Como você prefere as respostas do Claude?",
+          "id": "orcamento",
+          "tipo": "faixa",
+          "titulo": "Quanto você topa gastar por mês com serviços extras (além do Claude)?",
+          "min": 0,
+          "max": 500,
+          "passo": 25,
+          "padrao": 50,
+          "prefixo": "R$ "
+        },
+        {
+          "id": "economia",
+          "tipo": "unico",
+          "titulo": "Quanto você quer economizar tokens (o limite de uso do Claude)?",
           "opcoes": [
-            {"valor": "curtas", "rotulo": "Curtas e diretas"},
-            {"valor": "explicadas", "rotulo": "Explicadas passo a passo"}
+            {
+              "valor": "alta",
+              "rotulo": "Muito",
+              "descricao": "meu limite acaba rápido"
+            },
+            {
+              "valor": "media",
+              "rotulo": "Equilibrado"
+            },
+            {
+              "valor": "baixa",
+              "rotulo": "Pouco",
+              "descricao": "prefiro tudo ligado"
+            }
+          ]
+        },
+        {
+          "id": "sensivel",
+          "tipo": "unico",
+          "titulo": "Você lida com dados sigilosos (clientes, processos, saúde)?",
+          "opcoes": [
+            {
+              "valor": "sim",
+              "rotulo": "Sim",
+              "flags": {
+                "sensivel": true
+              }
+            },
+            {
+              "valor": "nao",
+              "rotulo": "Não"
+            }
+          ]
+        },
+        {
+          "id": "remoto",
+          "tipo": "unico",
+          "titulo": "Quer mandar tarefas para o PC pelo celular?",
+          "opcoes": [
+            {
+              "valor": "sim",
+              "rotulo": "Sim",
+              "sinais": {
+                "remoto": 3
+              }
+            },
+            {
+              "valor": "nao",
+              "rotulo": "Não"
+            }
+          ]
+        },
+        {
+          "id": "estilo",
+          "tipo": "unico",
+          "titulo": "Como você prefere as respostas do Claude?",
+          "opcoes": [
+            {
+              "valor": "curtas",
+              "rotulo": "Curtas e diretas"
+            },
+            {
+              "valor": "explicadas",
+              "rotulo": "Explicadas passo a passo"
+            }
           ]
         }
       ]

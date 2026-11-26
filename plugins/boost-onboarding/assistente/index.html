@@ -78,14 +78,16 @@
 <script type="module">
 import { recomendar, calcular } from "./assistente/recomendar.mjs";
 
-const [catalogo, perguntas, marca, ambiente] = await Promise.all(
-  ["/dados/catalogo.json", "/dados/perguntas.json", "/dados/marca.json", "/ambiente.json"].map((u) => fetch(u).then((r) => r.json()))
+const [catalogo, perguntas, marca, ambiente, preenchidas] = await Promise.all(
+  ["/dados/catalogo.json", "/dados/perguntas.json", "/dados/marca.json", "/ambiente.json", "/respostas.json"].map((u) => fetch(u).then((r) => (r.ok ? r.json() : {})).catch(() => ({})))
 );
 const porId = Object.fromEntries(catalogo.itens.map((i) => [i.id, i]));
 document.getElementById("marca").innerHTML = `${esc(marca.nome)}<small>${esc(marca.subtitulo)}</small>`;
 document.documentElement.style.setProperty("--cor", marca.cor || "#E0A33B");
 
-const respostas = { orcamento: 50 };
+// Perfil pronto do consultor: as respostas já vêm marcadas, e a pessoa só confere e ajusta.
+const { _nota, ...preenchidasSemNota } = preenchidas || {};
+const respostas = { orcamento: 50, ...preenchidasSemNota };
 let etapa = 0;
 let rec = null;
 let selecao = new Set();

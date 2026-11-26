@@ -834,7 +834,8 @@
         "video": 3,
         "conteudo": 2,
         "social": 1,
-        "marketing": 1
+        "marketing": 1,
+        "stream": 1
       },
       "requisitos": [
         "req-node",
@@ -874,7 +875,8 @@
       "estimado": true,
       "sinais": {
         "video": 3,
-        "conteudo": 2
+        "conteudo": 2,
+        "stream": 1
       },
       "requisitos": [
         "req-ffmpeg"
@@ -972,7 +974,8 @@
         "social": 3,
         "conteudo": 2,
         "marketing": 2,
-        "automacao": 1
+        "automacao": 1,
+        "stream": 1
       },
       "detectar": {
         "plugin": "postiz@claude-plugins-official"
@@ -1417,6 +1420,218 @@
           "tipo": "cmd",
           "win": "winget install -e --id RustDesk.RustDesk",
           "mac": "brew install --cask rustdesk"
+        }
+      ]
+    },
+    {
+      "id": "obs",
+      "nome": "OBS Studio (controle pelo Claude)",
+      "categoria": "Streaming",
+      "tipo": "mcp",
+      "resumo": "O Claude troca cenas, liga e desliga fontes, ajusta o áudio e começa ou para a gravação e a live no OBS.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "stream": 3,
+        "video": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "mcp": "obs"
+      },
+      "verificar": true,
+      "aviso": "MCP de comunidade e com poucos usuários (aaronckj/obs-studio-mcp, MIT). Alternativa: ironystock/agentic-obs.",
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No OBS (28 ou mais novo): Ferramentas → Configurações do servidor WebSocket → Ativar. Anotar a porta (4455) e a senha."
+        },
+        {
+          "tipo": "segredo",
+          "var": "OBS_MCP_PASSWORD",
+          "texto": "Salvar a senha do WebSocket do OBS."
+        },
+        {
+          "tipo": "cmd",
+          "win": "claude mcp add obs -s user -- uvx obs-studio-mcp",
+          "mac": "claude mcp add obs -s user -- uvx obs-studio-mcp",
+          "nota": "no Windows rodar pelo PowerShell; o OBS precisa estar aberto para conectar"
+        }
+      ]
+    },
+    {
+      "id": "twitch-cli",
+      "nome": "Twitch CLI (oficial)",
+      "categoria": "Streaming",
+      "tipo": "cli",
+      "resumo": "Ferramenta oficial da Twitch: o Claude consulta o canal, as lives, os VODs e os clipes pela API, e testa eventos (EventSub) para bots e alertas.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "stream": 3,
+        "dev": 1,
+        "automacao": 1
+      },
+      "detectar": {
+        "cmd": "twitch"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id Twitch.TwitchCLI",
+          "mac": "brew install twitchdev/twitch/twitch-cli"
+        },
+        {
+          "tipo": "manual",
+          "texto": "Criar um app em dev.twitch.tv/console (Client ID e Client Secret) e rodar `twitch configure` no próprio terminal (o segredo não passa pelo chat)."
+        }
+      ]
+    },
+    {
+      "id": "cortes-live",
+      "nome": "Cortes da live (VOD → Shorts/TikTok)",
+      "categoria": "Streaming",
+      "tipo": "nativo",
+      "resumo": "Fluxo com o que o kit já instala: baixar o VOD, cortar os silêncios (auto-editor), transcrever (Whisper), achar os melhores momentos, reenquadrar em 9:16 e legendar (HyperFrames).",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "stream": 2,
+        "video": 3,
+        "social": 2,
+        "conteudo": 2
+      },
+      "requisitos": [
+        "req-ffmpeg"
+      ],
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Instalar o auto-editor: baixar o executável oficial em github.com/WyattBlue/auto-editor/releases, conferindo o SHA-256, e colocar numa pasta do PATH."
+        },
+        {
+          "tipo": "manual",
+          "texto": "Usar junto com o boost-video e o HyperFrames (skills embedded-captions e talking-head-recut)."
+        }
+      ]
+    },
+    {
+      "id": "overlays-obs",
+      "nome": "Overlays e alertas para o OBS",
+      "categoria": "Streaming",
+      "tipo": "nativo",
+      "resumo": "O Claude cria overlays, telas de 'já volto', alertas e contadores como páginas HTML, que entram no OBS como 'Fonte de navegador'.",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "stream": 3,
+        "web": 1,
+        "design": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Nada a instalar: pedir o overlay, salvar o .html e adicionar no OBS em Fontes → Navegador → Arquivo local."
+        }
+      ]
+    },
+    {
+      "id": "vtuber",
+      "nome": "VTuber",
+      "categoria": "Streaming",
+      "tipo": "nativo",
+      "resumo": "O Claude ajuda no avatar 3D (modelo VRM: expressões, blendshapes, roupas) e escreve scripts que mandam reações e expressões para o VSeeFace ou o Warudo pelo protocolo VMC (OSC).",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "vtuber": 3,
+        "3d": 2,
+        "stream": 1
+      },
+      "aviso": "Não existe MCP maduro de avatar 3D: é feito com scripts e, para editar o modelo, o Blender MCP.",
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Ativar a recepção VMC/OSC no VSeeFace ou no Warudo e pedir ao Claude o script de controle (ex.: reação a evento do chat)."
+        }
+      ]
+    },
+    {
+      "id": "blender",
+      "nome": "Blender (pelo Claude)",
+      "categoria": "Arte e jogos",
+      "tipo": "mcp",
+      "resumo": "O Claude modela, edita e renderiza no Blender: ajustar o avatar VRM, criar props e cenas 3D.",
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 3,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 150,
+      "estimado": true,
+      "sinais": {
+        "3d": 3,
+        "vtuber": 2,
+        "jogos": 2,
+        "arte": 1
+      },
+      "requisitos": [
+        "req-uv"
+      ],
+      "detectar": {
+        "mcp": "blender"
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "winget install -e --id BlenderFoundation.Blender",
+          "mac": "brew install --cask blender"
+        },
+        {
+          "tipo": "manual",
+          "texto": "Instalar o addon e o servidor seguindo github.com/ahujasid/mcp-for-blender (cerca de 36 mil estrelas, MIT). Conferir os comandos atuais no README."
         }
       ]
     }

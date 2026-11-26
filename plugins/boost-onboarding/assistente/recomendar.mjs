@@ -15,6 +15,7 @@ const FRASES = {
   automacao: "você quer automatizar tarefas", comunicacao: "você conversa muito por mensagem",
   produtividade: "você organiza agenda e tarefas", remoto: "você quer comandar o PC de longe",
   economia: "economiza o seu limite de uso", vendas: "você cobra clientes",
+  stream: "você faz lives", vtuber: "você usa avatar virtual",
 };
 
 const PESO = { impulso: 6, essencial: 8 };
@@ -75,7 +76,7 @@ export function pontuar(item, p) {
   if (item.aviso) avisos.push(item.aviso);
   if (item.verificar) avisos.push("passos a conferir na hora da instalação");
 
-  return { nota: Math.round(base * mult * 10) / 10, motivos: [...new Set(motivos)].slice(0, 3), avisos, tecnicoDemais: salto >= 2 };
+  return { nota: Math.round(base * mult * 10) / 10, motivos: [...new Set(motivos)].slice(0, 3), avisos, tecnicoDemais: salto >= 2, jaUsa: p.impulsos.has(item.id) };
 }
 
 /** Está instalado? Usa o ambiente detectado (scripts/detectar.mjs). */
@@ -101,18 +102,28 @@ export function recomendar(respostas, catalogo, perguntas, ambiente = {}) {
     .map((i) => ({ item: i, ...pontuar(i, p), instalado: instalado(i, ambiente) }))
     .sort((a, b) => b.nota - a.nota);
 
+  // Vagas de "recomendado": o que a pessoa já usa entra primeiro; o resto disputa as vagas que sobram
+  // (no mínimo 5, para sempre sobrar espaço para descobertas novas).
+  const candidatos = avaliados.filter((a) => !a.item.essencial && a.nota >= CORTE.recomendado && !a.tecnicoDemais);
+  const jaUsados = candidatos.filter((a) => a.jaUsa).length;
+  const vagasNovas = Math.max(MAX_RECOMENDADOS - jaUsados, 5);
+
   const grupos = { essenciais: [], recomendados: [], opcionais: [], fora_orcamento: [] };
   let gasto = 0;
+  let novos = 0;
   for (const a of avaliados) {
     const mensal = a.item.custo?.mensal_brl || 0;
     let grupo = a.item.essencial ? "essenciais" : a.nota >= CORTE.recomendado ? "recomendados" : a.nota >= CORTE.opcional ? "opcionais" : null;
     if (!grupo) continue;
-    // Técnico demais para o nível da pessoa, ou a lista de recomendados já está cheia: vira opcional.
-    if (grupo === "recomendados" && (a.tecnicoDemais || grupos.recomendados.length >= MAX_RECOMENDADOS)) grupo = "opcionais";
+    // Técnico demais para o nível da pessoa, ou sem vaga: vira opcional.
+    if (grupo === "recomendados" && !a.jaUsa && (a.tecnicoDemais || novos >= vagasNovas)) grupo = "opcionais";
+    // Pago: só fica se couber no orçamento (do item de maior nota para o de menor).
     if (mensal > 0 && grupo !== "opcionais") {
       if (gasto + mensal <= p.orcamento) gasto += mensal;
       else grupo = "fora_orcamento";
     }
+    // A vaga só é ocupada por quem de fato ficou nos recomendados.
+    if (grupo === "recomendados" && !a.jaUsa) novos++;
     grupos[grupo].push(a);
   }
 

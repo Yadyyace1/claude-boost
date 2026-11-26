@@ -1,0 +1,13 @@
+{
+  "_nota": "Perfil pronto: streamer que programa (Twitch, OBS, avatar 3D). Use com --respostas; a pessoa confere e ajusta no assistente.",
+  "area": ["stream", "dev"],
+  "tarefas": ["lives", "cortes", "programar", "redes", "automatizar"],
+  "ferramentas": ["obs", "twitch", "vtuber", "github"],
+  "nivel": "3",
+  "preferencia": "misto",
+  "orcamento": 50,
+  "economia": "media",
+  "sensivel": "nao",
+  "remoto": "sim",
+  "estilo": "curtas"
+}
