@@ -1,0 +1,8 @@
+{
+  "name": "boost-backup",
+  "version": "0.1.0",
+  "description": "Backup e restauração das configurações do Claude Code (ajustes, CLAUDE.md, memórias, skills, plugins, marketplaces e MCPs) num arquivo só, para trocar de plano, de conta ou de computador sem perder nada.",
+  "author": { "name": "João Vitor" },
+  "license": "MIT",
+  "keywords": ["backup", "restaurar", "configuracoes", "pt-br"]
+}

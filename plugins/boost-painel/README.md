@@ -1,11 +1,21 @@
 # boost-painel
 
-O painel **Hoje** do Claude Boost: um painel ao lado do chat que transforma a tela inicial do Claude num pequeno dashboard.
+O painel **Hoje** do Claude Boost: o menu inicial do Claude, aberto ao lado do chat.
 
-- **Saudação e data**, com o seu nome.
-- **Seu uso:** barras do contexto da conversa, do limite de 5 horas (com o horário em que zera) e do limite da semana. Quando a conversa passa de 70%, sugere um `/compact`.
-- **Atalhos:** pedidos de um clique, como "Planejar o meu dia" ou "Resumir o que fiz hoje". Você escolhe quais em `/config`, separados por `|`.
-- **Lembretes:** anote com `/lembrete seu texto`. Um clique marca como feito e outro apaga. Eles ficam salvos entre sessões.
+```
+/plugin install boost-painel --marketplace Yadyyace1/claude-boost
+```
+
+- **"O que vamos criar hoje?"**: um campo para escrever o pedido. Enter envia para o Claude.
+- **Atalhos**: pedidos de um clique, escolhidos em `/config` (separados por `|`) ou no onboarding.
+- **Métricas**: conversas do dia, projetos, lembretes e barras do contexto e dos limites de 5 horas (com o horário em que zera) e da semana.
+- **Projetos recentes**: as pastas em que você mais trabalhou com o Claude, com link para abrir.
+- **Caixa de arquivos**: jogue arquivos em `~/Claude Boost/Caixa de entrada` e clique em **Analisar os arquivos**. A lista se atualiza sozinha a cada resposta.
+- **Personalizar o Claude**:
+  - **tema**: troca com um clique (precisa do `boost-temas`);
+  - **modelo e conversa**: trocar o modelo, compactar, nova conversa, configurações e conectores (o botão já escreve o comando na caixa de mensagem);
+  - **segurança**: fazer backup e restaurar (precisa do `boost-backup`).
+- **Lembretes**: `/lembrete seu texto`; um clique marca como feito e outro apaga.
 - **Dica do dia** para gastar menos do seu limite.
 
 Comandos: `/painel` abre o painel e `/lembrete <texto>` anota um lembrete. Em `/config` dá para mudar o nome, os atalhos e se o painel abre sozinho ao iniciar.

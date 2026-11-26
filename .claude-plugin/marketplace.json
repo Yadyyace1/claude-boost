@@ -56,9 +56,15 @@
     },
     {
       "name": "boost-painel",
-      "description": "Painel Hoje ao lado do chat: saudação, uso do contexto e dos limites, atalhos de um clique, lembretes e dica do dia.",
+      "description": "Painel Hoje, o menu inicial ao lado do chat: campo para pedir, métricas de uso, projetos recentes, caixa de arquivos, personalização (tema, modelo, conversa, backup), lembretes e dica do dia.",
       "category": "productivity",
       "source": "./plugins/boost-painel"
+    },
+    {
+      "name": "boost-backup",
+      "description": "Backup e restauração das configurações do Claude Code (ajustes, CLAUDE.md, memórias, skills, plugins, marketplaces e MCPs) num arquivo só: /backup e /restaurar.",
+      "category": "productivity",
+      "source": "./plugins/boost-backup"
     }
   ]
 }

@@ -18,6 +18,8 @@ import { Revisao } from "@/components/Revisao"
 import { Descobrir } from "@/components/Descobrir"
 import { Aparencia, APARENCIA_PADRAO, sugestoesDeAtalho, type EscolhaAparencia, type TemaPreview } from "@/components/Aparencia"
 import { GanhosPorCategoria, PerfilResumo } from "@/components/Visuais"
+import { Instalacao } from "@/components/Instalacao"
+import { postar } from "@/lib/api"
 
 const OBRIGATORIAS = ["area", "nivel", "preferencia", "economia", "sensivel"]
 const MEMORIA = "boost-onboarding-v2"
@@ -38,6 +40,7 @@ export default function App() {
   const [aberto, setAberto] = useState<Avaliado | null>(null)
   const [enviando, setEnviando] = useState(false)
   const [pronto, setPronto] = useState(false)
+  const [instalando, setInstalando] = useState(false)
 
   const setVisual = (v: Visual) => { setVisualEstado(v); aplicarVisual(v) }
 
@@ -168,10 +171,10 @@ export default function App() {
       sistema: dados!.ambiente.sistema || "win",
     }
     try {
-      const r = await fetch("confirmar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) })
-      if (!r.ok) throw new Error(String(r.status))
+      const r = await postar<{ instalar?: boolean }>("confirmar", corpo)
       localStorage.removeItem(MEMORIA)
-      setPronto(true)
+      if (r.instalar) setInstalando(true)
+      else setPronto(true)
     } catch {
       toast.error("Não consegui falar com o Claude", { description: "Ele ainda está aberto? Tente de novo em instantes." })
     } finally {
@@ -194,6 +197,20 @@ export default function App() {
     [IDX_REC]: "Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar, e em Detalhes para ver como é instalado.",
     [IDX_DESC]: "Descubra o que mais combina com você: arraste para a direita o que quiser e para a esquerda o que não quiser.",
     [IDX_REV]: "É isto que vai acontecer. Nada é instalado sem o seu OK, e senhas e chaves nunca passam pelo chat.",
+  }
+
+  if (instalando) {
+    return (
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual}>
+        <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 lg:px-8">
+          <header className="space-y-2">
+            <h1 className="text-3xl font-semibold tracking-tight">Instalação</h1>
+            <p className="max-w-2xl text-muted-foreground">Comece pelos automáticos. Os itens que pedem uma chave ou um login esperam você: cada cartão diz o que fazer, com um botão para abrir a página certa.</p>
+          </header>
+          <Instalacao nome={nome} />
+        </div>
+      </Casca>
+    )
   }
 
   if (pronto) {

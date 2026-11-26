@@ -1,8 +1,10 @@
 {
   "name": "boost-painel",
-  "version": "0.1.0",
-  "description": "Painel 'Hoje' do Claude Boost ao lado do chat: saudação, uso do contexto e dos limites, atalhos de um clique, lembretes e dica do dia.",
-  "author": { "name": "João Vitor" },
+  "version": "0.2.0",
+  "description": "Painel Hoje, o menu inicial ao lado do chat: campo para pedir, métricas de uso, projetos recentes, caixa de arquivos, personalização (tema, modelo, conversa, backup), lembretes e dica do dia.",
+  "author": {
+    "name": "João Vitor"
+  },
   "license": "MIT",
   "types": "./types/index.d.ts",
   "userConfig": {

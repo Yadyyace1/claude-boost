@@ -14,10 +14,26 @@ Kit para turbinar o **Claude Code**: o que já foi testado e funciona, num pacot
 | **boost-web** | quem tem site | Playwright + Chrome DevTools, testar site, deploy na Vercel, referências de UI |
 | **boost-dados** | planilhas, relatórios, mercado | planilhas e relatórios, TradingView (não é recomendação de investimento) |
 | **boost-ads** | quem gerencia tráfego pago | Meta Ads: diagnóstico, metas, estrutura, criativos, copy, auditor de políticas (Meta + OAB) e relatório; [como ligar o conector da Meta](plugins/boost-ads/README.md) |
+| **boost-onboarding** | quem está começando | `/onboarding`: assistente no navegador que pergunta como você trabalha, recomenda e instala tudo |
+| **boost-temas** | todo mundo | 7 temas para o app do Claude (claro e escuro, dois com fundo animado): `/tema` |
+| **boost-painel** | todo mundo | o menu inicial **Hoje** ao lado do chat: pedido, métricas, projetos, caixa de arquivos, personalização e lembretes |
+| **boost-backup** | todo mundo | `/backup` e `/restaurar`: as suas configurações num arquivo, para trocar de plano ou de conta sem perder nada |
 
 Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= tokens).
 
-## Instalar
+## Instalar sem terminal (Windows)
+
+Na pasta **Claude Boost - Instalador** (montada por `instalador/montar.ps1`), dê dois cliques em **Instalar Claude Boost.exe**. Ele:
+
+1. confere o Git e o Node.js e instala o que faltar;
+2. instala o Claude Code;
+3. abre o login;
+4. registra o kit da própria pasta;
+5. abre o assistente no navegador, que recomenda e instala tudo.
+
+Você só confirma e entra nas suas contas. Um `perfil.json` ao lado do .exe deixa as respostas pré-preenchidas. O programa ainda não tem assinatura digital: na primeira vez o Windows pede **Mais informações → Executar assim mesmo**.
+
+## Instalar pelo terminal
 
 Pré-requisitos e passo a passo completo no [guia de instalação](docs/GUIA-INSTALACAO.md). Resumo, no PowerShell:
 

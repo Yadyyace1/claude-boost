@@ -1,0 +1,24 @@
+CLAUDE BOOST - INSTALADOR
+
+1. Dê dois cliques em "Instalar Claude Boost.exe".
+   O Windows pode mostrar "O Windows protegeu o computador" (o programa ainda não tem
+   assinatura digital). Clique em "Mais informações" e depois em "Executar assim mesmo".
+
+2. Clique em "Começar". O instalador:
+   - confere o Git e o Node.js e instala o que faltar (pergunta antes);
+   - instala o Claude Code, se ainda não tiver (pergunta antes);
+   - abre o login da sua conta do Claude, se precisar;
+   - registra o kit desta pasta no seu Claude;
+   - abre o assistente no navegador.
+
+3. No navegador, responda as perguntas, escolha o visual e os conectores e clique em
+   "Confirmar e instalar". Na tela de instalação:
+   - "Instalar os automáticos" instala de uma vez o que não precisa de você;
+   - chaves (de serviços como o PixelLab ou o GitHub) você cola num campo protegido:
+     elas ficam só no seu computador;
+   - logins e conectores têm um botão "Abrir" que leva à página certa.
+
+4. No fim, feche e abra de novo o app do Claude. Experimente /tema, /painel e /lembrete.
+
+Mantenha o .exe dentro desta pasta: ele usa a pasta "kit" que está ao lado.
+Se quiser começar com respostas já preenchidas, coloque um arquivo "perfil.json" ao lado do .exe.

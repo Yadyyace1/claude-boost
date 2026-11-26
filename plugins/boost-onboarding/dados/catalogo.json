@@ -1675,7 +1675,7 @@
       "terceiros": false,
       "dificuldade": 1,
       "aparencia": true,
-      "resumo": "Transforma a tela do Claude num dashboard: saudação, uso do limite, atalhos de um clique, lembretes e dica do dia.",
+      "resumo": "O menu inicial do Claude: campo para pedir, uso do limite, projetos recentes, caixa de arquivos, botões para personalizar (tema, modelo, backup) e lembretes.",
       "custo": {
         "tipo": "gratis",
         "mensal_brl": 0
@@ -1690,6 +1690,39 @@
           "tipo": "cmd",
           "win": "claude plugin install boost-painel@claude-boost",
           "mac": "claude plugin install boost-painel@claude-boost"
+        }
+      ]
+    },
+    {
+      "id": "boost-backup",
+      "nome": "Backup do Claude",
+      "categoria": "Economia e base",
+      "tipo": "plugin",
+      "kit": true,
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "essencial": true,
+      "resumo": "Guarda as suas configurações (memórias, skills, plugins, MCPs) num arquivo. Trocou de plano ou de conta? É só restaurar com /restaurar.",
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 120,
+      "estimado": true,
+      "sinais": {
+        "economia": 1,
+        "produtividade": 1
+      },
+      "detectar": {
+        "plugin": "boost-backup@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-backup@claude-boost",
+          "mac": "claude plugin install boost-backup@claude-boost"
         }
       ]
     }

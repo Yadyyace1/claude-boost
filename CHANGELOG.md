@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.7.0 — 2026-11-26
+
+- **Instalador para Windows** (`instalador/`): `Instalar Claude Boost.exe`, compilado com o compilador C# que já vem no Windows (`montar.ps1` monta a pasta com o .exe e o kit). Ele:
+  - confere e instala o Git, o Node.js e o Claude Code, pedindo confirmação;
+  - abre o login (`claude auth login`) se precisar;
+  - registra o kit da própria pasta (troca um kit antigo, com confirmação);
+  - abre o assistente.
+- **boost-onboarding (0.5.0):**
+  - **modo instalação** (`scripts/instalar.mjs`, `assistente.mjs --instalar`): depois da confirmação, a página instala tudo com a pessoa:
+    - "instalar os automáticos";
+    - chaves salvas no computador por um campo protegido (nunca no chat);
+    - logins com botão para a página certa;
+    - aplicação do CLAUDE.md, com backup;
+  - **segurança:** o servidor local só aceita pedidos com o código secreto da execução e só roda comandos do plano gerado por ele.
+- **boost-painel (0.2.0):** virou o menu inicial:
+  - campo "O que vamos criar hoje?", que envia o pedido;
+  - métricas (conversas do dia, projetos, lembretes e uso);
+  - projetos recentes;
+  - **caixa de arquivos** (`~/Claude Boost/Caixa de entrada`, com "Analisar os arquivos");
+  - **Personalizar o Claude** (tema com um clique, modelo, compactar, nova conversa, configurações, conectores, backup e restaurar).
+- **boost-backup (0.1.0, novo):** `/backup` e `/restaurar`:
+  - guarda settings, CLAUDE.md, memórias, skills, agentes, comandos, mods, marketplaces, plugins e MCPs num arquivo;
+  - as chaves viram `${VARIAVEL}`, então o arquivo não expõe segredos;
+  - a restauração simula antes, guarda o que sobrescrever e reinstala plugins e MCPs.
+
 ## 0.6.0 — 2026-11-25
 
 - **boost-temas (0.1.0, novo):** 7 temas para o app do Claude, feitos como mod (`$.theme.set`):

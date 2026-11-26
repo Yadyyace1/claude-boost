@@ -1,6 +1,6 @@
 {
   "name": "boost-onboarding",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Onboarding guiado do Claude: um assistente no navegador pergunta como a pessoa trabalha, recomenda conectores, plugins e instaladores com custo e peso em tokens, e o Claude instala tudo item por item.",
   "author": {
     "name": "João Vitor"
