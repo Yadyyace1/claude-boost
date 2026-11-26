@@ -9,7 +9,12 @@ Onboarding guiado do Claude, para vender como serviço: o cliente responde a um 
 ## Como funciona
 
 1. **Detecta o PC** (`scripts/detectar.mjs`): sistema, programas (Node, uv, Git, Bun, FFmpeg...), plugins e MCPs já instalados. Só lê; não grava segredos.
-2. **Assistente no navegador** (`scripts/assistente.mjs` + `assistente/index.html`): servidor local em `127.0.0.1`, tema escuro, 3 etapas de perguntas (`dados/perguntas.json`) e a tela de recomendação, onde a pessoa marca e desmarca. Os totais de custo e de tokens se atualizam ao vivo. A confirmação grava `selecao.json`.
+2. **Assistente no navegador** (`scripts/assistente.mjs` + `app/`): servidor Node local em `127.0.0.1`, que serve o app React + shadcn/ui já compilado (`app/dist`) em tema escuro. São 6 etapas:
+   - **Sobre você**, **Seu dia a dia**, **Seu Claude hoje** e **Preferências**: 19 perguntas (`dados/perguntas.json`), com cartões e chips com ícone, um ícone grande por etapa e o "por que perguntamos";
+   - **Recomendação**: retrato do perfil, grade "o que o seu Claude vai ganhar" por categoria, abas (sugestão, opcionais, fora do orçamento, selecionados), busca, cartões com o porquê e um painel de detalhes com os passos exatos da instalação, mais o resumo fixo com barras de orçamento e de tokens;
+   - **Revisão**: linha do tempo de quem faz o quê (o Claude instala, você faz login, você cola uma chave, já vem no Claude).
+
+   As respostas ficam salvas no navegador. A confirmação grava `selecao.json`. Se `app/dist` não existir, o servidor usa a página simples `assistente/index.html`.
 3. **Plano** (`scripts/plano.mjs`): passos em ordem, com os comandos do sistema da pessoa, mais o `CLAUDE.md` pessoal sugerido.
 4. **Instalação** (skill `onboarding`): o Claude segue o plano item por item, com OK, sem pedir segredos no chat.
 
@@ -43,6 +48,20 @@ node scripts/simular.mjs respostas.json ambiente.json
 `dados/perfis/*.json` traz respostas prontas por tipo de cliente (ex.: `streamer-dev.json`, para streamer que programa: Twitch, OBS, VTuber). O consultor copia, ajusta o nome e passa com `--respostas` para o assistente abrir já marcado. Os perfis de clientes reais ficam fora do repositório (ficha do cliente).
 
 Área de **Streaming e lives** no catálogo: OBS (MCP de comunidade, via WebSocket), Twitch CLI (oficial), cortes da live (VOD → Shorts com auto-editor, Whisper e HyperFrames), overlays e alertas em HTML para o OBS, VTuber (modelo VRM + controle por VMC/OSC no VSeeFace ou no Warudo) e Blender.
+
+## Mexer na interface (para quem mantém o kit)
+
+O app fica em `app/` (Vite + React + TypeScript + Tailwind v4 + shadcn/ui, ícones lucide). O cliente **não** compila nada: o `app/dist` vai junto no repositório.
+
+```
+cd app
+npm.cmd install          # no Windows, npm.cmd (o npm.ps1 é bloqueado no PowerShell 5.1)
+npm.cmd run build        # gera app/dist; commitar o dist junto
+```
+
+Para desenvolver com recarga automática, suba o servidor de dados (`node scripts/assistente.mjs --saida <pasta> --porta 47330 --sem-abrir`) e, em outro terminal, `npm.cmd run dev` dentro de `app/` (o Vite repassa `/dados`, `/ambiente.json`, `/respostas.json` e `/confirmar` para a porta 47330). O algoritmo (`assistente/recomendar.mjs`) é o mesmo do Node: o app importa pelo alias `@motor`.
+
+Componentes: `src/components/Pergunta.tsx` (cartões, chips, faixa), `Recomendacao.tsx`, `ItemCard.tsx`, `ItemDetalhes.tsx` (painel lateral), `Resumo.tsx`, `Revisao.tsx` (linha do tempo), `Visuais.tsx` (perfil e categorias). Ícones das opções e das categorias: `src/lib/icones.tsx`.
 
 ## Personalizar para vender (marca própria)
 

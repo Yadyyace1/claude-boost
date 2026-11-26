@@ -58,16 +58,27 @@ writeFileSync(join(pasta, "plano.md"), md);
 const areas = rotulos("area"), tarefas = rotulos("tarefas"), ferramentas = rotulos("ferramentas");
 const instalados = plano.filter((p) => p.tipo !== "requisito").map((p) => p.nome);
 let cm = `# Sobre mim\n\n`;
-if (r.nome) cm += `- Me chame de **${r.nome}**. Responda em português do Brasil.\n`;
+const IDIOMA = { pt: "português do Brasil", en: "inglês", es: "espanhol" };
+if (r.nome) cm += `- Me chame de **${r.nome}**.\n`;
+cm += `- Responda em ${IDIOMA[r.idioma] || IDIOMA.pt}.\n`;
+if (r.objetivo) cm += `- Meu objetivo para os próximos 30 dias: ${r.objetivo}. Quando fizer sentido, sugira passos que me aproximem dele.\n`;
 const juntar = (l) => (l.length > 1 ? `${l.slice(0, -1).join("; ")}; e ${l.at(-1)}` : l[0]);
 if (areas.length) cm += `- Trabalho com: ${juntar(areas).toLowerCase()}.\n`;
 if (tarefas.length) cm += `- O que mais peço: ${tarefas.join(", ").toLowerCase()}.\n`;
 if (ferramentas.length) cm += `- Ferramentas que uso: ${ferramentas.join(", ")}.\n`;
 cm += r.estilo === "curtas" ? `- Prefiro respostas curtas e diretas, sem rodeio.\n` : `- Prefiro respostas explicadas passo a passo, sem jargão.\n`;
-if (r.nivel === "1") cm += `- Sou iniciante em tecnologia: antes de rodar algo no meu computador, diga em uma frase o que aquilo faz.\n`;
+if (r.nivel === "1" || r.experiencia === "nunca") cm += `- Sou novo no Claude Code: antes de rodar algo no meu computador, diga em uma frase o que aquilo faz.\n`;
+const AUTONOMIA = {
+  cauteloso: "Peça confirmação antes de qualquer ação que mude arquivos ou rode comandos.",
+  equilibrado: "Pode ler e investigar à vontade; peça confirmação para o que for arriscado ou difícil de desfazer.",
+  solto: "Pode agir sem me perguntar em tarefas rotineiras e me avise do que fez; pergunte só antes de apagar, publicar ou gastar dinheiro.",
+};
+if (AUTONOMIA[r.autonomia]) cm += `- Autonomia: ${AUTONOMIA[r.autonomia]}\n`;
+if (r.equipe === "pequena" || r.equipe === "empresa") cm += `- Trabalho em equipe: escreva mensagens, documentos e commits de um jeito que outras pessoas entendam sem contexto.\n`;
 if (r.sensivel === "sim" || [].concat(r.area || []).includes("juridico")) cm += `- Lido com dados sigilosos: nunca envie dados de clientes para serviços de terceiros sem me perguntar, e não cole dados pessoais em buscas na web.\n`;
 if ([].concat(r.area || []).includes("juridico")) cm += `- Em textos jurídicos, cite a fonte (lei, artigo, súmula) e avise quando algo precisar de conferência humana. Em publicidade de advocacia, siga o Provimento 205/2021 da OAB.\n`;
-cm += `- Economia de uso: ${r.economia === "alta" ? "meu limite acaba rápido; prefira o modelo mais barato que resolva e respostas enxutas" : "equilibre qualidade e consumo"}.\n`;
+const economiaAlta = r.economia === "alta" || r.plano === "free";
+cm += `- Economia de uso: ${economiaAlta ? "meu limite acaba rápido; prefira o modelo mais barato que resolva e respostas enxutas" : "equilibre qualidade e consumo"}.\n`;
 cm += `\n# Ferramentas instaladas no onboarding\n\n${instalados.map((n) => `- ${n}`).join("\n")}\n`;
 writeFileSync(join(pasta, "claude-md-sugerido.md"), cm);
 

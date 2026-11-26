@@ -40,12 +40,19 @@ export function lerPerfil(respostas, perguntas) {
       }
     }
   }
+  // Economia: o plano e as horas de uso podem exigir mais economia do que a pessoa escolheu.
+  const ORDEM_ECO = ["baixa", "media", "alta"];
+  let economia = respostas.economia || "media";
+  const minimos = [flags.economia_min, Number(respostas.horas) >= 6 ? "media" : null].filter(Boolean);
+  for (const m of minimos) if (ORDEM_ECO.indexOf(m) > ORDEM_ECO.indexOf(economia)) economia = m;
+
   return {
     sinais, impulsos, flags,
     nivel: Number(respostas.nivel || 2),
     preferencia: respostas.preferencia || "misto",
     orcamento: Number(respostas.orcamento ?? 50),
-    economia: respostas.economia || "media",
+    economia,
+    economiaAjustada: economia !== (respostas.economia || "media"),
     sensivel: !!flags.sensivel,
   };
 }
@@ -136,7 +143,7 @@ export function recomendar(respostas, catalogo, perguntas, ambiente = {}) {
   }
 
   const selecao = [...grupos.essenciais, ...grupos.recomendados].map((a) => a.item.id);
-  return { perfil: p, teto, grupos, selecao, ...calcular(selecao, catalogo, ambiente, { teto, porId, avaliados }) };
+  return { perfil: { ...p, impulsos: [...p.impulsos.keys()] }, teto, grupos, selecao, ...calcular(selecao, catalogo, ambiente, { teto, porId, avaliados }) };
 }
 
 /** Totais e requisitos para uma seleção qualquer (o usuário pode marcar e desmarcar). */

@@ -19,8 +19,11 @@ const respostasArq = opt("--respostas"); // respostas pré-preenchidas pelo cons
 const porta = Number(opt("--porta", 0));
 const LIMITE_MIN = 45;
 
-const TIPOS = { ".html": "text/html; charset=utf-8", ".mjs": "text/javascript; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml" };
+const TIPOS = { ".html": "text/html; charset=utf-8", ".mjs": "text/javascript; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".png": "image/png" };
 const PERMITIDOS = ["assistente", "dados"];
+// Interface nova (React + shadcn, compilada em app/dist). Se não existir, usa a página simples de assistente/.
+const DIST = join(raiz, "app", "dist");
+const temApp = existsSync(join(DIST, "index.html"));
 
 function servir(res, arquivo) {
   res.writeHead(200, { "Content-Type": TIPOS[extname(arquivo)] || "application/octet-stream", "Cache-Control": "no-store" });
@@ -49,7 +52,12 @@ const servidor = createServer((req, res) => {
     return;
   }
   if (req.method !== "GET") { res.writeHead(405); return res.end(); }
-  if (url.pathname === "/" || url.pathname === "/index.html") return servir(res, join(raiz, "assistente", "index.html"));
+  if (url.pathname === "/" || url.pathname === "/index.html") return servir(res, temApp ? join(DIST, "index.html") : join(raiz, "assistente", "index.html"));
+  if (temApp && (url.pathname.startsWith("/assets/") || url.pathname === "/favicon.svg")) {
+    const arq = join(DIST, normalize(decodeURIComponent(url.pathname)).replace(/^[\\/]+/, ""));
+    if (arq.startsWith(DIST) && existsSync(arq)) return servir(res, arq);
+    res.writeHead(404); return res.end();
+  }
   if (url.pathname === "/ambiente.json") {
     res.writeHead(200, { "Content-Type": TIPOS[".json"] });
     return res.end(ambienteArq && existsSync(ambienteArq) ? readFileSync(ambienteArq) : "{}");

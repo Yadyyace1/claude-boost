@@ -139,7 +139,9 @@
             }
           ]
         }
-      ]
+      ],
+      "icone": "user",
+      "dica": "Para chamar você pelo nome e entender o seu tipo de trabalho."
     },
     {
       "titulo": "Seu dia a dia",
@@ -427,6 +429,215 @@
             }
           ]
         }
+      ],
+      "icone": "calendar",
+      "dica": "O que você faz e o que já usa decide quais conectores fazem sentido."
+    },
+    {
+      "titulo": "Seu Claude hoje",
+      "icone": "bot",
+      "dica": "Como você já usa o Claude, para ajustar o ritmo, a autonomia e o seu CLAUDE.md.",
+      "perguntas": [
+        {
+          "id": "onde",
+          "tipo": "multi",
+          "titulo": "Onde você usa o Claude?",
+          "opcoes": [
+            {
+              "valor": "app",
+              "rotulo": "App no computador",
+              "descricao": "Claude para Windows ou Mac"
+            },
+            {
+              "valor": "terminal",
+              "rotulo": "Terminal",
+              "descricao": "Claude Code na linha de comando",
+              "sinais": {
+                "dev": 1
+              }
+            },
+            {
+              "valor": "web",
+              "rotulo": "Navegador",
+              "descricao": "claude.ai"
+            },
+            {
+              "valor": "celular",
+              "rotulo": "Celular",
+              "descricao": "app no Android ou iPhone",
+              "sinais": {
+                "remoto": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "plano",
+          "tipo": "unico",
+          "titulo": "Qual é o seu plano do Claude?",
+          "opcoes": [
+            {
+              "valor": "free",
+              "rotulo": "Gratuito",
+              "descricao": "o limite acaba rápido",
+              "flags": {
+                "economia_min": "alta"
+              }
+            },
+            {
+              "valor": "pro",
+              "rotulo": "Pro",
+              "descricao": "uso individual",
+              "flags": {
+                "economia_min": "media"
+              }
+            },
+            {
+              "valor": "max",
+              "rotulo": "Max",
+              "descricao": "uso intenso"
+            },
+            {
+              "valor": "team",
+              "rotulo": "Team ou Enterprise",
+              "descricao": "conta da empresa",
+              "sinais": {
+                "comunicacao": 1,
+                "docs": 1
+              }
+            },
+            {
+              "valor": "naosei",
+              "rotulo": "Não sei",
+              "descricao": "a gente confere junto",
+              "flags": {
+                "economia_min": "media"
+              }
+            }
+          ]
+        },
+        {
+          "id": "experiencia",
+          "tipo": "unico",
+          "titulo": "Quanto você já usou o Claude Code?",
+          "opcoes": [
+            {
+              "valor": "nunca",
+              "rotulo": "Nunca",
+              "descricao": "vou começar agora",
+              "flags": {
+                "novato_claude": true
+              }
+            },
+            {
+              "valor": "pouco",
+              "rotulo": "Um pouco",
+              "descricao": "já testei algumas vezes"
+            },
+            {
+              "valor": "diario",
+              "rotulo": "Todo dia",
+              "descricao": "faz parte da rotina",
+              "sinais": {
+                "economia": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "horas",
+          "tipo": "faixa",
+          "titulo": "Quantas horas por dia você pretende usar o Claude?",
+          "min": 0,
+          "max": 12,
+          "passo": 1,
+          "padrao": 2,
+          "sufixo": " h",
+          "atalhos": [
+            1,
+            2,
+            4,
+            8
+          ]
+        },
+        {
+          "id": "equipe",
+          "tipo": "unico",
+          "titulo": "Você trabalha sozinho ou em equipe?",
+          "opcoes": [
+            {
+              "valor": "solo",
+              "rotulo": "Sozinho",
+              "descricao": "eu e o Claude"
+            },
+            {
+              "valor": "pequena",
+              "rotulo": "Equipe pequena",
+              "descricao": "até 10 pessoas",
+              "sinais": {
+                "comunicacao": 2,
+                "produtividade": 1
+              }
+            },
+            {
+              "valor": "empresa",
+              "rotulo": "Empresa",
+              "descricao": "várias áreas",
+              "sinais": {
+                "comunicacao": 3,
+                "docs": 1,
+                "produtividade": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "idioma",
+          "tipo": "unico",
+          "titulo": "Em que idioma o Claude deve responder?",
+          "opcoes": [
+            {
+              "valor": "pt",
+              "rotulo": "Português"
+            },
+            {
+              "valor": "en",
+              "rotulo": "Inglês"
+            },
+            {
+              "valor": "es",
+              "rotulo": "Espanhol"
+            }
+          ]
+        },
+        {
+          "id": "autonomia",
+          "tipo": "unico",
+          "titulo": "Quanta liberdade o Claude deve ter no seu computador?",
+          "opcoes": [
+            {
+              "valor": "cauteloso",
+              "rotulo": "Pedir antes de tudo",
+              "descricao": "confirmo cada passo"
+            },
+            {
+              "valor": "equilibrado",
+              "rotulo": "Equilibrado",
+              "descricao": "pede para o que for arriscado"
+            },
+            {
+              "valor": "solto",
+              "rotulo": "Mais solto",
+              "descricao": "pode agir e me avisar"
+            }
+          ]
+        },
+        {
+          "id": "objetivo",
+          "tipo": "texto",
+          "titulo": "Qual é o seu principal objetivo com o Claude nos próximos 30 dias?",
+          "placeholder": "Ex.: lançar meu site, automatizar os cortes das lives, organizar os clientes"
+        }
       ]
     },
     {
@@ -484,7 +695,15 @@
           "max": 500,
           "passo": 25,
           "padrao": 50,
-          "prefixo": "R$ "
+          "prefixo": "R$ ",
+          "atalhos": [
+            0,
+            50,
+            100,
+            250,
+            500
+          ],
+          "sufixo": "/mês"
         },
         {
           "id": "economia",
@@ -558,7 +777,9 @@
             }
           ]
         }
-      ]
+      ],
+      "icone": "sliders",
+      "dica": "Orçamento, privacidade e economia: os limites que o Claude respeita."
     }
   ]
 }
