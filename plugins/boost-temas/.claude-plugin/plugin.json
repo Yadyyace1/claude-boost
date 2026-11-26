@@ -1,0 +1,22 @@
+{
+  "name": "boost-temas",
+  "version": "0.1.0",
+  "description": "Temas do Claude Boost para o app do Claude: 7 visuais (claro e escuro), dois com cenário animado. Troque com /tema.",
+  "author": { "name": "João Vitor" },
+  "license": "MIT",
+  "userConfig": {
+    "tema": {
+      "type": "string",
+      "title": "Tema",
+      "description": "O visual do app do Claude. Também dá para trocar com /tema <nome>.",
+      "default": "ambar",
+      "options": ["ambar", "synthwave", "floresta", "oceano", "caderno", "grafite", "royal"]
+    },
+    "cenario": {
+      "type": "boolean",
+      "title": "Cenário animado",
+      "description": "Mostra o fundo em movimento nos temas que têm um (Synthwave e Oceano).",
+      "default": true
+    }
+  }
+}

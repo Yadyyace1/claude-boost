@@ -29,9 +29,29 @@ const plano = itens.map((it, n) => ({
   aviso: it.aviso || null, conferir: !!it.verificar,
   passos: (it.passos || []).map((p) => ({ tipo: p.tipo, comando: p[so] || p.win || null, texto: p.texto || null, variavel: p.var || null, nota: p.nota || null })),
 }));
+
+// Aparência escolhida no assistente: configura o tema e o painel logo depois de instalar.
+const r = sel.respostas || {};
+const ap = r.aparencia || {};
+function configurar(plugin, valores) {
+  const json = JSON.stringify(valores);
+  const comando = so === "win"
+    ? `'${json.replace(/'/g, "''")}' | claude plugin configure ${plugin} --values-stdin`
+    : `printf '%s' '${json.replace(/'/g, "'\\''")}' | claude plugin configure ${plugin} --values-stdin`;
+  return { tipo: "cmd", comando, texto: null, variavel: null, nota: "grava as escolhas da etapa Aparência" };
+}
+for (const p of plano) {
+  if (p.id === "boost-temas" && ap.tema) p.passos.push(configurar("boost-temas@claude-boost", { tema: ap.tema, cenario: ap.cenario !== false }));
+  if (p.id === "boost-painel") {
+    p.passos.push(configurar("boost-painel@claude-boost", {
+      nome: typeof r.nome === "string" ? r.nome : "",
+      abrir: ap.abrirPainel !== false,
+      atalhos: (ap.atalhos || []).join("|") || undefined,
+    }));
+  }
+}
 writeFileSync(join(pasta, "plano.json"), JSON.stringify({ sistema: so, itens: plano }, null, 2) + "\n");
 
-const r = sel.respostas || {};
 const rotulos = (qid) => {
   for (const e of perguntas.etapas) for (const q of e.perguntas) if (q.id === qid && q.opcoes)
     return [].concat(r[qid] ?? []).map((v) => q.opcoes.find((o) => o.valor === v)?.rotulo).filter(Boolean);

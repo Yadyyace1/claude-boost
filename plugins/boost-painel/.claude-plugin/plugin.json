@@ -1,0 +1,28 @@
+{
+  "name": "boost-painel",
+  "version": "0.1.0",
+  "description": "Painel 'Hoje' do Claude Boost ao lado do chat: saudação, uso do contexto e dos limites, atalhos de um clique, lembretes e dica do dia.",
+  "author": { "name": "João Vitor" },
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "nome": {
+      "type": "string",
+      "title": "Seu nome",
+      "description": "Como o painel te cumprimenta.",
+      "default": ""
+    },
+    "abrir": {
+      "type": "boolean",
+      "title": "Abrir o painel ao iniciar",
+      "description": "Abre o painel Hoje toda vez que uma sessão começa. Dá para abrir a qualquer hora com /painel.",
+      "default": true
+    },
+    "atalhos": {
+      "type": "string",
+      "title": "Atalhos",
+      "description": "Pedidos de um clique, separados por | (barra vertical).",
+      "default": "Planejar o meu dia|Resumir o que fiz hoje|Revisar a segurança deste projeto|Sugerir o próximo passo do meu objetivo"
+    }
+  }
+}

@@ -131,3 +131,20 @@
     @apply font-sans;
     }
 }
+/* Padrões de fundo do assistente (escolhidos na etapa Aparência ou no menu do topo). */
+body.padrao-pontos {
+  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 9%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+body.padrao-grade {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+body.padrao-brilho {
+  background-image:
+    radial-gradient(60rem 30rem at 85% -10%, color-mix(in oklab, var(--primary) 18%, transparent), transparent 70%),
+    radial-gradient(40rem 24rem at -10% 110%, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%);
+  background-attachment: fixed;
+}

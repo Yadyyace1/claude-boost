@@ -1,0 +1,174 @@
+{
+  "temas": [
+    {
+      "id": "ambar",
+      "nome": "Âmbar",
+      "descricao": "Quente e acolhedor: madeira, cobre e luz de abajur.",
+      "cena": null,
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#17130e",
+        "cartao": "#252019",
+        "texto": "#f3e9da",
+        "suave": "#a99a84"
+      },
+      "claro": {
+        "fundo": "#f3ece1",
+        "cartao": "#fbf7f0",
+        "texto": "#2a2016",
+        "suave": "#6e5c48"
+      },
+      "destaque": "#d98a1c",
+      "extras": [
+        "#4f8a3c",
+        "#b7791f",
+        "#8a5cc2"
+      ]
+    },
+    {
+      "id": "synthwave",
+      "nome": "Synthwave",
+      "descricao": "Neon dos anos 80: pôr do sol roxo e grade em movimento.",
+      "cena": "synthwave",
+      "soEscuro": true,
+      "escuro": {
+        "fundo": "#120b1f",
+        "cartao": "#1f1533",
+        "texto": "#f6ecff",
+        "suave": "#a993c9"
+      },
+      "claro": null,
+      "destaque": "#ff4fd8",
+      "extras": [
+        "#3ddc97",
+        "#ffb347",
+        "#9d7bff"
+      ]
+    },
+    {
+      "id": "floresta",
+      "nome": "Floresta",
+      "descricao": "Verdes calmos de mata e musgo, bom para longas sessões.",
+      "cena": null,
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#0f1712",
+        "cartao": "#19261e",
+        "texto": "#e6f1e9",
+        "suave": "#93aa9a"
+      },
+      "claro": {
+        "fundo": "#eef3ec",
+        "cartao": "#f9fbf7",
+        "texto": "#1c2a20",
+        "suave": "#55695b"
+      },
+      "destaque": "#3f8f5a",
+      "extras": [
+        "#4e9a3e",
+        "#b9852a",
+        "#7a6bb5"
+      ]
+    },
+    {
+      "id": "oceano",
+      "nome": "Oceano",
+      "descricao": "Azuis profundos com ondas lentas ao fundo.",
+      "cena": "oceano",
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#0b1520",
+        "cartao": "#132331",
+        "texto": "#e4f0fa",
+        "suave": "#8ea7bd"
+      },
+      "claro": {
+        "fundo": "#eaf2f8",
+        "cartao": "#f7fbfe",
+        "texto": "#10263a",
+        "suave": "#4a6680"
+      },
+      "destaque": "#2b8fd6",
+      "extras": [
+        "#2f9e7a",
+        "#c28a2c",
+        "#7b6fd6"
+      ]
+    },
+    {
+      "id": "caderno",
+      "nome": "Caderno",
+      "descricao": "Papel de dia e papel à luz de abajur à noite.",
+      "cena": null,
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#1f1a15",
+        "cartao": "#312a22",
+        "texto": "#f0e7d7",
+        "suave": "#aca08d"
+      },
+      "claro": {
+        "fundo": "#efe6d3",
+        "cartao": "#faf5e9",
+        "texto": "#2a241d",
+        "suave": "#6a5f50"
+      },
+      "destaque": "#2f5d8c",
+      "extras": [
+        "#4e7d3a",
+        "#a86f14",
+        "#6d4f94"
+      ]
+    },
+    {
+      "id": "grafite",
+      "nome": "Grafite",
+      "descricao": "Neutro e minimalista: cinzas limpos e um azul discreto.",
+      "cena": null,
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#141414",
+        "cartao": "#222222",
+        "texto": "#ededed",
+        "suave": "#9a9a9a"
+      },
+      "claro": {
+        "fundo": "#f2f2f2",
+        "cartao": "#fcfcfc",
+        "texto": "#1a1a1a",
+        "suave": "#5c5c5c"
+      },
+      "destaque": "#6e8efb",
+      "extras": [
+        "#57ab5a",
+        "#c69026",
+        "#986ee2"
+      ]
+    },
+    {
+      "id": "royal",
+      "nome": "Azul Royal",
+      "descricao": "Azul royal com pêssego: forte, divertido e com personalidade.",
+      "cena": null,
+      "soEscuro": false,
+      "escuro": {
+        "fundo": "#0e1230",
+        "cartao": "#181e4c",
+        "texto": "#eef1ff",
+        "suave": "#9aa3d6"
+      },
+      "claro": {
+        "fundo": "#fbeee2",
+        "cartao": "#fffaf5",
+        "texto": "#1a1f3d",
+        "suave": "#555e8a"
+      },
+      "destaque": "#2b4bc7",
+      "extras": [
+        "#3f8f5a",
+        "#c58a1d",
+        "#8a5cc2"
+      ]
+    }
+  ]
+}

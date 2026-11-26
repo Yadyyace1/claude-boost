@@ -9,9 +9,11 @@ Onboarding guiado do Claude, para vender como serviço: o cliente responde a um 
 ## Como funciona
 
 1. **Detecta o PC** (`scripts/detectar.mjs`): sistema, programas (Node, uv, Git, Bun, FFmpeg...), plugins e MCPs já instalados. Só lê; não grava segredos.
-2. **Assistente no navegador** (`scripts/assistente.mjs` + `app/`): servidor Node local em `127.0.0.1`, que serve o app React + shadcn/ui já compilado (`app/dist`) em tema escuro. São 6 etapas:
+2. **Assistente no navegador** (`scripts/assistente.mjs` + `app/`): servidor Node local em `127.0.0.1`, que serve o app React + shadcn/ui já compilado (`app/dist`), com modo **claro e escuro**, 7 cores de destaque e 4 fundos (liso, pontos, grade, brilho), trocáveis no topo ou na etapa Aparência. São 8 etapas:
    - **Sobre você**, **Seu dia a dia**, **Seu Claude hoje** e **Preferências**: 19 perguntas (`dados/perguntas.json`), com cartões e chips com ícone, um ícone grande por etapa e o "por que perguntamos";
+   - **Aparência**: o tema do app do Claude (7 temas do `boost-temas`, cada um numa miniatura de janela com as cores reais, claro e escuro), a tela inicial como dashboard (painel Hoje do `boost-painel`, com prévia ao vivo, atalhos sugeridos pela área da pessoa e atalhos próprios) e o visual do próprio assistente;
    - **Recomendação**: retrato do perfil, grade "o que o seu Claude vai ganhar" por categoria, abas (sugestão, opcionais, fora do orçamento, selecionados), busca, cartões com o porquê e um painel de detalhes com os passos exatos da instalação, mais o resumo fixo com barras de orçamento e de tokens;
+   - **Descobrir**: os opcionais em cartas para deslizar, como no Tinder: para a direita, quero; para a esquerda, pulo (ou as setas ← →, com desfazer). O algoritmo (`app/src/lib/descoberta.ts`) aprende com cada escolha: um "quero" soma afinidade nas etiquetas do item e um "pular" subtrai, a próxima carta é a de maior nota ajustada (variando a categoria), e a cada 4 cartas entra uma de um assunto ainda não visto;
    - **Revisão**: linha do tempo de quem faz o quê (o Claude instala, você faz login, você cola uma chave, já vem no Claude).
 
    As respostas ficam salvas no navegador. A confirmação grava `selecao.json`. Se `app/dist` não existir, o servidor usa a página simples `assistente/index.html`.

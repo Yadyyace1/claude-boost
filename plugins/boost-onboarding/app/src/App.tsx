@@ -1,67 +1,76 @@
 import { useEffect, useMemo, useState } from "react"
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, Loader2, RotateCcw } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, Check, CheckCircle2, ClipboardCheck, Compass, Loader2, Moon, Palette, RotateCcw, Sun, Wand2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { calcular, carregar, recomendar } from "@/lib/motor"
+import { ICONE_ETAPA } from "@/lib/icones"
+import { aplicarVisual, lerVisual, type Visual } from "@/lib/visual"
+import type { Escolha } from "@/lib/descoberta"
 import type { Ambiente, Avaliado, Catalogo, Item, Marca, Perguntas, Recomendacao as Rec, Respostas } from "@/lib/tipos"
 import { Pergunta } from "@/components/Pergunta"
 import { Recomendacao } from "@/components/Recomendacao"
 import { ItemDetalhes } from "@/components/ItemDetalhes"
 import { Resumo } from "@/components/Resumo"
 import { Revisao } from "@/components/Revisao"
+import { Descobrir } from "@/components/Descobrir"
+import { Aparencia, APARENCIA_PADRAO, sugestoesDeAtalho, type EscolhaAparencia, type TemaPreview } from "@/components/Aparencia"
 import { GanhosPorCategoria, PerfilResumo } from "@/components/Visuais"
-import { ICONE_ETAPA } from "@/lib/icones"
-import { Bot, ClipboardCheck, Wand2 } from "lucide-react"
 
 const OBRIGATORIAS = ["area", "nivel", "preferencia", "economia", "sensivel"]
-const MEMORIA = "boost-onboarding-v1"
+const MEMORIA = "boost-onboarding-v2"
 
-type Dados = { catalogo: Catalogo; perguntas: Perguntas; marca: Marca; ambiente: Ambiente }
+type Dados = { catalogo: Catalogo; perguntas: Perguntas; marca: Marca; ambiente: Ambiente; temas: TemaPreview[] }
 
 export default function App() {
   const [dados, setDados] = useState<Dados | null>(null)
   const [respostas, setRespostas] = useState<Respostas>({ orcamento: 50 })
+  const [ap, setAp] = useState<EscolhaAparencia>(APARENCIA_PADRAO)
+  const [visual, setVisualEstado] = useState<Visual>(() => lerVisual("#E0A33B"))
   const [etapa, setEtapa] = useState(0)
   const [erros, setErros] = useState<Record<string, string>>({})
   const [rec, setRec] = useState<Rec | null>(null)
   const [selecao, setSelecao] = useState<Set<string>>(new Set())
+  const [cartas, setCartas] = useState<Avaliado[] | null>(null)
+  const [escolhas, setEscolhas] = useState<Escolha[]>([])
   const [aberto, setAberto] = useState<Avaliado | null>(null)
   const [enviando, setEnviando] = useState(false)
   const [pronto, setPronto] = useState(false)
 
-  // Carrega catálogo, perguntas, marca, ambiente e o perfil pré-preenchido (se o consultor mandou).
+  const setVisual = (v: Visual) => { setVisualEstado(v); aplicarVisual(v) }
+
+  // Carrega catálogo, perguntas, marca, temas, ambiente e o perfil pré-preenchido (se o consultor mandou).
   useEffect(() => {
-    carregar().then(({ catalogo, perguntas, marca, ambiente, preenchidas }) => {
+    carregar().then(({ catalogo, perguntas, marca, ambiente, preenchidas, temas }) => {
       const { _nota, ...pre } = preenchidas as Respostas & { _nota?: string }
       void _nota
       const salvo = JSON.parse(localStorage.getItem(MEMORIA) || "null")
       setRespostas({ orcamento: 50, ...pre, ...(salvo?.respostas ?? {}) })
-      if (salvo?.etapa) setEtapa(Math.min(salvo.etapa, perguntas.etapas.length - 1))
-      if (marca?.cor) {
-        const r = document.documentElement.style
-        r.setProperty("--primary", marca.cor)
-        r.setProperty("--ring", marca.cor)
-        r.setProperty("--primary-foreground", "#1a1206")
-      }
+      if (salvo?.ap) setAp(salvo.ap)
+      if (salvo?.etapa) setEtapa(Math.min(salvo.etapa, perguntas.etapas.length))
+      const v = lerVisual(marca?.cor ?? "#E0A33B")
+      setVisualEstado(v)
+      aplicarVisual(v)
       document.title = `${marca?.nome ?? "Claude"} · Onboarding`
-      setDados({ catalogo, perguntas, marca, ambiente })
+      setDados({ catalogo, perguntas, marca, ambiente, temas })
     })
   }, [])
 
   useEffect(() => {
-    if (dados && !pronto) localStorage.setItem(MEMORIA, JSON.stringify({ respostas, etapa: Math.min(etapa, dados.perguntas.etapas.length - 1) }))
-  }, [respostas, etapa, dados, pronto])
+    if (dados && !pronto) localStorage.setItem(MEMORIA, JSON.stringify({ respostas, ap, etapa: Math.min(etapa, dados.perguntas.etapas.length) }))
+  }, [respostas, ap, etapa, dados, pronto])
 
   // Ao trocar de etapa, volta para o topo (depois de desenhar a etapa nova).
   useEffect(() => { window.scrollTo({ top: 0 }) }, [etapa])
 
-  const nEtapas = dados ? dados.perguntas.etapas.length : 3
-  const IDX_REC = nEtapas
-  const IDX_REV = nEtapas + 1
-  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Recomendação", "Revisão"] : []
+  const nEtapas = dados ? dados.perguntas.etapas.length : 4
+  const IDX_AP = nEtapas
+  const IDX_REC = nEtapas + 1
+  const IDX_DESC = nEtapas + 2
+  const IDX_REV = nEtapas + 3
+  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Aparência", "Recomendação", "Descobrir", "Revisão"] : []
   const porId = useMemo(() => Object.fromEntries((dados?.catalogo.itens ?? []).map((i) => [i.id, i])) as Record<string, Item>, [dados])
   const avaliados = useMemo(() => (rec ? (Object.values(rec.grupos).flat() as Avaliado[]) : []), [rec])
   const totais = useMemo(
@@ -79,6 +88,7 @@ export default function App() {
   }
 
   function validar() {
+    if (etapa >= nEtapas) return true
     const novos: Record<string, string> = {}
     for (const q of dados!.perguntas.etapas[etapa].perguntas) {
       const r = respostas[q.id]
@@ -93,17 +103,31 @@ export default function App() {
     return true
   }
 
+  // Os itens de aparência entram como "essenciais" escolhidos pela pessoa, com o motivo dito.
+  function itensAparencia(): Avaliado[] {
+    const ids = [ap.tema ? "boost-temas" : null, ap.painel ? "boost-painel" : null].filter(Boolean) as string[]
+    return ids.map((id) => porId[id]).filter(Boolean).map((item) => ({ item, nota: 0, motivos: ["você escolheu na etapa Aparência"], avisos: [], instalado: false }))
+  }
+
   function irPara(i: number) {
     if (i === IDX_REC && etapa < IDX_REC) {
-      const r = recomendar(respostas, dados!.catalogo, dados!.perguntas, dados!.ambiente)
+      const r = recomendar({ ...respostas, aparencia: undefined }, dados!.catalogo, dados!.perguntas, dados!.ambiente)
+      const extras = itensAparencia()
+      r.grupos.essenciais = [...r.grupos.essenciais, ...extras]
       setRec(r)
-      setSelecao(new Set(r.selecao))
+      setSelecao(new Set([...r.selecao, ...extras.map((e) => e.item.id)]))
+      setCartas(null)
+      setEscolhas([])
+    }
+    if (i === IDX_DESC && rec && !cartas) {
+      setCartas([...rec.grupos.opcionais, ...rec.grupos.fora_orcamento].filter((a) => !selecao.has(a.item.id)))
     }
     setEtapa(i)
   }
 
   function avancar() {
-    if (etapa < IDX_REC && !validar()) return
+    if (etapa < nEtapas && !validar()) return
+    if (etapa === IDX_AP && !ap.atalhos.length) setAp({ ...ap, atalhos: sugestoesDeAtalho(respostas).slice(0, 4) })
     irPara(etapa + 1)
   }
 
@@ -116,11 +140,33 @@ export default function App() {
     })
   }
 
+  function escolher(e: Escolha) {
+    setEscolhas((l) => [...l, e])
+    if (e.quer) setSelecao((s) => new Set([...s, e.id]))
+  }
+
+  function desfazer() {
+    setEscolhas((l) => {
+      const ultima = l.at(-1)
+      if (ultima?.quer) setSelecao((s) => { const n = new Set(s); n.delete(ultima.id); return n })
+      return l.slice(0, -1)
+    })
+  }
+
   async function confirmar() {
     if (!rec || !totais) return
     setEnviando(true)
     const desligados = avaliados.filter((a) => a.desligado && selecao.has(a.item.id)).map((a) => a.item.id)
-    const corpo = { respostas, selecao: [...selecao], requisitos: totais.requisitos, desligados, totais: totais.totais, teto_tokens: rec.teto, sistema: dados!.ambiente.sistema || "win" }
+    const corpo = {
+      respostas: { ...respostas, aparencia: ap },
+      selecao: [...selecao],
+      requisitos: totais.requisitos,
+      desligados,
+      descoberta: escolhas,
+      totais: totais.totais,
+      teto_tokens: rec.teto,
+      sistema: dados!.ambiente.sistema || "win",
+    }
     try {
       const r = await fetch("confirmar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) })
       if (!r.ok) throw new Error(String(r.status))
@@ -138,21 +184,27 @@ export default function App() {
     location.reload()
   }
 
-  const categorias = [...new Set(dados.catalogo.itens.filter((i) => i.tipo !== "requisito").map((i) => i.categoria))]
-  const IconeEtapa = etapa < IDX_REC ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : etapa === IDX_REC ? Wand2 : ClipboardCheck
   const nome = typeof respostas.nome === "string" && respostas.nome ? respostas.nome : ""
   const orcamento = Number(respostas.orcamento ?? 0)
   const itensSelecionados = [...(totais?.requisitos ?? []), ...selecao].map((id) => porId[id]).filter(Boolean)
+  const categorias = [...new Set(dados.catalogo.itens.filter((i) => i.tipo !== "requisito").map((i) => i.categoria))]
+  const IconeEtapa = etapa < nEtapas ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : [Palette, Wand2, Compass, ClipboardCheck][etapa - nEtapas]
+  const SUBTITULOS: Record<number, string> = {
+    [IDX_AP]: "Escolha a cara do seu Claude: o tema do app, a tela inicial como dashboard e o visual desta tela.",
+    [IDX_REC]: "Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar, e em Detalhes para ver como é instalado.",
+    [IDX_DESC]: "Descubra o que mais combina com você: arraste para a direita o que quiser e para a esquerda o que não quiser.",
+    [IDX_REV]: "É isto que vai acontecer. Nada é instalado sem o seu OK, e senhas e chaves nunca passam pelo chat.",
+  }
 
   if (pronto) {
     return (
-      <Casca marca={dados.marca}>
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual}>
         <div className="mx-auto max-w-xl px-4 py-20 text-center space-y-5">
           <CheckCircle2 className="mx-auto size-14 text-primary" />
           <h1 className="text-3xl font-semibold">Tudo certo{nome ? `, ${nome}` : ""}!</h1>
           <p className="text-muted-foreground">Suas escolhas foram enviadas. Pode fechar esta aba e voltar para o Claude: ele vai instalar {selecao.size} itens, um por vez, e pedir o seu OK em cada passo.</p>
           <ol className="mx-auto max-w-sm space-y-2 text-left text-sm">
-            {["O Claude mostra o plano e começa pelos programas que faltam.", "Quando um item pedir login ou chave, ele explica onde clicar.", "No fim, ele escreve o seu CLAUDE.md pessoal e um resumo do que ficou pronto."].map((t, i) => (
+            {["O Claude mostra o plano e começa pelos programas que faltam.", "Quando um item pedir login ou chave, ele explica onde clicar.", "No fim, ele aplica o seu tema, abre o painel Hoje e escreve o seu CLAUDE.md."].map((t, i) => (
               <li key={i} className="flex gap-3"><span className="grid size-6 shrink-0 place-items-center rounded-full bg-primary/15 text-primary text-xs font-medium">{i + 1}</span>{t}</li>
             ))}
           </ol>
@@ -161,40 +213,41 @@ export default function App() {
     )
   }
 
+  const temResumo = etapa >= IDX_REC && rec && totais
+
   return (
-    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100}>
+    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100} visual={visual} setVisual={setVisual}>
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[220px_1fr] lg:px-8">
         <nav aria-label="Etapas" className="hidden lg:block">
           <div className="sticky top-24">
-          <ol className="space-y-1">
-            {titulos.map((t, i) => {
-              const feita = i < etapa
-              const atual = i === etapa
-              const podeIr = feita
-              return (
-                <li key={t}>
-                  <button
-                    type="button"
-                    disabled={!podeIr}
-                    onClick={() => podeIr && irPara(i)}
-                    className={cn(
-                      "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                      atual && "bg-muted font-medium",
-                      podeIr && "hover:bg-muted/60 cursor-pointer",
-                      !atual && !feita && "text-muted-foreground",
-                    )}
-                  >
-                    <span className={cn("grid size-6 shrink-0 place-items-center rounded-full border text-xs", atual && "border-primary text-primary", feita && "border-primary bg-primary text-primary-foreground")}>
-                      {feita ? <Check className="size-3.5" /> : i + 1}
-                    </span>
-                    {t}
-                  </button>
-                </li>
-              )
-            })}
-          </ol>
-          <Separator className="my-6" />
-          <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={recomecar}><RotateCcw /> Recomeçar</Button>
+            <ol className="space-y-1">
+              {titulos.map((t, i) => {
+                const feita = i < etapa
+                const atual = i === etapa
+                return (
+                  <li key={t}>
+                    <button
+                      type="button"
+                      disabled={!feita}
+                      onClick={() => feita && irPara(i)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                        atual && "bg-muted font-medium",
+                        feita && "hover:bg-muted/60 cursor-pointer",
+                        !atual && !feita && "text-muted-foreground",
+                      )}
+                    >
+                      <span className={cn("grid size-6 shrink-0 place-items-center rounded-full border text-xs", atual && "border-primary text-primary", feita && "border-primary bg-primary text-primary-foreground")}>
+                        {feita ? <Check className="size-3.5" /> : i + 1}
+                      </span>
+                      {t}
+                    </button>
+                  </li>
+                )
+              })}
+            </ol>
+            <Separator className="my-6" />
+            <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={recomecar}><RotateCcw /> Recomeçar</Button>
           </div>
         </nav>
 
@@ -204,22 +257,20 @@ export default function App() {
               <IconeEtapa className="size-7" />
             </span>
             <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Etapa {etapa + 1} de {titulos.length}</p>
-            <h1 className="text-3xl font-semibold tracking-tight">
-              {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : titulos[etapa]}
-            </h1>
-            <p className="text-muted-foreground max-w-2xl">
-              {etapa < IDX_REC && "Responda do seu jeito: dá para mudar tudo no final. As respostas ficam salvas neste navegador."}
-              {etapa === IDX_REC && "Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar, e em Detalhes para ver o que cada item faz e como é instalado."}
-              {etapa === IDX_REV && "É isto que vai acontecer. Nada é instalado sem o seu OK, e senhas e chaves nunca passam pelo chat."}
-            </p>
-            {etapa < IDX_REC && dados.perguntas.etapas[etapa].dica && (
-              <p className="text-sm text-primary/90">Por que perguntamos: {dados.perguntas.etapas[etapa].dica}</p>
-            )}
+              <p className="text-sm text-muted-foreground">Etapa {etapa + 1} de {titulos.length}</p>
+              <h1 className="text-3xl font-semibold tracking-tight">
+                {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : etapa === IDX_DESC ? "Descubra mais" : titulos[etapa]}
+              </h1>
+              <p className="text-muted-foreground max-w-2xl">
+                {etapa < nEtapas ? "Responda do seu jeito: dá para mudar tudo no final. As respostas ficam salvas neste navegador." : SUBTITULOS[etapa]}
+              </p>
+              {etapa < nEtapas && dados.perguntas.etapas[etapa].dica && (
+                <p className="text-sm text-primary">Por que perguntamos: {dados.perguntas.etapas[etapa].dica}</p>
+              )}
             </div>
           </header>
 
-          {etapa < IDX_REC && (
+          {etapa < nEtapas && (
             <div className="space-y-10 max-w-4xl">
               {dados.perguntas.etapas[etapa].perguntas.map((q) => (
                 <Pergunta key={q.id} q={q} respostas={respostas} mudar={mudar} erro={erros[q.id]} />
@@ -227,14 +278,20 @@ export default function App() {
             </div>
           )}
 
-          {etapa >= IDX_REC && rec && totais && (
+          {etapa === IDX_AP && <Aparencia temas={dados.temas} ap={ap} setAp={setAp} visual={visual} setVisual={setVisual} respostas={respostas} />}
+
+          {etapa === IDX_DESC && cartas && (
+            <Descobrir cartas={cartas} escolhas={escolhas} escolher={escolher} desfazer={desfazer} detalhes={setAberto} />
+          )}
+
+          {temResumo && etapa !== IDX_DESC && (
             <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
               <div className="min-w-0">
                 {etapa === IDX_REC ? (
                   <div className="space-y-8">
-                  <PerfilResumo respostas={respostas} perguntas={dados.perguntas} perfil={rec.perfil} />
-                  <GanhosPorCategoria itens={itensSelecionados} todasCategorias={categorias} />
-                  <Recomendacao grupos={rec.grupos} selecao={selecao} alternar={alternar} detalhes={setAberto} />
+                    <PerfilResumo respostas={respostas} perguntas={dados.perguntas} perfil={rec.perfil} />
+                    <GanhosPorCategoria itens={itensSelecionados} todasCategorias={categorias} />
+                    <Recomendacao grupos={rec.grupos} selecao={selecao} alternar={alternar} detalhes={setAberto} />
                   </div>
                 ) : (
                   <Revisao itens={itensSelecionados} />
@@ -250,7 +307,7 @@ export default function App() {
                   requisitos={totais.requisitos.map((id) => porId[id]?.nome ?? id)}
                   acao={
                     etapa === IDX_REC
-                      ? { rotulo: "Revisar", onClick: () => irPara(IDX_REV), desativado: selecao.size === 0 }
+                      ? { rotulo: "Descobrir mais", onClick: () => irPara(IDX_DESC), desativado: false }
                       : { rotulo: enviando ? "Enviando…" : "Confirmar e instalar", onClick: confirmar, desativado: enviando }
                   }
                 />
@@ -262,8 +319,8 @@ export default function App() {
           <div className="flex items-center justify-between gap-4 pb-10">
             <Button variant="outline" onClick={() => irPara(etapa - 1)} disabled={etapa === 0}><ArrowLeft /> Voltar</Button>
             {etapa < IDX_REV && (
-              <Button onClick={avancar} disabled={etapa === IDX_REC && selecao.size === 0}>
-                {etapa === IDX_REC - 1 ? "Ver minha recomendação" : etapa === IDX_REC ? "Revisar" : "Continuar"} <ArrowRight />
+              <Button onClick={avancar}>
+                {etapa === IDX_AP ? "Ver minha recomendação" : etapa === IDX_REC ? "Descobrir mais" : etapa === IDX_DESC ? "Revisar" : "Continuar"} <ArrowRight />
               </Button>
             )}
             {etapa === IDX_REV && (
@@ -286,9 +343,10 @@ export default function App() {
   )
 }
 
-function Casca({ marca, progresso, children }: { marca: Marca; progresso?: number; children: React.ReactNode }) {
+function Casca({ marca, progresso, visual, setVisual, children }: { marca: Marca; progresso?: number; visual: Visual; setVisual: (v: Visual) => void; children: React.ReactNode }) {
+  const escuro = visual.modo === "escuro"
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 lg:px-8">
           <div className="flex items-center gap-3">
@@ -298,7 +356,12 @@ function Casca({ marca, progresso, children }: { marca: Marca; progresso?: numbe
               <div className="text-xs text-muted-foreground">{marca.subtitulo}</div>
             </div>
           </div>
-          {progresso != null && <Progress value={progresso} className="h-1.5 w-40" aria-label="Progresso" />}
+          <div className="flex items-center gap-4">
+            {progresso != null && <Progress value={progresso} className="hidden h-1.5 w-40 sm:block" aria-label="Progresso" />}
+            <Button variant="ghost" size="icon" aria-label={escuro ? "Mudar para o modo claro" : "Mudar para o modo escuro"} onClick={() => setVisual({ ...visual, modo: escuro ? "claro" : "escuro" })}>
+              {escuro ? <Sun /> : <Moon />}
+            </Button>
+          </div>
         </div>
       </header>
       {children}

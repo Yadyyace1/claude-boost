@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.6.0 — 2026-11-25
+
+- **boost-temas (0.1.0, novo):** 7 temas para o app do Claude, feitos como mod (`$.theme.set`):
+  - Âmbar, Synthwave, Floresta, Oceano, Caderno, Grafite e Azul Royal, todos claro e escuro (o Synthwave só escuro);
+  - Synthwave e Oceano com cenário animado lento (SVG);
+  - todas as paletas passam no verificador de contraste do app;
+  - `/tema <nome>` troca o tema e salva a escolha; o tema e o cenário também mudam em `/config`.
+- **boost-painel (0.1.0, novo):** painel **Hoje** ao lado do chat, para a tela inicial virar um dashboard:
+  - saudação com o nome da pessoa;
+  - barras do contexto e dos limites de 5 horas e da semana;
+  - atalhos de um clique;
+  - lembretes salvos entre sessões (`/lembrete`) e dica do dia;
+  - `/painel` abre o painel.
+- **boost-onboarding (0.4.0):**
+  - **Modo claro e escuro** no assistente, com 7 cores de destaque e 4 fundos.
+  - **Etapa Aparência:** escolha do tema do Claude com miniaturas reais, do painel Hoje com prévia e atalhos sugeridos pela área, e do visual do assistente.
+  - **Etapa Descobrir:** os opcionais em cartas para deslizar, com um algoritmo que aprende com cada escolha.
+  - **Plano:** já configura o tema e o painel (`claude plugin configure --values-stdin`).
+
 ## 0.5.0 — 2026-11-25
 
 - **boost-onboarding (0.3.0):**

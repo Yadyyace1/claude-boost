@@ -1634,6 +1634,64 @@
           "texto": "Instalar o addon e o servidor seguindo github.com/ahujasid/mcp-for-blender (cerca de 36 mil estrelas, MIT). Conferir os comandos atuais no README."
         }
       ]
+    },
+    {
+      "id": "boost-temas",
+      "nome": "Temas do Claude",
+      "categoria": "Aparência",
+      "tipo": "plugin",
+      "kit": true,
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "aparencia": true,
+      "resumo": "Deixa o app do Claude com a sua cara: 7 temas (claro e escuro), dois com fundo animado. Troque quando quiser com /tema.",
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {},
+      "detectar": {
+        "plugin": "boost-temas@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-temas@claude-boost",
+          "mac": "claude plugin install boost-temas@claude-boost"
+        }
+      ]
+    },
+    {
+      "id": "boost-painel",
+      "nome": "Painel Hoje",
+      "categoria": "Aparência",
+      "tipo": "plugin",
+      "kit": true,
+      "oficial": false,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 1,
+      "aparencia": true,
+      "resumo": "Transforma a tela do Claude num dashboard: saudação, uso do limite, atalhos de um clique, lembretes e dica do dia.",
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 0,
+      "sinais": {},
+      "detectar": {
+        "plugin": "boost-painel@claude-boost"
+      },
+      "passos": [
+        {
+          "tipo": "cmd",
+          "win": "claude plugin install boost-painel@claude-boost",
+          "mac": "claude plugin install boost-painel@claude-boost"
+        }
+      ]
     }
   ]
 }

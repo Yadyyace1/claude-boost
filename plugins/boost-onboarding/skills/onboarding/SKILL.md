@@ -61,6 +61,8 @@ Siga o `plano.json` na ordem. Para cada item:
 
 Depois de instalar requisitos (Node, uv, Bun, FFmpeg), avise que talvez seja preciso **reiniciar o app do Claude ou o terminal** para o PATH novo valer.
 
+**Aparência** (`boost-temas` e `boost-painel`): o plano já traz o comando que grava as escolhas da etapa Aparência (`claude plugin configure ... --values-stdin`). Depois de instalar, peça para a pessoa rodar `/reload-plugins` ou abrir uma conversa nova: o tema e o painel Hoje aparecem no app do Claude (o terminal não desenha temas). Ensine `/tema <nome>`, `/painel` e `/lembrete <texto>`.
+
 ## Passo 5: personalizar
 
 Mostre o `claude-md-sugerido.md` e pergunte se pode acrescentar ao `~/.claude/CLAUDE.md` (sem apagar o que já existe; faça backup antes). Ajuste o texto se ela pedir.

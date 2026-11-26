@@ -47,6 +47,18 @@
       "description": "Onboarding guiado: assistente no navegador pergunta como a pessoa trabalha, recomenda conectores, plugins e instaladores (custo e peso em tokens) e o Claude instala tudo item por item.",
       "category": "productivity",
       "source": "./plugins/boost-onboarding"
+    },
+    {
+      "name": "boost-temas",
+      "description": "Temas para o app do Claude: 7 visuais (claro e escuro), dois com cenário animado. Troque com /tema.",
+      "category": "design",
+      "source": "./plugins/boost-temas"
+    },
+    {
+      "name": "boost-painel",
+      "description": "Painel Hoje ao lado do chat: saudação, uso do contexto e dos limites, atalhos de um clique, lembretes e dica do dia.",
+      "category": "productivity",
+      "source": "./plugins/boost-painel"
     }
   ]
 }
