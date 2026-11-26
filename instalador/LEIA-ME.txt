@@ -1,6 +1,6 @@
-CLAUDE BOOST - INSTALADOR
+BOOST - INSTALADOR DO CLAUDE BOOST
 
-1. Dê dois cliques em "Instalar Claude Boost.exe".
+1. Dê dois cliques em "Boost.exe" (o ícone do raio).
    O Windows pode mostrar "O Windows protegeu o computador" (o programa ainda não tem
    assinatura digital). Clique em "Mais informações" e depois em "Executar assim mesmo".
 

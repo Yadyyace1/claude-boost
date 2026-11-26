@@ -23,7 +23,7 @@ Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= toke
 
 ## Instalar sem terminal (Windows)
 
-Na pasta **Claude Boost - Instalador** (montada por `instalador/montar.ps1`), dê dois cliques em **Instalar Claude Boost.exe**. Ele:
+Na pasta **Claude Boost - Instalador** (montada por `instalador/montar.ps1`), dê dois cliques em **Boost.exe** (o ícone do raio). Ele:
 
 1. confere o Git e o Node.js e instala o que faltar;
 2. instala o Claude Code;

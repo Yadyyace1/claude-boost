@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.1 — 2026-11-26
+
+- **Instalador:** agora se chama **Boost.exe**, com ícone próprio (um raio âmbar num quadrado escuro, gerado por `instalador/gerar_icone.py`) no arquivo, na janela e no título. O `montar.ps1` tira da pasta o .exe com o nome antigo.
+- **boost-onboarding:** a pergunta "Com o que você trabalha?" aceita quantas áreas a pessoa quiser.
+
 ## 0.7.0 — 2026-11-26
 
 - **Instalador para Windows** (`instalador/`): `Instalar Claude Boost.exe`, compilado com o compilador C# que já vem no Windows (`montar.ps1` monta a pasta com o .exe e o kit). Ele:

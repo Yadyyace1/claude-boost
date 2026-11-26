@@ -1,10 +1,12 @@
-// Instalador do Claude Boost para Windows: prepara o computador, instala o Claude Code, faz o login,
+// Boost: o instalador do Claude Boost para Windows. Prepara o computador, instala o Claude Code, faz o login,
 // registra o kit desta pasta e abre o assistente no navegador, que instala o resto.
 // Compilado com o compilador C# que já vem no Windows (C# 5, .NET Framework 4.x): ver montar.ps1.
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -15,7 +17,7 @@ class Instalador : Form
         "Preparar o computador (Git e Node.js)",
         "Claude Code",
         "Entrar na sua conta do Claude",
-        "Registrar o kit Claude Boost",
+        "Registrar o kit Boost",
         "Escolher e instalar (no navegador)",
     };
 
@@ -23,7 +25,7 @@ class Instalador : Form
     readonly Label[] rotulos = new Label[NOMES.Length];
     readonly TextBox registro = new TextBox();
     readonly Button botao = new Button();
-    readonly ProgressBar barra = new ProgressBar();
+    readonly Barra barra = new Barra();
     readonly string pastaBase = AppDomain.CurrentDomain.BaseDirectory;
     readonly string pastaKit;
     readonly string binLocal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin");
@@ -43,18 +45,39 @@ class Instalador : Form
         Application.Run(new Instalador());
     }
 
+    // Tudo escuro: barra de título (Windows 10 20H1+ e 11) e barra de rolagem.
+    [DllImport("dwmapi.dll")] static extern int DwmSetWindowAttribute(IntPtr h, int atributo, ref int valor, int tamanho);
+    [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)] static extern int SetWindowTheme(IntPtr h, string app, string lista);
+
+    protected override void OnHandleCreated(EventArgs e)
+    {
+        base.OnHandleCreated(e);
+        int sim = 1;
+        try { if (DwmSetWindowAttribute(Handle, 20, ref sim, 4) != 0) DwmSetWindowAttribute(Handle, 19, ref sim, 4); } catch { }
+    }
+
+    // O ícone vai embutido no .exe (montar.ps1 passa /resource:icone.ico e icone.png).
+    static Stream Recurso(string nome)
+    {
+        return Assembly.GetExecutingAssembly().GetManifestResourceStream(nome);
+    }
+
     Instalador()
     {
         pastaKit = Path.Combine(pastaBase, "kit");
-        Text = "Claude Boost · Instalador";
+        Text = "Boost · Instalação";
+        var ico = Recurso("Boost.icone.ico");
+        if (ico != null) Icon = new Icon(ico);
         Width = 680; Height = 600;
         FormBorderStyle = FormBorderStyle.FixedSingle; MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = FUNDO; ForeColor = TEXTO;
         Font = new Font("Segoe UI", 10f);
 
-        var titulo = new Label { Text = "Claude Boost", Font = new Font("Segoe UI Semibold", 20f), ForeColor = TEXTO, AutoSize = true, Left = 28, Top = 22 };
-        var sub = new Label { Text = "Vamos deixar o seu Claude pronto. Você só confirma e entra nas suas contas.", ForeColor = SUAVE, AutoSize = true, Left = 30, Top = 64 };
+        var png = Recurso("Boost.icone.png");
+        if (png != null) Controls.Add(new PictureBox { Image = Image.FromStream(png), SizeMode = PictureBoxSizeMode.Zoom, Left = 28, Top = 22, Width = 40, Height = 40 });
+        var titulo = new Label { Text = "Boost", Font = new Font("Segoe UI Semibold", 20f), ForeColor = TEXTO, AutoSize = true, Left = 74, Top = 22 };
+        var sub = new Label { Text = "Vamos deixar o seu Claude pronto. Você só confirma e entra nas suas contas.", ForeColor = SUAVE, AutoSize = true, Left = 30, Top = 70 };
         Controls.Add(titulo); Controls.Add(sub);
 
         var painel = new Panel { Left = 28, Top = 100, Width = 608, Height = 200, BackColor = CARTAO };
@@ -66,13 +89,14 @@ class Instalador : Form
         }
         Controls.Add(painel);
 
-        barra.Left = 28; barra.Top = 312; barra.Width = 608; barra.Height = 6; barra.Style = ProgressBarStyle.Continuous; barra.Maximum = NOMES.Length;
+        barra.Left = 28; barra.Top = 312; barra.Width = 608; barra.Height = 6; barra.Maximum = NOMES.Length;
         Controls.Add(barra);
 
         registro.Left = 28; registro.Top = 330; registro.Width = 608; registro.Height = 170;
         registro.Multiline = true; registro.ReadOnly = true; registro.ScrollBars = ScrollBars.Vertical;
         registro.BackColor = CARTAO; registro.ForeColor = SUAVE; registro.BorderStyle = BorderStyle.None;
         registro.Font = new Font("Consolas", 9f);
+        registro.HandleCreated += delegate { SetWindowTheme(registro.Handle, "DarkMode_Explorer", null); };
         Controls.Add(registro);
 
         botao.Text = "Começar"; botao.Left = 496; botao.Top = 512; botao.Width = 140; botao.Height = 36;
@@ -105,13 +129,13 @@ class Instalador : Form
     bool Confirmar(string mensagem)
     {
         var r = DialogResult.No;
-        NaJanela(delegate { r = MessageBox.Show(this, mensagem, "Claude Boost", MessageBoxButtons.YesNo, MessageBoxIcon.Question); });
+        NaJanela(delegate { r = MessageBox.Show(this, mensagem, "Boost", MessageBoxButtons.YesNo, MessageBoxIcon.Question); });
         return r == DialogResult.Yes;
     }
 
     void Avisar(string mensagem)
     {
-        NaJanela(delegate { MessageBox.Show(this, mensagem, "Claude Boost", MessageBoxButtons.OK, MessageBoxIcon.Information); });
+        NaJanela(delegate { MessageBox.Show(this, mensagem, "Boost", MessageBoxButtons.OK, MessageBoxIcon.Information); });
     }
 
     // ---------- processos ----------
@@ -296,5 +320,20 @@ class Instalador : Form
         int codigo = Rodar("node", "\"" + script + "\"" + extra);
         if (codigo == 2) throw new Exception("O assistente ficou aberto tempo demais sem terminar.");
         if (codigo != 0) throw new Exception("O assistente fechou com erro (código " + codigo + ").");
+    }
+}
+
+// Barra de progresso fina, desenhada à mão (a do Windows fica branca no tema escuro).
+class Barra : Control
+{
+    int valor, maximo = 1;
+    public int Value { get { return valor; } set { valor = value; Invalidate(); } }
+    public int Maximum { get { return maximo; } set { maximo = Math.Max(1, value); Invalidate(); } }
+    public Barra() { DoubleBuffered = true; }
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        e.Graphics.Clear(Color.FromArgb(31, 29, 26));
+        int w = (int)((long)Width * Math.Min(valor, maximo) / maximo);
+        using (var b = new SolidBrush(Color.FromArgb(224, 163, 59))) e.Graphics.FillRectangle(b, 0, 0, w, Height);
     }
 }
