@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.1 — 2026-11-27
+
+- **Erros da instalação corrigidos:**
+  - "o termo 'claude' não é reconhecido": o servidor do assistente montava o PATH só pelo registro, e o Claude Code fica em `~\.local\bin`. Agora entram também o `~\.local\bin`, o npm global, o bun e o cargo; e o `Spark.exe` põe o `~\.local\bin` no PATH do usuário se faltar;
+  - o núcleo falhava ao registrar o kit pelo GitHub quando o `settings.json` já tem o `claude-boost` em `extraKnownMarketplaces` (o plano pula esse passo com o kit já registrado);
+  - num Claude novo, o plano registra antes o catálogo oficial de plugins da Anthropic;
+  - o Claude Code tenta instalar de novo se a primeira tentativa falhar.
+- **Registro das execuções:** cada comando vai para `execucao.log` na pasta da sessão (`~/.claude/boost-onboarding/<data>`), para diagnosticar sem print.
+- **Instaladores no pacote:** `instalador/baixar-pacotes.ps1` baixa o Git, o Node.js LTS e o uv das fontes oficiais (confere o SHA-256) para `pacotes\`; o `Spark.exe` usa esses antes do winget. O uv passou a ser instalado junto com o Git e o Node.
+- **Personalização em carrossel:** três cartões, o do meio em destaque e os dos lados menores, com blur e luz baixa; gira pelas setas, pelo teclado, arrastando ou clicando no cartão do lado, e avança sozinho depois de um Spark.
+
 ## 0.8.0 — 2026-11-26
 
 - **Nova marca: Spark.** O kit passa a se chamar Spark, com ícone novo (uma faísca âmbar). Os nomes técnicos (`boost-*`, `claude-boost`) continuam iguais, para não quebrar o que já está instalado. As pastas viram `~/Spark/Backups` e `~/Spark/Caixa de entrada`.

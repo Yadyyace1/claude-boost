@@ -80,13 +80,22 @@ function segredoSalvo(nome) {
   } catch { return false; }
 }
 
+// Pastas onde os programas do plano se instalam e que nem sempre estão no PATH do registro:
+// o Claude Code (~\.local\bin), o npm global, o uv/uvx e o bun. Sem elas, o PowerShell responde
+// "o termo 'claude' não é reconhecido" logo depois de uma instalação nova.
+const EXTRAS_PATH = win
+  ? [join(homedir(), ".local", "bin"), join(process.env.APPDATA ?? "", "npm"), join(homedir(), ".bun", "bin"), join(homedir(), ".cargo", "bin")]
+  : [join(homedir(), ".local", "bin"), join(homedir(), ".bun", "bin")];
+const extrasPs = EXTRAS_PATH.map((p) => `'${p.replace(/'/g, "''")}'`).join(", ");
+
 // Roda um comando do plano no PowerShell (Windows) ou no shell (mac/linux), com o PATH recarregado
 // (programas que acabaram de ser instalados já aparecem). Devolve a saída e o código.
 function rodar(comando) {
   return new Promise((ok) => {
+    const prefixo = `$env:Path = (@([Environment]::GetEnvironmentVariable('Path','Machine'), [Environment]::GetEnvironmentVariable('Path','User'), $env:Path) + @(${extrasPs})) -join ';'; [Console]::OutputEncoding = [Text.Encoding]::UTF8; `;
     const [exe, a] = win
-      ? ["powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", `$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User'); ${comando}`]]
-      : ["/bin/sh", ["-lc", comando]];
+      ? ["powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", prefixo + comando]]
+      : ["/bin/sh", ["-lc", `export PATH="$PATH:${EXTRAS_PATH.join(":")}"; ${comando}`]];
     const p = spawn(exe, a, { env: process.env, windowsHide: true });
     let texto = "";
     const juntar = (d) => { texto = (texto + d.toString()).slice(-6000); };
@@ -107,6 +116,7 @@ async function executarItem(id) {
     if (p.tipo !== "cmd" || !p.comando) continue;
     const r = await rodar(p.comando);
     resultados.push({ comando: p.comando, ...r });
+    try { appendFileSync(join(saida, "execucao.log"), `[${new Date().toISOString()}] ${id} · código ${r.codigo}\n$ ${p.comando}\n${r.saida}\n\n`); } catch { /* log é só ajuda */ }
     // "já instalado / já existe" não é erro para a pessoa
     if (r.codigo !== 0 && !/already|exists|já (está|existe)|já instalad|pacote existente|nenhuma atualiza|no (available|applicable) upgrade/i.test(r.saida)) return { ok: false, resultados };
   }

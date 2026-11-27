@@ -13,3 +13,6 @@ fichas/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Instaladores baixados (vão no pacote, não no git)
+instalador/pacotes/

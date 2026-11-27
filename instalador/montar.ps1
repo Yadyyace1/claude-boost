@@ -24,6 +24,9 @@ $kit = Join-Path $Saida "kit"
 robocopy $repo $kit /MIR /XD .git node_modules instalador /XF *.log /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "A cópia do kit falhou (robocopy $LASTEXITCODE)." }
 Copy-Item (Join-Path $PSScriptRoot "LEIA-ME.txt") $Saida -Force
+# Instaladores do Git, Node.js e uv (baixar-pacotes.ps1), se existirem: o Spark.exe usa estes antes do winget.
+$pacotes = Join-Path $PSScriptRoot "pacotes"
+if (Test-Path $pacotes) { robocopy $pacotes (Join-Path $Saida "pacotes") /MIR /NFL /NDL /NJH /NJS /NP | Out-Null }
 
 Write-Host "Pronto: $Saida"
 Get-ChildItem $Saida | Select-Object Name, Length

@@ -33,6 +33,11 @@ const pularPasso = (cmd) => {
   return jaRegistrados.has(nome);
 };
 
+const OFICIAL = "claude plugin marketplace add anthropics/claude-plugins-official";
+const usaOficial = (it) => (it.passos || []).some((p) => (p[so] || p.win || "").includes("@claude-plugins-official"));
+const precisaOficial = !jaRegistrados.has("claude-plugins-official");
+let oficialGarantido = false;
+
 const plano = itens.map((it, n) => ({
   ordem: n + 1, id: it.id, nome: it.nome, tipo: it.tipo, resumo: it.resumo,
   desligar_depois: desligados.has(it.id) && it.tipo === "plugin" ? `claude plugin disable ${it.detectar?.plugin || it.id}` : null,
@@ -41,6 +46,11 @@ const plano = itens.map((it, n) => ({
     .map((p) => ({ tipo: p.tipo, comando: p[so] || p.win || null, texto: p.texto || null, variavel: p.var || null, nota: p.nota || null }))
     .filter((p) => !(p.tipo === "cmd" && pularPasso(p.comando))),
 }));
+for (const p of plano) {
+  if (!precisaOficial || oficialGarantido || !usaOficial(itens.find((i) => i.id === p.id))) continue;
+  p.passos.unshift({ tipo: "cmd", comando: OFICIAL, texto: null, variavel: null, nota: "o catálogo oficial de plugins da Anthropic" });
+  oficialGarantido = true;
+}
 
 // Aparência escolhida no assistente: configura o tema e o painel logo depois de instalar.
 const r = sel.respostas || {};

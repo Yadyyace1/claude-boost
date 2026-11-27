@@ -211,6 +211,15 @@ class Instalador : Form
         return File.Exists(local) ? local : "claude";
     }
 
+    // Acrescenta uma pasta ao PATH do usuário, se faltar (sem mexer no resto).
+    void GarantirNoPath(string pasta)
+    {
+        string atual = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User) ?? "";
+        foreach (var p in atual.Split(';')) if (string.Equals(p.Trim().TrimEnd('\\'), pasta.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase)) return;
+        Environment.SetEnvironmentVariable("Path", atual.TrimEnd(';') + ";" + pasta, EnvironmentVariableTarget.User);
+        Escrever("Pasta do Claude Code acrescentada ao PATH: " + pasta);
+    }
+
     // ---------- etapas ----------
     void Comecar()
     {
@@ -255,22 +264,49 @@ class Instalador : Form
         }
     }
 
+    // Instaladores que vêm dentro do pacote (pasta "pacotes" ao lado do .exe, montada por baixar-pacotes.ps1).
+    // Sem eles, usa o winget. Assim a instalação não depende do winget nem de baixar tudo na hora.
+    string Pacote(string padrao)
+    {
+        string pasta = Path.Combine(pastaBase, "pacotes");
+        if (!Directory.Exists(pasta)) return null;
+        var achados = Directory.GetFiles(pasta, padrao);
+        Array.Sort(achados);
+        return achados.Length > 0 ? achados[achados.Length - 1] : null;
+    }
+
     void PrepararBase()
     {
-        if (!Tem("winget"))
-        {
-            Process.Start("ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1");
-            throw new Exception("Falta o 'Instalador de Aplicativo' do Windows (winget). Abri a página dele na Microsoft Store: instale e rode o instalador de novo.");
-        }
-        string[,] programas = { { "git", "Git.Git", "Git", "o Claude Code usa no Windows" }, { "node", "OpenJS.NodeJS.LTS", "Node.js", "roda o assistente e vários conectores" } };
+        // cmd, id no winget, nome, motivo, arquivo no pacote
+        string[,] programas = {
+            { "git", "Git.Git", "Git", "o Claude Code usa no Windows", "Git-*-64-bit.exe" },
+            { "node", "OpenJS.NodeJS.LTS", "Node.js", "roda o assistente e vários conectores", "node-*-x64.msi" },
+            { "uv", "astral-sh.uv", "uv", "roda os conectores feitos em Python (uvx)", "uv-x86_64-pc-windows-msvc.zip" },
+        };
         for (int i = 0; i < programas.GetLength(0); i++)
         {
             string cmd = programas[i, 0], id = programas[i, 1], nome = programas[i, 2], motivo = programas[i, 3];
             if (Tem(cmd)) { Escrever(nome + ": já instalado."); continue; }
-            if (!Confirmar("Falta o " + nome + " (" + motivo + ").\n\nInstalar agora pelo winget? O Windows pode pedir permissão."))
+            string local = Pacote(programas[i, 4]);
+            if (local == null && !Tem("winget"))
+            {
+                Process.Start("ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1");
+                throw new Exception("Falta o " + nome + " e o 'Instalador de Aplicativo' do Windows (winget). Abri a página dele na Microsoft Store: instale e rode o instalador de novo.");
+            }
+            string origem = local != null ? "pelo instalador que veio no pacote" : "pelo winget";
+            if (!Confirmar("Falta o " + nome + " (" + motivo + ").\n\nInstalar agora " + origem + "? O Windows pode pedir permissão."))
                 throw new Exception("Sem o " + nome + " não dá para continuar.");
-            Escrever("Instalando " + nome + "…");
-            Rodar("winget", "install --id " + id + " -e --silent --accept-package-agreements --accept-source-agreements --disable-interactivity");
+            Escrever("Instalando " + nome + " " + origem + "…");
+            if (local == null) Rodar("winget", "install --id " + id + " -e --silent --accept-package-agreements --accept-source-agreements --disable-interactivity");
+            else if (local.EndsWith(".msi")) Rodar("msiexec.exe", "/i \"" + local + "\" /passive /norestart");
+            else if (local.EndsWith(".zip"))
+            {
+                // uv: só copia uv.exe e uvx.exe para ~\.local\bin
+                Directory.CreateDirectory(binLocal);
+                PowerShell("Expand-Archive -LiteralPath '" + local.Replace("'", "''") + "' -DestinationPath '" + binLocal.Replace("'", "''") + "' -Force");
+                GarantirNoPath(binLocal);
+            }
+            else Rodar(local, "/VERYSILENT /NORESTART /NOCANCEL /SP- /SUPPRESSMSGBOXES");
             RecarregarPath();
             if (!Tem(cmd)) throw new Exception(nome + " não apareceu depois da instalação. Reinicie o computador e rode o instalador de novo.");
         }
@@ -281,7 +317,13 @@ class Instalador : Form
         if (Tem("claude") || File.Exists(Path.Combine(binLocal, "claude.exe"))) { Escrever("Claude Code: já instalado."); return; }
         if (!Confirmar("Instalar o Claude Code pelo instalador oficial da Anthropic (claude.ai/install.ps1)?"))
             throw new Exception("Sem o Claude Code não dá para continuar.");
-        PowerShell("irm https://claude.ai/install.ps1 | iex");
+        for (int tentativa = 1; tentativa <= 2; tentativa++)
+        {
+            PowerShell("irm https://claude.ai/install.ps1 | iex");
+            if (File.Exists(Path.Combine(binLocal, "claude.exe"))) break;
+            if (tentativa == 1) { Escrever("A instalação do Claude Code não terminou; tentando de novo em 5 segundos…"); Thread.Sleep(5000); }
+        }
+        GarantirNoPath(binLocal);
         RecarregarPath();
         if (!Tem("claude") && !File.Exists(Path.Combine(binLocal, "claude.exe")))
             throw new Exception("O Claude Code não apareceu depois da instalação.");
