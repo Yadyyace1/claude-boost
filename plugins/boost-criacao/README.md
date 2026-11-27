@@ -3,7 +3,7 @@
 29 skills em português para criar mais, atender melhor e aprender a usar o Claude. Instale o plugin inteiro:
 
 ```
-/plugin install boost-criacao --marketplace Yadyyace1/claude-boost
+/plugin install boost-criacao --marketplace Yadyyace1/spark
 ```
 
 ou escolha só as que quiser na etapa **Skills** do assistente do Spark (elas vão para `~/.claude/skills`).

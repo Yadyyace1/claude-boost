@@ -158,8 +158,8 @@
       "passos": [
         {
           "tipo": "cmd",
-          "win": "claude plugin marketplace add Yadyyace1/claude-boost",
-          "mac": "claude plugin marketplace add Yadyyace1/claude-boost",
+          "win": "claude plugin marketplace add Yadyyace1/spark",
+          "mac": "claude plugin marketplace add Yadyyace1/spark",
           "nota": "repositório privado: o cliente precisa de acesso no GitHub (convite) antes"
         },
         {

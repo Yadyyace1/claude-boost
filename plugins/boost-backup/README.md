@@ -1,7 +1,7 @@
 # boost-backup
 
 ```
-/plugin install boost-backup --marketplace Yadyyace1/claude-boost
+/plugin install boost-backup --marketplace Yadyyace1/spark
 ```
 
 Backup e restauração das configurações do Claude Code num arquivo só. Serve para quando você troca de plano, de conta ou de computador, ou perde o acesso: depois de entrar na conta nova, é só restaurar.

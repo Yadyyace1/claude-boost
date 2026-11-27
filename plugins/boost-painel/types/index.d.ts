@@ -5,6 +5,7 @@ export type Arquivo = { nome: string; tamanho: number; quando: number }
 export type Caixa = { pasta: string; arquivos: Arquivo[] }
 export type Contagem = { dia: string; conversas: number }
 export type Inicio = { mensagens: number; oculto: boolean }
+export type Aba = 'hoje' | 'comandos' | 'arquivos' | 'visual'
 
 declare module 'claude-code' {
   interface PluginState {
@@ -15,6 +16,7 @@ declare module 'claude-code' {
       caixa: Shaped<Caixa>
       contagem: Shaped<Contagem>
       inicio: Shaped<Inicio>
+      aba: Shaped<Aba>
     }
   }
 }

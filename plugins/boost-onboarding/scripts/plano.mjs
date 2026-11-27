@@ -30,7 +30,8 @@ const pularPasso = (cmd) => {
   const m = cmd && cmd.match(/plugin marketplace add (\S+)/);
   if (!m) return false;
   const nome = m[1].split("/").pop().replace(/\.git$/, "");
-  return jaRegistrados.has(nome);
+  // O repositório se chama "spark" desde 2026-11-27, mas o kit (o marketplace) continua "claude-boost".
+  return jaRegistrados.has(nome === "spark" ? "claude-boost" : nome);
 };
 
 const OFICIAL = "claude plugin marketplace add anthropics/claude-plugins-official";

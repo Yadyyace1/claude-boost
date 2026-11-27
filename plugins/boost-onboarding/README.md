@@ -1,7 +1,7 @@
 # boost-onboarding
 
 ```
-/plugin install boost-onboarding --marketplace Yadyyace1/claude-boost
+/plugin install boost-onboarding --marketplace Yadyyace1/spark
 ```
 
 Onboarding guiado do Claude, para vender como serviço: o cliente responde a um assistente no navegador, recebe uma recomendação personalizada de conectores, plugins e instaladores, e o Claude instala tudo junto com ele.
@@ -79,4 +79,4 @@ Componentes: `src/components/Pergunta.tsx` (cartões, chips, faixa), `Recomendac
 
 - Revisar preços e comandos a cada mês: serviços mudam de plano e de URL.
 - Plugins oficiais: `claude plugin details <plugin>@claude-plugins-official` dá o peso real em tokens.
-- Repositório privado: o cliente precisa de convite no GitHub para `claude plugin marketplace add Yadyyace1/claude-boost`.
+- Repositório privado: o cliente precisa de convite no GitHub para `claude plugin marketplace add Yadyyace1/spark`.

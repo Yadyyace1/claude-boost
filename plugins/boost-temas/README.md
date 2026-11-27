@@ -1,7 +1,7 @@
 # boost-temas
 
 ```
-/plugin install boost-temas --marketplace Yadyyace1/claude-boost
+/plugin install boost-temas --marketplace Yadyyace1/spark
 ```
 
 Temas do Spark para o app do Claude (desktop e celular): sete visuais completos, cada um com modo claro e escuro, menos o Synthwave, que é só escuro.

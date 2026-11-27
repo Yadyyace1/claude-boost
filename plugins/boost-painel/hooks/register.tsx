@@ -1,7 +1,7 @@
 import { atom, read, update } from 'claude-code'
-import type { EngineInterface, Register, SessionContextUsage, SessionRateLimit } from 'claude-code'
+import type { EngineInterface, Register, RenderChildren, SessionContextUsage, SessionRateLimit } from 'claude-code'
 
-import type { Arquivo, Caixa, Contagem, Inicio, Lembrete, Projeto, Uso } from '../types'
+import type { Aba, Arquivo, Caixa, Contagem, Inicio, Lembrete, Projeto, Uso } from '../types'
 
 // O painel "Hoje" do Spark: na página de criar (a faixa acima da caixa de mensagem, enquanto a conversa
 // está vazia) e, completo, ao lado do chat (/painel).
@@ -12,6 +12,8 @@ const projetos = atom({ plugin: 'boost-painel', key: 'projetos' } as const, [] a
 const caixa = atom({ plugin: 'boost-painel', key: 'caixa' } as const, { pasta: '', arquivos: [] } as Caixa, { shape: 'caixa-1' })
 const contagem = atom({ plugin: 'boost-painel', key: 'contagem' } as const, { dia: '', conversas: 0 } as Contagem, { shape: 'contagem-1' })
 const inicio = atom({ plugin: 'boost-painel', key: 'inicio' } as const, { mensagens: 0, oculto: false } as Inicio, { shape: 'inicio-1' })
+const aba = atom({ plugin: 'boost-painel', key: 'aba' } as const, 'hoje' as Aba, { shape: 'aba-1' })
+const ABAS: [Aba, string][] = [['hoje', 'Hoje'], ['comandos', 'Comandos'], ['arquivos', 'Arquivos'], ['visual', 'Visual']]
 
 const TEMAS: [string, string][] = [['ambar', 'Âmbar'], ['synthwave', 'Synthwave'], ['floresta', 'Floresta'], ['oceano', 'Oceano'], ['caderno', 'Caderno'], ['grafite', 'Grafite'], ['royal', 'Royal']]
 
@@ -181,7 +183,7 @@ export const register: Register = (on, options) => {
         )}
         <Box flexDirection="row" gap={1} flexWrap="wrap">
           <Button key="ini-painel" label="Painel completo" onPress={() => void abrir($)} />
-          <Button key="ini-guia" label="Guia de comandos" onPress={() => void abrir($)} />
+          <Button key="ini-guia" label="Guia de comandos" onPress={() => void update($, aba, () => 'comandos' as Aba).then(() => abrir($))} />
           <Button key="ini-esconder" label="Esconder" onPress={() => void update($, inicio, i => ({ ...i, oculto: true }))} />
         </Box>
       </Box>
@@ -199,6 +201,7 @@ export const register: Register = (on, options) => {
   })
 
   on('command.run', { command: 'guia' }, async $ => {
+    await update($, aba, () => 'comandos' as Aba)
     await abrir($)
     return { text: 'O guia de comandos está no painel Hoje, ao lado. Um clique num comando escreve ele na caixa de mensagem.' }
   })
@@ -227,116 +230,144 @@ export const register: Register = (on, options) => {
     const projs = await read($, projetos)
     const cx = await read($, caixa)
     const cont = await read($, contagem)
+    const atual = await read($, aba)
     const pendentes = lista.filter(l => !l.feito)
     const dica = DICAS[Math.floor(agoraMs / 86_400_000) % DICAS.length]
     const data = agora.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })
     const reset = u.reset5h ? new Date(u.reset5h).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : null
     const urlPasta = cx.pasta ? `file:///${cx.pasta.replace(/\\/g, '/').replace(/^\/+/, '')}` : ''
 
-    return (
+    // Um cartão: borda arredondada, título e o conteúdo.
+    const cartao = (chave: string, titulo: string, filhos: RenderChildren) => (
+      <Box key={chave} flexDirection="column" gap={1} borderStyle="round" borderColor="subtle" paddingX={1} paddingY={1}>
+        <Text weight="semibold">{titulo}</Text>
+        {filhos}
+      </Box>
+    )
+    // Um número grande com a legenda embaixo.
+    const numero = (chave: string, valor: number, legenda: string) => (
+      <Box key={chave} flexDirection="column" alignItems="center" flexGrow={1} borderStyle="round" borderColor="subtle" paddingY={1}>
+        <Text size="title" weight="bold" color="claude">{String(valor)}</Text>
+        <Text size="caption" dimColor>{legenda}</Text>
+      </Box>
+    )
+
+    const hoje = (
       <Box flexDirection="column" gap={1}>
-        <Box flexDirection="column">
-          <Text size="heading" weight="semibold">{saudacao(agora.getHours())}{nome ? `, ${nome}` : ''}!</Text>
-          <Text dimColor>{data}</Text>
-        </Box>
-
-        <Box flexDirection="column" gap={1}>
-          <Text weight="semibold">Guia de comandos</Text>
-          <Text dimColor>Digite / na caixa de mensagem, ou clique aqui:</Text>
-          {GUIA.map(([grupo, cmds]) => (
-            <Box key={`guia-${grupo}`} flexDirection="column">
-              <Text dimColor>{grupo}</Text>
-              <Box flexDirection="row" gap={1} flexWrap="wrap">
-                {cmds.map(([c, o]) => <Button key={`guia-${c}`} label={`${c} · ${o}`} onPress={() => void preencher($, `${c} `)} />)}
-              </Box>
-            </Box>
-          ))}
-          <Text dimColor>Skills: digite / e o nome (ex.: /roteiro-video). Arquivos: @ e o caminho. Parar uma resposta: Esc.</Text>
-        </Box>
-
-        <Input key="pedido" label="Pedir algo" placeholder="Escreva e aperte Enter" submitLabel="enviar" onSubmit={(v: string) => void enviar($, v)} />
-
-        {skills.length > 0 && (
+        {cartao('c-pedir', 'O que vamos criar?', <Input key="pedido" label="Pedido" placeholder="Escreva e aperte Enter" submitLabel="enviar" onSubmit={(v: string) => void enviar($, v)} />)}
+        {cartao('c-uso', 'Seu limite', (
           <Box flexDirection="column" gap={1}>
-            <Text weight="semibold">Suas skills</Text>
-            <Box flexDirection="row" gap={1} flexWrap="wrap">
-              {skills.map(s => <Button key={`skill-${s}`} label={`/${s}`} onPress={() => void preencher($, `/${s} `)} />)}
-            </Box>
+            {u.contexto !== null && <Progress label="Esta conversa" value={u.contexto / 100} valueText={`${Math.round(u.contexto)}%`} />}
+            {u.cincoHoras !== null && <Progress label="5 horas" value={u.cincoHoras / 100} valueText={`${Math.round(u.cincoHoras)}%${reset ? ` · zera ${reset}` : ''}`} />}
+            {u.semana !== null && <Progress label="Semana" value={u.semana / 100} valueText={`${Math.round(u.semana)}%`} />}
+            {u.contexto === null && u.cincoHoras === null && <Text dimColor>Aparece depois da primeira resposta.</Text>}
+            {(u.contexto ?? 0) >= 70 && <Text size="caption" color="warning">Conversa pesada: um /compact agora economiza.</Text>}
           </Box>
-        )}
-
-        <Box flexDirection="column" gap={1}>
-          <Text weight="semibold">Métricas</Text>
-          <Text dimColor>{cont.conversas} {cont.conversas === 1 ? 'conversa' : 'conversas'} hoje · {projs.length} {projs.length === 1 ? 'projeto' : 'projetos'} · {pendentes.length} {pendentes.length === 1 ? 'lembrete' : 'lembretes'}</Text>
-          {u.contexto !== null && <Progress label="Contexto da conversa" value={u.contexto / 100} valueText={`${Math.round(u.contexto)}%`} />}
-          {u.cincoHoras !== null && <Progress label="Limite de 5 horas" value={u.cincoHoras / 100} valueText={`${Math.round(u.cincoHoras)}%${reset ? ` · zera às ${reset}` : ''}`} />}
-          {u.semana !== null && <Progress label="Limite da semana" value={u.semana / 100} valueText={`${Math.round(u.semana)}%`} />}
-          {u.contexto === null && u.cincoHoras === null && <Text dimColor>O uso aparece depois da primeira resposta.</Text>}
-          {(u.contexto ?? 0) >= 70 && <Text dimColor>Conversa pesada: um /compact agora economiza.</Text>}
-        </Box>
-
-        {projs.length > 0 && (
-          <Box flexDirection="column" gap={1}>
-            <Text weight="semibold">Projetos recentes</Text>
-            {projs.slice(0, 5).map(p => (
+        ))}
+        {projs.length > 0 && cartao('c-proj', 'Projetos recentes', (
+          <Box flexDirection="column">
+            {projs.slice(0, 4).map(p => (
               <Link key={`proj-${p.caminho}`} href={`file:///${p.caminho.replace(/\\/g, '/').replace(/^\/+/, '')}`}>
-                {p.nome} <Text dimColor>· {haQuanto(p.ultimo, agoraMs)} · {p.vezes}×</Text>
+                {p.nome} <Text size="caption" dimColor>· {haQuanto(p.ultimo, agoraMs)}</Text>
               </Link>
             ))}
           </Box>
-        )}
+        ))}
+        {cartao('c-lemb', `Lembretes${pendentes.length ? ` (${pendentes.length})` : ''}`, (
+          <Box flexDirection="column">
+            {lista.length === 0 && <Text dimColor>Anote com /lembrete seu texto.</Text>}
+            {lista.map(l => (
+              <Button key={`lembrete-${l.id}`} plain
+                onPress={() => void salvarLembretes($, all => (l.feito ? all.filter(x => x.id !== l.id) : all.map(x => (x.id === l.id ? { ...x, feito: true } : x))))}>
+                {l.feito ? '✓ ' : '○ '}{l.texto} <Text dimColor>{l.feito ? '(apagar)' : ''}</Text>
+              </Button>
+            ))}
+          </Box>
+        ))}
+        {cartao('c-dica', '✦ Dica do dia', <Text dimColor>{dica}</Text>)}
+      </Box>
+    )
 
-        <Box flexDirection="column" gap={1}>
-          <Text weight="semibold">Caixa de arquivos {cx.arquivos.length ? `(${cx.arquivos.length})` : ''}</Text>
-          {cx.arquivos.length === 0 && <Text dimColor>Jogue arquivos na pasta e o Claude analisa para você.</Text>}
-          {cx.arquivos.slice(0, 6).map(a => (
-            <Text key={`arq-${a.nome}`}>{a.nome} <Text dimColor>· {tamanho(a.tamanho)} · {haQuanto(a.quando, agoraMs)}</Text></Text>
-          ))}
-          {urlPasta && <Link href={urlPasta}>Abrir a pasta</Link>}
+    const comandos = (
+      <Box flexDirection="column" gap={1}>
+        {GUIA.map(([grupo, cmds]) => cartao(`g-${grupo}`, grupo, (
+          <Box flexDirection="column">
+            {cmds.map(([c, o]) => (
+              <Box key={`guia-${c}`} flexDirection="row" gap={1} alignItems="center">
+                <Button key={`b-${c}`} label={c} variant="secondary" onPress={() => void preencher($, `${c} `)} />
+                <Text size="caption" dimColor>{o}</Text>
+              </Box>
+            ))}
+          </Box>
+        )))}
+        {cartao('g-skills', 'Suas skills', (
+          <Box flexDirection="column" gap={1}>
+            {skills.length > 0
+              ? <Box flexDirection="row" gap={1} flexWrap="wrap">{skills.map(sk => <Button key={`skill-${sk}`} label={`/${sk}`} variant="secondary" onPress={() => void preencher($, `/${sk} `)} />)}</Box>
+              : <Text dimColor>Digite / e o nome da skill, ex.: /roteiro-video.</Text>}
+          </Box>
+        ))}
+        <Text size="caption" dimColor>Arquivos: @ e o caminho · parar uma resposta: Esc · um clique escreve o comando na caixa de mensagem.</Text>
+      </Box>
+    )
+
+    const arquivos = cartao('c-caixa', `Caixa de entrada${cx.arquivos.length ? ` (${cx.arquivos.length})` : ''}`, (
+      <Box flexDirection="column" gap={1}>
+        {cx.arquivos.length === 0 && <Text dimColor>Jogue arquivos na pasta e o Claude analisa para você.</Text>}
+        {cx.arquivos.slice(0, 8).map(a => (
+          <Text key={`arq-${a.nome}`}>{a.nome} <Text size="caption" dimColor>· {tamanho(a.tamanho)} · {haQuanto(a.quando, agoraMs)}</Text></Text>
+        ))}
+        <Box flexDirection="row" gap={1} flexWrap="wrap">
           {cx.arquivos.length > 0 && (
-            <Button key="analisar" label="Analisar os arquivos" onPress={() => void enviar($, `Leia os arquivos da minha caixa de entrada (${cx.pasta}) e me diga, para cada um, o que ele é e o que dá para fazer com ele. Depois pergunte o que eu quero fazer.`)} />
+            <Button key="analisar" label="Analisar os arquivos" variant="primary" onPress={() => void enviar($, `Leia os arquivos da minha caixa de entrada (${cx.pasta}) e me diga, para cada um, o que ele é e o que dá para fazer com ele. Depois pergunte o que eu quero fazer.`)} />
           )}
-          <Button key="atualizar-caixa" label="Atualizar" onPress={() => void lerCaixa($)} />
+          <Button key="atualizar-caixa" label="Atualizar" variant="secondary" onPress={() => void lerCaixa($)} />
         </Box>
+        {urlPasta && <Link href={urlPasta}>Abrir a pasta</Link>}
+      </Box>
+    ))
 
-        <Box flexDirection="column" gap={1}>
-          <Text weight="semibold">Personalizar o Claude</Text>
-          <Text dimColor>Tema</Text>
+    const visual = (
+      <Box flexDirection="column" gap={1}>
+        {cartao('v-tema', 'Tema', <Box flexDirection="row" gap={1} flexWrap="wrap">{TEMAS.map(([id, rotulo]) => <Button key={`tema-${id}`} label={rotulo} variant="secondary" onPress={() => void trocarTema($, id)} />)}</Box>)}
+        {cartao('v-modelo', 'Modelo e conversa', (
           <Box flexDirection="row" gap={1} flexWrap="wrap">
-            {TEMAS.map(([id, rotulo]) => <Button key={`tema-${id}`} label={rotulo} onPress={() => void trocarTema($, id)} />)}
+            <Button key="modelo" label="Trocar o modelo" variant="secondary" onPress={() => void preencher($, '/model ')} />
+            <Button key="compactar" label="Compactar" variant="secondary" onPress={() => void preencher($, '/compact')} />
+            <Button key="nova" label="Nova conversa" variant="secondary" onPress={() => void preencher($, '/clear')} />
+            <Button key="config" label="Configurações" variant="secondary" onPress={() => void preencher($, '/config')} />
+            <Button key="conectores" label="Conectores" variant="secondary" onPress={() => void preencher($, '/mcp')} />
           </Box>
-          <Text dimColor>Modelo e conversa</Text>
+        ))}
+        {cartao('v-seguranca', 'Segurança', (
           <Box flexDirection="row" gap={1} flexWrap="wrap">
-            <Button key="modelo" label="Trocar o modelo" onPress={() => void preencher($, '/model ')} />
-            <Button key="compactar" label="Compactar a conversa" onPress={() => void preencher($, '/compact')} />
-            <Button key="nova" label="Nova conversa" onPress={() => void preencher($, '/clear')} />
-            <Button key="config" label="Configurações" onPress={() => void preencher($, '/config')} />
-            <Button key="conectores" label="Conectores (MCP)" onPress={() => void preencher($, '/mcp')} />
+            <Button key="backup" label="Fazer backup" variant="secondary" onPress={() => void preencher($, '/backup')} />
+            <Button key="restaurar" label="Restaurar" variant="secondary" onPress={() => void preencher($, '/restaurar')} />
           </Box>
-          <Text dimColor>Segurança</Text>
-          <Box flexDirection="row" gap={1} flexWrap="wrap">
-            <Button key="backup" label="Fazer backup agora" onPress={() => void preencher($, '/backup')} />
-            <Button key="restaurar" label="Restaurar um backup" onPress={() => void preencher($, '/restaurar')} />
-          </Box>
+        ))}
+      </Box>
+    )
+
+    return (
+      <Box flexDirection="column" gap={1}>
+        <Box flexDirection="column">
+          <Text size="title" weight="bold">{saudacao(agora.getHours())}{nome ? `, ${nome}` : ''}!</Text>
+          <Text size="caption" dimColor>{data}</Text>
         </Box>
-
-        <Box flexDirection="column" gap={1}>
-          <Text weight="semibold">Lembretes {pendentes.length ? `(${pendentes.length})` : ''}</Text>
-          {lista.length === 0 && <Text dimColor>Nenhum ainda. Anote com /lembrete seu texto.</Text>}
-          {lista.map(l => (
-            <Button
-              key={`lembrete-${l.id}`}
-              onPress={() => void salvarLembretes($, all => (l.feito ? all.filter(x => x.id !== l.id) : all.map(x => (x.id === l.id ? { ...x, feito: true } : x))))}
-            >
-              {l.feito ? '✓ ' : '○ '}{l.texto} <Text dimColor>{l.feito ? '(clique para apagar)' : ''}</Text>
-            </Button>
+        <Box flexDirection="row" gap={1}>
+          {numero('n-conv', cont.conversas, cont.conversas === 1 ? 'conversa hoje' : 'conversas hoje')}
+          {numero('n-proj', projs.length, projs.length === 1 ? 'projeto' : 'projetos')}
+          {numero('n-lemb', pendentes.length, pendentes.length === 1 ? 'lembrete' : 'lembretes')}
+        </Box>
+        <Box flexDirection="row" gap={1} flexWrap="wrap">
+          {ABAS.map(([id, rotulo]) => (
+            <Button key={`aba-${id}`} label={rotulo} variant={atual === id ? 'primary' : 'secondary'} onPress={() => void update($, aba, () => id)} />
           ))}
         </Box>
-
-        <Box flexDirection="column">
-          <Text weight="semibold">Dica do dia</Text>
-          <Text dimColor>{dica}</Text>
-        </Box>
+        {atual === 'hoje' && hoje}
+        {atual === 'comandos' && comandos}
+        {atual === 'arquivos' && arquivos}
+        {atual === 'visual' && visual}
       </Box>
     )
   })

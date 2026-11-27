@@ -43,7 +43,7 @@ No zip **Spark - Instalador Mac**, clique com o botão direito em **Spark.comman
 Pré-requisitos e passo a passo completo no [guia de instalação](docs/GUIA-INSTALACAO.md). Resumo, no PowerShell:
 
 ```powershell
-claude plugin marketplace add Yadyyace1/claude-boost
+claude plugin marketplace add Yadyyace1/spark
 ```
 
 ```powershell

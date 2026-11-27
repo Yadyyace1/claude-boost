@@ -7,7 +7,7 @@
           "id": "nome",
           "tipo": "texto",
           "titulo": "Como você quer que o Claude te chame?",
-          "placeholder": "Ex.: Bia"
+          "placeholder": "Ex.: Mari, Dr. Carlos, Ju"
         },
         {
           "id": "avatar",

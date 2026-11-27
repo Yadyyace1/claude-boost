@@ -49,8 +49,8 @@ export function Pergunta({ q, respostas, mudar, erro }: Props) {
             const on = valor === a.id
             return (
               <button key={a.id} type="button" role="radio" aria-checked={on} aria-label={a.nome} title={a.nome} onClick={() => mudar(q.id, a.id)}
-                className={cn("rounded-full p-1 transition-all outline-none hover:scale-110 focus-visible:ring-[3px] focus-visible:ring-ring/50", on ? "ring-2 ring-primary scale-110" : "opacity-80 hover:opacity-100")}>
-                <Avatar id={a.id} className="size-12" />
+                className={cn("rounded-full p-1 transition-all duration-200 outline-none hover:scale-110 hover:-rotate-6 focus-visible:ring-[3px] focus-visible:ring-ring/50", on ? "ring-[3px] ring-primary scale-110 shadow-lg shadow-primary/30" : "opacity-85 hover:opacity-100")}>
+                <Avatar id={a.id} className="size-16" />
               </button>
             )
           })}

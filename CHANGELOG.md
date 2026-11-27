@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.13.0 — 2026-11-28
+
+- **Repositório renomeado para `Yadyyace1/spark`.** O GitHub redireciona o endereço antigo, e o kit dentro do Claude continua com o nome técnico `claude-boost`. O plano entende que `Yadyyace1/spark` é o mesmo kit e não tenta registrar de novo.
+- **boost-painel (0.5.0), painel Hoje redesenhado:**
+  - cabeçalho com a saudação e 3 números (conversas, projetos e lembretes);
+  - abas Hoje, Comandos, Arquivos e Visual;
+  - seções em cartões com borda;
+  - guia de comandos enxuto, com a descrição ao lado e as suas skills;
+  - o `/guia` abre direto na aba Comandos.
+- **Assistente:**
+  - 12 avatares ilustrados em SVG: faísca, gato, raposa, panda, robô, fantasma, astronauta, alien, sapo, coruja, dragão e unicórnio;
+  - seletor maior, com um leve giro;
+  - o exemplo do campo do nome agora é neutro.
+
 ## 0.12.0 — 2026-11-27
 
 - **Versão para Mac:** `instalador/mac/Spark.command`, que abre com dois cliques no Terminal. Ele faz o mesmo que o Spark.exe:

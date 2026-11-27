@@ -6,7 +6,7 @@ O painel **Hoje** do Spark, em dois lugares:
 - **ao lado do chat** (`/painel`): métricas, projetos, caixa de arquivos, personalização e lembretes.
 
 ```
-/plugin install boost-painel --marketplace Yadyyace1/claude-boost
+/plugin install boost-painel --marketplace Yadyyace1/spark
 ```
 
 - **"O que vamos criar hoje?"**: um campo para escrever o pedido. Enter envia para o Claude.
