@@ -44,7 +44,15 @@ Conferir $arq ($linha -split '\s+')[0]
 $uv = Invoke-RestMethod "https://api.github.com/repos/astral-sh/uv/releases/latest" -Headers $cab
 $zip = $uv.assets | Where-Object { $_.name -eq "uv-x86_64-pc-windows-msvc.zip" } | Select-Object -First 1
 $arq = Baixar $zip.browser_download_url $zip.name
-$sha = $uv.assets | Where-Object { $_.name -eq "uv-x86_64-pc-windows-msvc.zip.sha256" } | Select-Object -First 1
-if ($sha) { Conferir $arq ((Invoke-WebRequest $sha.browser_download_url -UseBasicParsing -Headers $cab).Content -split '\s+')[0] }
+if ($zip.digest -match '^sha256:(.+)$') { Conferir $arq $Matches[1] }
+else {
+    # o .sha256 vem como binário: converte para texto antes de ler a soma
+    $sha = $uv.assets | Where-Object { $_.name -eq "uv-x86_64-pc-windows-msvc.zip.sha256" } | Select-Object -First 1
+    if ($sha) {
+        $conteudo = (Invoke-WebRequest $sha.browser_download_url -UseBasicParsing -Headers $cab).Content
+        if ($conteudo -is [byte[]]) { $conteudo = [Text.Encoding]::ASCII.GetString($conteudo) }
+        Conferir $arq (($conteudo.Trim() -split '\s+')[0])
+    }
+}
 
 Get-ChildItem $pasta | Select-Object Name, @{ n = "MB"; e = { [math]::Round($_.Length / 1MB, 1) } }
