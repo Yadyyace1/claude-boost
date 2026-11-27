@@ -3142,6 +3142,154 @@
           "texto": "Depois de instalar, digite /bot-whatsapp no Claude: a skill monta junto com você o número, o fluxo de atendimento, as respostas e o encaminhamento para um humano."
         }
       ]
+    },
+    {
+      "id": "pollinations",
+      "nome": "Pollinations (imagem, texto, áudio)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Gera imagens, textos, áudio e vídeo com modelos abertos; o básico funciona sem conta.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "gratis",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "ia": 2,
+        "arte": 2,
+        "conteudo": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir o README oficial do servidor MCP da Pollinations (github.com/pollinations). Uso básico sem chave."
+        }
+      ]
+    },
+    {
+      "id": "picsart",
+      "nome": "Picsart (140+ modelos)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Uma conexão para mais de 140 modelos de IA e ferramentas de edição: remover fundo, aumentar, gerar e editar.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "design": 2,
+        "arte": 2,
+        "marketing": 1,
+        "ecommerce": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir a página do MCP da Picsart (picsart.com, seção para desenvolvedores) e entrar com a conta."
+        }
+      ]
+    },
+    {
+      "id": "recraft",
+      "nome": "Recraft (imagem e vetor)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Gera e edita imagens e ilustrações vetoriais (SVG) com estilo de marca consistente.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "design": 3,
+        "arte": 2,
+        "marketing": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir recraft.ai/docs/mcp-reference/getting-started e criar a chave da API no painel da Recraft."
+        }
+      ]
+    },
+    {
+      "id": "magnific",
+      "nome": "Magnific (aumentar e refinar)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Aumenta a resolução e refina imagens com IA, mantendo os detalhes.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 0,
+        "nota": "paga por uso"
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "design": 2,
+        "arte": 2
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir docs.magnific.com/modelcontextprotocol e criar a chave da API."
+        }
+      ]
+    },
+    {
+      "id": "civitai",
+      "nome": "Civitai (modelos da comunidade)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Gera imagens com milhares de modelos e estilos da comunidade (LoRAs) pela API da Civitai.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 0,
+        "nota": "créditos da Civitai"
+      },
+      "tokens_fixos": 700,
+      "estimado": true,
+      "sinais": {
+        "arte": 3,
+        "jogos": 1,
+        "ia": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir developer.civitai.com/orchestration/mcp; usa a mesma chave da API da Civitai."
+        }
+      ],
+      "aviso": "tem modelos e conteúdos da comunidade: confira as licenças antes de usar comercialmente"
     }
   ]
 }

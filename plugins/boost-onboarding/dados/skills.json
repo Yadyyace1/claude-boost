@@ -442,6 +442,77 @@
         "planilhas"
       ],
       "todos": false
+    },
+    {
+      "id": "prompt-imagem-video",
+      "nome": "Prompt para IA de imagem e vídeo",
+      "categoria": "Vídeo e roteiro",
+      "resumo": "Escreve prompts certeiros para Higgsfield, PixelLab, Recraft, Midjourney e afins.",
+      "exemplo": "/prompt-imagem-video foto de produto de um perfume em mármore, luz de fim de tarde",
+      "areas": [
+        "design",
+        "conteudo",
+        "marketing",
+        "jogos",
+        "arquitetura"
+      ],
+      "tarefas": [
+        "imagens",
+        "video"
+      ],
+      "todos": false
+    },
+    {
+      "id": "traducao",
+      "nome": "Tradução e localização",
+      "categoria": "Texto e escrita",
+      "resumo": "Traduz e adapta textos, sites e jogos para outro idioma mantendo o tom.",
+      "exemplo": "/traducao traduzir a página do produto para inglês e espanhol, tom descontraído",
+      "areas": [
+        "ecommerce",
+        "conteudo",
+        "dev",
+        "jogos",
+        "eventos",
+        "educacao"
+      ],
+      "tarefas": [
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "precificacao",
+      "nome": "Quanto cobrar",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Calcula o preço de um serviço ou produto a partir dos custos, do tempo e do mercado.",
+      "exemplo": "/precificacao sessão de fotos de 2 horas com 30 fotos editadas",
+      "areas": [
+        "gestao",
+        "design",
+        "dev",
+        "beleza",
+        "fitness",
+        "restaurante",
+        "eventos",
+        "conteudo"
+      ],
+      "tarefas": [
+        "cobrar"
+      ],
+      "todos": false
+    },
+    {
+      "id": "rotina-semanal",
+      "nome": "Planejar a semana",
+      "categoria": "Produtividade",
+      "resumo": "Transforma a lista de tarefas e compromissos num plano de semana realista.",
+      "exemplo": "/rotina-semanal (cole as tarefas) tenho 4 horas livres por dia",
+      "areas": [],
+      "tarefas": [
+        "agenda"
+      ],
+      "todos": true
     }
   ]
 }

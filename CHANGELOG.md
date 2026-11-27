@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.0 — 2026-11-27
+
+- **Catálogo com 104 itens.** Entram 5 IAs com MCP oficial: Pollinations (grátis, sem conta), Picsart (140+ modelos), Recraft (imagem e vetor), Magnific (aumentar e refinar) e Civitai (modelos da comunidade). Elas se somam a Higgsfield, PixelLab, Tripo, ElevenLabs, Perplexity e Replicate.
+- **boost-criacao (0.3.0), 29 skills.** As novas: `prompt-imagem-video`, `traducao`, `precificacao` e `rotina-semanal`.
+- **boost-painel (0.4.0):** **guia de comandos** na barra lateral (conversa, ajustes e Spark; um clique escreve o comando), o comando `/guia` e um botão no painel da página de criar.
+- **Docs:** `docs/SERVIDOR-VULTR.md` com a proposta de servidor em São Paulo (para que serve, menor custo e passo a passo). Não foi contratado.
+
 ## 0.10.0 — 2026-11-27
 
 - **Catálogo de 84 para 99 itens:**

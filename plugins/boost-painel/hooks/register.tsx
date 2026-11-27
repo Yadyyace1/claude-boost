@@ -26,6 +26,13 @@ const DICAS = [
   'Faça um backup das suas configurações de vez em quando: é um clique aqui no painel.',
 ]
 
+// Guia de comandos: [comando, o que faz]. Um clique escreve o comando na caixa de mensagem.
+const GUIA: [string, [string, string][]][] = [
+  ['Conversa', [['/clear', 'começa do zero (assunto novo)'], ['/compact', 'resume uma conversa longa'], ['/resume', 'volta numa conversa anterior'], ['/model', 'troca o modelo']]],
+  ['Ajustes', [['/config', 'configurações e opções dos plugins'], ['/mcp', 'conectores ligados'], ['/memory', 'edita o seu CLAUDE.md']]],
+  ['Spark', [['/painel', 'abre este painel'], ['/tema', 'troca o visual (aurora, noite, spark...)'], ['/lembrete', 'anota um lembrete'], ['/backup', 'guarda as suas configurações'], ['/restaurar', 'traz um backup de volta'], ['/onboarding', 'refaz o assistente do Spark']]],
+]
+
 function saudacao(hora: number) {
   return hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite'
 }
@@ -124,6 +131,7 @@ export const register: Register = (on, options) => {
 
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'painel', description: 'Abre o painel Hoje do Spark' })
+    await $.command.register({ name: 'guia', description: 'Abre o guia de comandos do Spark na barra lateral' })
     await $.command.register({ name: 'lembrete', description: 'Anota um lembrete no painel Hoje (ex.: /lembrete ligar para o Renan)' })
     const agora = await $.clock.now()
     await carregarLembretes($)
@@ -173,6 +181,7 @@ export const register: Register = (on, options) => {
         )}
         <Box flexDirection="row" gap={1} flexWrap="wrap">
           <Button key="ini-painel" label="Painel completo" onPress={() => void abrir($)} />
+          <Button key="ini-guia" label="Guia de comandos" onPress={() => void abrir($)} />
           <Button key="ini-esconder" label="Esconder" onPress={() => void update($, inicio, i => ({ ...i, oculto: true }))} />
         </Box>
       </Box>
@@ -187,6 +196,11 @@ export const register: Register = (on, options) => {
   on('turn.complete', async ($, e, next) => {
     await lerCaixa($).catch(() => undefined)
     return next(e)
+  })
+
+  on('command.run', { command: 'guia' }, async $ => {
+    await abrir($)
+    return { text: 'O guia de comandos está no painel Hoje, ao lado. Um clique num comando escreve ele na caixa de mensagem.' }
   })
 
   on('command.run', { command: 'painel' }, async $ => {
@@ -224,6 +238,20 @@ export const register: Register = (on, options) => {
         <Box flexDirection="column">
           <Text size="heading" weight="semibold">{saudacao(agora.getHours())}{nome ? `, ${nome}` : ''}!</Text>
           <Text dimColor>{data}</Text>
+        </Box>
+
+        <Box flexDirection="column" gap={1}>
+          <Text weight="semibold">Guia de comandos</Text>
+          <Text dimColor>Digite / na caixa de mensagem, ou clique aqui:</Text>
+          {GUIA.map(([grupo, cmds]) => (
+            <Box key={`guia-${grupo}`} flexDirection="column">
+              <Text dimColor>{grupo}</Text>
+              <Box flexDirection="row" gap={1} flexWrap="wrap">
+                {cmds.map(([c, o]) => <Button key={`guia-${c}`} label={`${c} · ${o}`} onPress={() => void preencher($, `${c} `)} />)}
+              </Box>
+            </Box>
+          ))}
+          <Text dimColor>Skills: digite / e o nome (ex.: /roteiro-video). Arquivos: @ e o caminho. Parar uma resposta: Esc.</Text>
         </Box>
 
         <Input key="pedido" label="Pedir algo" placeholder="Escreva e aperte Enter" submitLabel="enviar" onSubmit={(v: string) => void enviar($, v)} />

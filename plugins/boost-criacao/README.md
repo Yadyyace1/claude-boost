@@ -1,6 +1,6 @@
 # Spark: criação
 
-25 skills em português para criar mais, atender melhor e aprender a usar o Claude. Instale o plugin inteiro:
+29 skills em português para criar mais, atender melhor e aprender a usar o Claude. Instale o plugin inteiro:
 
 ```
 /plugin install boost-criacao --marketplace Yadyyace1/claude-boost
@@ -35,5 +35,9 @@ ou escolha só as que quiser na etapa **Skills** do assistente do Spark (elas v�
 | `/anuncio-imovel` | Atendimento e vendas | Título, descrição e post para portais e redes a partir dos dados do imóvel. |
 | `/cardapio-promocoes` | Atendimento e vendas | Descrições de pratos que dão água na boca, combos e campanhas da semana. |
 | `/planilha-inteligente` | Produtividade | Monta planilhas com fórmulas, validação e painel no Excel ou no Google Sheets. |
+| `/prompt-imagem-video` | Vídeo e roteiro | Escreve prompts certeiros para Higgsfield, PixelLab, Recraft, Midjourney e afins. |
+| `/traducao` | Texto e escrita | Traduz e adapta textos, sites e jogos para outro idioma mantendo o tom. |
+| `/precificacao` | Atendimento e vendas | Calcula o preço de um serviço ou produto a partir dos custos, do tempo e do mercado. |
+| `/rotina-semanal` | Produtividade | Transforma a lista de tarefas e compromissos num plano de semana realista. |
 
 Cada skill pergunta o mínimo, entrega pronto para usar e nunca envia nada por você.
