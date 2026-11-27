@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.0 — 2026-11-27
+
+- **Catálogo de 84 para 99 itens:**
+  - conectores do diretório do Claude: Adobe, Affinity, Ableton, Splice, SketchUp, Squarespace, Tines e Spotify;
+  - MCPs oficiais da Meta: WhatsApp Business e Instagram/Facebook;
+  - outras IAs e buscas: Perplexity, Replicate, Jina AI e Brave Search;
+  - o roteiro "Atendente de IA no WhatsApp".
+- **8 áreas novas** (24 no total): imobiliário, fitness, beleza, restaurante, arquitetura, contabilidade, RH, eventos e turismo.
+- **boost-criacao (0.2.0), 25 skills.** As novas: `bot-whatsapp` (atendente pela API oficial da Meta + n8n + Claude, com passagem para humano e regras da Meta e da LGPD), `respostas-atendimento`, `proposta-comercial`, `briefing-cliente`, `analise-concorrencia`, `anuncio-imovel`, `cardapio-promocoes` e `planilha-inteligente`.
+- **boost-temas (0.2.0):**
+  - 3 temas com fundo animado: Aurora, Noite estrelada e Spark (faíscas);
+  - **fundo próprio**: do tema, cor, degradê, **foto** (vira mosaico vetorial no navegador; o app não aceita imagens) ou nenhum;
+  - **estilo das mensagens**: padrão, bolhas ou cartões.
+- **Assistente:** a seção "Fundo e estilo" na Aparência tem prévia ao vivo e a opção de mostrar ou não o painel na página de criar. O servidor só grava o fundo com foto em `~/Spark/fundo.svg` se for um SVG feito de retângulos.
+
 ## 0.9.0 — 2026-11-27
 
 - **boost-criacao (0.1.0, novo): Spark: criação**, 17 skills em português:

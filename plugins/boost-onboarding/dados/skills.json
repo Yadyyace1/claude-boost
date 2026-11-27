@@ -289,6 +289,159 @@
       "areas": [],
       "tarefas": [],
       "todos": true
+    },
+    {
+      "id": "bot-whatsapp",
+      "nome": "Bot de atendimento no WhatsApp",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Monta com você um atendente de IA no WhatsApp pela API oficial da Meta, com passagem para um humano.",
+      "exemplo": "/bot-whatsapp salão de beleza: agendar horários e tirar dúvidas de preço",
+      "areas": [
+        "atendimento",
+        "ecommerce",
+        "restaurante",
+        "beleza",
+        "imobiliario",
+        "saude",
+        "fitness"
+      ],
+      "tarefas": [
+        "automatizar"
+      ],
+      "todos": false
+    },
+    {
+      "id": "respostas-atendimento",
+      "nome": "Respostas prontas de atendimento",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Banco de respostas rápidas e perguntas frequentes para WhatsApp, Instagram e e-mail.",
+      "exemplo": "/respostas-atendimento loja de roupas online: troca, prazo, frete e tamanhos",
+      "areas": [
+        "atendimento",
+        "ecommerce",
+        "restaurante",
+        "beleza",
+        "imobiliario",
+        "saude",
+        "fitness",
+        "eventos"
+      ],
+      "tarefas": [
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "proposta-comercial",
+      "nome": "Proposta comercial e orçamento",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Proposta ou orçamento profissional com escopo, prazo, investimento e condições.",
+      "exemplo": "/proposta-comercial site institucional para uma clínica, 4 páginas, R$ 3.500",
+      "areas": [
+        "gestao",
+        "dev",
+        "design",
+        "marketing",
+        "arquitetura",
+        "eventos",
+        "juridico",
+        "contabilidade"
+      ],
+      "tarefas": [
+        "cobrar",
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "briefing-cliente",
+      "nome": "Briefing com o cliente",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Roteiro de perguntas para começar um projeto e o resumo do briefing depois.",
+      "exemplo": "/briefing-cliente identidade visual para uma cafeteria nova",
+      "areas": [
+        "design",
+        "marketing",
+        "dev",
+        "arquitetura",
+        "eventos",
+        "conteudo"
+      ],
+      "tarefas": [
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "analise-concorrencia",
+      "nome": "Análise de concorrência",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Compara concorrentes (oferta, preço, redes, diferenciais) e acha oportunidades.",
+      "exemplo": "/analise-concorrencia 3 hamburguerias do meu bairro no iFood e Instagram",
+      "areas": [
+        "marketing",
+        "ecommerce",
+        "gestao",
+        "conteudo",
+        "restaurante",
+        "beleza",
+        "imobiliario"
+      ],
+      "tarefas": [
+        "pesquisar"
+      ],
+      "todos": false
+    },
+    {
+      "id": "anuncio-imovel",
+      "nome": "Anúncio de imóvel",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Título, descrição e post para portais e redes a partir dos dados do imóvel.",
+      "exemplo": "/anuncio-imovel apartamento 2 quartos, 68 m², varanda gourmet, perto do metrô, R$ 520 mil",
+      "areas": [
+        "imobiliario"
+      ],
+      "tarefas": [
+        "escrever",
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "cardapio-promocoes",
+      "nome": "Cardápio e promoções",
+      "categoria": "Atendimento e vendas",
+      "resumo": "Descrições de pratos que dão água na boca, combos e campanhas da semana.",
+      "exemplo": "/cardapio-promocoes hamburgueria: descrever 6 lanches e criar promoção de quarta",
+      "areas": [
+        "restaurante",
+        "eventos",
+        "ecommerce"
+      ],
+      "tarefas": [
+        "escrever",
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "planilha-inteligente",
+      "nome": "Planilha inteligente",
+      "categoria": "Produtividade",
+      "resumo": "Monta planilhas com fórmulas, validação e painel no Excel ou no Google Sheets.",
+      "exemplo": "/planilha-inteligente controle de caixa mensal de uma loja com gráfico por categoria",
+      "areas": [
+        "contabilidade",
+        "financas",
+        "gestao",
+        "ecommerce",
+        "rh",
+        "eventos"
+      ],
+      "tarefas": [
+        "planilhas"
+      ],
+      "todos": false
     }
   ]
 }

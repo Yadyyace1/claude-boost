@@ -240,6 +240,18 @@ const servidor = createServer(async (req, res) => {
 
     if (url.pathname === "/confirmar") {
       if (!existsSync(saida)) mkdirSync(saida, { recursive: true });
+      // Fundo com foto: o navegador manda o mosaico; só aceita SVG feito de retângulos, e grava fora da seleção.
+      const apr = corpo?.respostas?.aparencia;
+      if (apr && typeof apr.fotoSvg === "string") {
+        const svg = apr.fotoSvg;
+        delete apr.fotoSvg;
+        if (svg.length < 131000 && /^<svg [^>]*>(\s*<rect [^<>]*\/>)+\s*<\/svg>\s*$/.test(svg)) {
+          const pastaSpark = join(homedir(), "Spark");
+          if (!existsSync(pastaSpark)) mkdirSync(pastaSpark, { recursive: true });
+          writeFileSync(join(pastaSpark, "fundo.svg"), svg);
+          apr.fotoArquivo = join(pastaSpark, "fundo.svg");
+        } else if (apr.fundo === "foto") apr.fundo = "tema";
+      }
       const arq = join(saida, "selecao.json");
       writeFileSync(arq, JSON.stringify({ confirmado_em: new Date().toISOString(), ...corpo }, null, 2) + "\n");
       console.log(`CONFIRMADO ${arq}`);

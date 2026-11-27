@@ -31,6 +31,12 @@
       "title": "Skills nos atalhos",
       "description": "Skills do Spark que aparecem como botões na página de criar, separadas por |.",
       "default": ""
+    },
+    "inicio": {
+      "type": "boolean",
+      "title": "Painel na página de criar",
+      "description": "Mostra o painel Hoje acima da caixa de mensagem numa conversa nova.",
+      "default": true
     }
   }
 }

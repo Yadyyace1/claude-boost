@@ -6,7 +6,7 @@ export type Paleta = {
   roles: Record<'accent' | 'danger' | 'success' | 'warning' | 'pro', string>
   light?: Record<string, string>
   dark: Record<string, string>
-  cena?: 'synthwave' | 'oceano'
+  cena?: 'synthwave' | 'oceano' | 'aurora' | 'estrelas' | 'faiscas'
   fundo?: { claro: [string, string]; escuro: [string, string] }
 }
 
@@ -54,5 +54,24 @@ export const PALETAS: Paleta[] = [
     roles: { accent: '#2b4bc7', danger: '#c2412d', success: '#3f8f5a', warning: '#c58a1d', pro: '#8a5cc2' },
     light: { 'surface-0': '#fbeee2', 'surface-1': '#fdf3ea', 'surface-2': '#fffaf5', 'text-primary': '#1a1f3d', 'text-secondary': '#3b4470', 'text-muted': '#555e8a' },
     dark: { 'surface-0': '#0e1230', 'surface-1': '#131840', 'surface-2': '#181e4c', 'surface-3': '#1c2353', 'text-primary': '#eef1ff', 'text-secondary': '#c5ccef', 'text-muted': '#9aa3d6' },
+  },
+  {
+    id: 'aurora', nome: 'Aurora', descricao: 'Luzes do norte dançando devagar num céu verde-azulado.',
+    roles: { accent: '#2bbf8f', danger: '#e0574a', success: '#3fbf7a', warning: '#d6a23a', pro: '#8b7cf0' },
+    dark: { 'surface-0': '#071419', 'surface-1': '#0b1c22', 'surface-2': '#10242b', 'surface-3': '#142b33', 'text-primary': '#e3f4f1', 'text-secondary': '#b5d6d0', 'text-muted': '#8fb3ad' },
+    cena: 'aurora',
+  },
+  {
+    id: 'noite', nome: 'Noite estrelada', descricao: 'Azul profundo com estrelas que piscam e um cometa de vez em quando.',
+    roles: { accent: '#7c8cff', danger: '#ef6461', success: '#4fbf8a', warning: '#e0ad4a', pro: '#b08cff' },
+    dark: { 'surface-0': '#080b1d', 'surface-1': '#0d1128', 'surface-2': '#121733', 'surface-3': '#171d3d', 'text-primary': '#eceeff', 'text-secondary': '#c3c8f0', 'text-muted': '#9aa1d4' },
+    cena: 'estrelas',
+  },
+  {
+    id: 'spark', nome: 'Spark', descricao: 'A cara do Spark: âmbar quente com faíscas subindo devagar.',
+    roles: { accent: '#e0a33b', danger: '#d9534a', success: '#4f9a5a', warning: '#c98a1d', pro: '#9b6cd6' },
+    light: { 'surface-0': '#f6efe4', 'surface-1': '#f9f3ea', 'surface-2': '#fdf9f3', 'text-primary': '#2a2016', 'text-secondary': '#574634', 'text-muted': '#6e5c48' },
+    dark: { 'surface-0': '#141210', 'surface-1': '#1b1814', 'surface-2': '#221e19', 'surface-3': '#29241e', 'text-primary': '#f5ecdf', 'text-secondary': '#d6c8b4', 'text-muted': '#ab9c86' },
+    cena: 'faiscas',
   },
 ]

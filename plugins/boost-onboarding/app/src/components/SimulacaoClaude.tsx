@@ -25,15 +25,25 @@ const svgUrl = (svg: string) => `url("data:image/svg+xml;utf8,${encodeURICompone
 
 const CONVERSAS = ["Roteiro da live de hoje", "Revisar o contrato", "Ideias de posts", "Organizar a semana"]
 
-type Props = { t: TemaPreview; modo: "escuro" | "claro"; grande?: boolean; nome?: string; cenario?: boolean; className?: string }
+export type FundoEscolhido = { tipo: "tema" | "cor" | "degrade" | "foto" | "nenhum"; cor?: string; degrade?: string[]; fotoSvg?: string }
+type Props = { t: TemaPreview; modo: "escuro" | "claro"; grande?: boolean; nome?: string; cenario?: boolean; className?: string; fundo?: FundoEscolhido; estilo?: string }
 
 /**
  * O app do Claude em miniatura, nas cores reais do tema: barra lateral com as conversas,
  * a conversa no meio (com o cenário animado ao fundo, quando o tema tem) e a caixa de mensagem.
  */
-export function SimulacaoClaude({ t, modo, grande = false, nome = "você", cenario = true, className }: Props) {
+export function SimulacaoClaude({ t, modo, grande = false, nome = "você", cenario = true, className, fundo, estilo = "padrao" }: Props) {
   const c = coresDoTema(t, modo)
-  const comCena = cenario && t.cenaSvg && modo === "escuro"
+  const tipo = fundo?.tipo ?? "tema"
+  const comCena = tipo === "tema" && cenario && t.cenaSvg && modo === "escuro"
+  const imagem = comCena ? svgUrl(t.cenaSvg!)
+    : tipo === "foto" && fundo?.fotoSvg ? svgUrl(fundo.fotoSvg)
+    : tipo === "degrade" && (fundo?.degrade?.length ?? 0) >= 2 ? `linear-gradient(160deg, ${fundo!.degrade!.join(", ")})`
+    : undefined
+  const corFundo = tipo === "cor" && fundo?.cor ? fundo.cor : undefined
+  const temVeu = !!imagem || !!corFundo
+  const bolhaPessoa = estilo === "bolhas" ? "rounded-3xl" : estilo === "cartoes" ? "rounded-lg border" : "rounded-2xl"
+  const caixaClaude = estilo === "bolhas" ? "rounded-3xl p-3" : estilo === "cartoes" ? "rounded-lg border p-3" : ""
   const linha = (w: string, cor: string, op = 1) => <div className="h-1.5 rounded-full" style={{ width: w, background: cor, opacity: op }} />
 
   return (
@@ -62,15 +72,15 @@ export function SimulacaoClaude({ t, modo, grande = false, nome = "você", cenar
       </div>
 
       {/* conversa */}
-      <div className="relative flex min-w-0 flex-1 flex-col" style={{ backgroundImage: comCena ? svgUrl(t.cenaSvg!) : undefined, backgroundSize: "cover", backgroundPosition: "center" }}>
-        {comCena && <div className="absolute inset-0" style={{ background: `${c.fundo}99` }} />}
+      <div className="relative flex min-w-0 flex-1 flex-col" style={{ backgroundImage: imagem, backgroundColor: corFundo, backgroundSize: "cover", backgroundPosition: "center" }}>
+        {temVeu && <div className="absolute inset-0" style={{ background: `${c.fundo}${tipo === "tema" ? "99" : "66"}` }} />}
         <div className={cn("relative flex flex-1 flex-col", grande ? "gap-4 px-8 pt-6" : "gap-2 px-2.5 pt-2.5")}>
           {/* mensagem da pessoa */}
-          <div className={cn("ml-auto max-w-[80%] rounded-2xl", grande ? "px-4 py-2.5 text-sm" : "w-3/5 px-2 py-1.5")} style={{ background: c.elevado }}>
+          <div className={cn("ml-auto max-w-[80%]", bolhaPessoa, grande ? "px-4 py-2.5 text-sm" : "w-3/5 px-2 py-1.5")} style={{ background: c.elevado, borderColor: t.destaque }}>
             {grande ? "Monta o roteiro da live de hoje, com os horários de cada bloco." : linha("100%", c.texto, 0.8)}
           </div>
           {/* resposta do Claude */}
-          <div className={cn("flex", grande ? "gap-3" : "gap-1.5")}>
+          <div className={cn("flex", grande ? "gap-3" : "gap-1.5", caixaClaude)} style={caixaClaude ? { background: c.lateral, borderColor: `${c.suave}55` } : undefined}>
             <Sparkles className={cn("shrink-0", grande ? "mt-0.5 size-5" : "size-3")} style={{ color: t.destaque }} />
             {grande ? (
               <div className="space-y-2 text-sm leading-relaxed">

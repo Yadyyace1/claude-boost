@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { BookOpen, Check, Clapperboard, GraduationCap, MessageSquareText, PenLine, Share2, Sparkles, Wand2 } from "lucide-react"
+import { BookOpen, Check, Clapperboard, GraduationCap, Headset, MessageSquareText, PenLine, Share2, Sparkles, Wand2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -9,7 +9,7 @@ import { Ajuda } from "./Ajuda"
 
 const ICONES: Record<string, typeof BookOpen> = {
   "Vídeo e roteiro": Clapperboard, "Redes sociais": Share2, "Texto e escrita": PenLine, Produtividade: MessageSquareText,
-  Aprender: GraduationCap, "Usar melhor o Claude": Wand2,
+  Aprender: GraduationCap, "Usar melhor o Claude": Wand2, "Atendimento e vendas": Headset,
 }
 
 /** Recomendadas: as que servem para todo mundo + as que batem com as áreas ou as tarefas da pessoa. */

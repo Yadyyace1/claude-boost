@@ -18,6 +18,7 @@ const FRASES = {
   stream: "você faz lives", vtuber: "você usa avatar virtual",
   ecommerce: "você vende online", atendimento: "você atende clientes", musica: "você trabalha com música",
   ia: "você gosta de IA e automação", gestao: "você gerencia projetos",
+  fitness: "você trabalha com esporte e saúde", arquitetura: "você projeta espaços",
 };
 
 const PESO = { impulso: 6, essencial: 8 };

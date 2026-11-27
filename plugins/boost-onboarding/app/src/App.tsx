@@ -60,7 +60,7 @@ export default function App() {
       void _nota
       const salvo = JSON.parse(localStorage.getItem(MEMORIA) || "null")
       setRespostas({ orcamento: 50, ...pre, ...(salvo?.respostas ?? {}) })
-      if (salvo?.ap) setAp(salvo.ap)
+      if (salvo?.ap) setAp({ ...APARENCIA_PADRAO, ...salvo.ap })
       if (salvo?.etapa) setEtapa(Math.min(salvo.etapa, perguntas.etapas.length))
       const v = lerVisual(marca?.cor ?? "#E0A33B")
       setVisualEstado(v)

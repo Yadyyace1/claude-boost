@@ -1,6 +1,6 @@
 # Spark: criação
 
-17 skills em português para criar mais e aprender a usar o Claude. Instale o plugin inteiro:
+25 skills em português para criar mais, atender melhor e aprender a usar o Claude. Instale o plugin inteiro:
 
 ```
 /plugin install boost-criacao --marketplace Yadyyace1/claude-boost
@@ -27,5 +27,13 @@ ou escolha só as que quiser na etapa **Skills** do assistente do Spark (elas v�
 | `/plano-de-aula` | Aprender | Plano de aula, treinamento ou curso com objetivos, atividades e avaliação. |
 | `/melhorar-prompt` | Usar melhor o Claude | Transforma um pedido vago em um pedido claro, e ensina o porquê. |
 | `/primeiros-passos` | Usar melhor o Claude | Um guia prático e interativo para começar a usar o Claude Code no dia a dia. |
+| `/bot-whatsapp` | Atendimento e vendas | Monta com você um atendente de IA no WhatsApp pela API oficial da Meta, com passagem para um humano. |
+| `/respostas-atendimento` | Atendimento e vendas | Banco de respostas rápidas e perguntas frequentes para WhatsApp, Instagram e e-mail. |
+| `/proposta-comercial` | Atendimento e vendas | Proposta ou orçamento profissional com escopo, prazo, investimento e condições. |
+| `/briefing-cliente` | Atendimento e vendas | Roteiro de perguntas para começar um projeto e o resumo do briefing depois. |
+| `/analise-concorrencia` | Atendimento e vendas | Compara concorrentes (oferta, preço, redes, diferenciais) e acha oportunidades. |
+| `/anuncio-imovel` | Atendimento e vendas | Título, descrição e post para portais e redes a partir dos dados do imóvel. |
+| `/cardapio-promocoes` | Atendimento e vendas | Descrições de pratos que dão água na boca, combos e campanhas da semana. |
+| `/planilha-inteligente` | Produtividade | Monta planilhas com fórmulas, validação e painel no Excel ou no Google Sheets. |
 
 Cada skill pergunta o mínimo, entrega pronto para usar e nunca envia nada por você.

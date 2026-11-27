@@ -9,12 +9,24 @@ import { cn } from "@/lib/utils"
 import { CORES, PADROES, type Visual } from "@/lib/visual"
 import type { Respostas } from "@/lib/tipos"
 import { SimulacaoClaude, type TemaPreview } from "@/components/SimulacaoClaude"
+import { fotoParaMosaico, svgComoUrl } from "@/lib/mosaico"
+import { Ajuda } from "./Ajuda"
+import { ImageUp, Loader2 } from "lucide-react"
+
+const FUNDOS: [EscolhaAparencia["fundo"], string][] = [["tema", "Do tema"], ["cor", "Uma cor"], ["degrade", "Degradê"], ["foto", "Minha foto"], ["nenhum", "Nenhum"]]
+const ESTILOS: [EscolhaAparencia["estilo"], string, string][] = [["padrao", "Padrão", "como o Claude vem"], ["bolhas", "Bolhas", "mensagens arredondadas"], ["cartoes", "Cartões", "com borda, mais organizado"]]
 
 export type { TemaPreview }
 
-export type EscolhaAparencia = { tema: string | null; cenario: boolean; painel: boolean; abrirPainel: boolean; atalhos: string[] }
+export type EscolhaAparencia = {
+  tema: string | null; cenario: boolean; painel: boolean; abrirPainel: boolean; atalhos: string[]
+  fundo: "tema" | "cor" | "degrade" | "foto" | "nenhum"; cor: string; degrade: string[]; fotoSvg?: string; estilo: "padrao" | "bolhas" | "cartoes"; inicio: boolean
+}
 
-export const APARENCIA_PADRAO: EscolhaAparencia = { tema: "ambar", cenario: true, painel: true, abrirPainel: true, atalhos: [] }
+export const APARENCIA_PADRAO: EscolhaAparencia = {
+  tema: "ambar", cenario: true, painel: true, abrirPainel: false, atalhos: [],
+  fundo: "tema", cor: "#141210", degrade: ["#1b1036", "#0b1f3a"], estilo: "padrao", inicio: true,
+}
 
 const SUGESTOES: Record<string, string[]> = {
   base: ["Planejar o meu dia", "Resumir o que fiz hoje", "Sugerir o próximo passo do meu objetivo"],
@@ -46,6 +58,15 @@ type Props = {
 
 export function Aparencia({ temas, ap, setAp, visual, setVisual, respostas }: Props) {
   const [novo, setNovo] = useState("")
+  const [lendoFoto, setLendoFoto] = useState(false)
+  const [erroFoto, setErroFoto] = useState("")
+  const fundoPrevia = { tipo: ap.fundo ?? "tema", cor: ap.cor, degrade: ap.degrade, fotoSvg: ap.fotoSvg }
+  async function escolherFoto(arquivo?: File) {
+    if (!arquivo) return
+    setErroFoto("")
+    setLendoFoto(true)
+    try { mudar({ fundo: "foto", fotoSvg: await fotoParaMosaico(arquivo) }) } catch (e) { setErroFoto((e as Error).message) } finally { setLendoFoto(false) }
+  }
   const sugestoes = sugestoesDeAtalho(respostas)
   const atalhos = ap.atalhos.length ? ap.atalhos : sugestoes.slice(0, 4)
   const mudar = (p: Partial<EscolhaAparencia>) => setAp({ ...ap, atalhos, ...p })
@@ -108,10 +129,58 @@ export function Aparencia({ temas, ap, setAp, visual, setVisual, respostas }: Pr
                 ))}
               </div>
             </div>
-            <SimulacaoClaude t={temaAtual} modo={modoPrevia === "claro" && temaAtual.claro ? "claro" : "escuro"} grande nome={nome === "você" ? "Você" : nome} cenario={ap.cenario} className="shadow-xl shadow-black/20" />
+            <SimulacaoClaude t={temaAtual} modo={modoPrevia === "claro" && temaAtual.claro ? "claro" : "escuro"} grande nome={nome === "você" ? "Você" : nome} cenario={ap.cenario} fundo={fundoPrevia} estilo={ap.estilo} className="shadow-xl shadow-black/20" />
           </div>
         )}
       </section>
+
+      {/* Fundo e estilo das mensagens */}
+      {temaAtual && (
+        <section className="space-y-4">
+          <Cabecalho icone={ImageUp} titulo="Fundo e estilo" sub="O que fica atrás da conversa e o jeito das mensagens. A prévia acima muda junto." />
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              {FUNDOS.map(([v, r]) => (
+                <Button key={v} type="button" size="sm" variant={(ap.fundo ?? "tema") === v ? "default" : "outline"} onClick={() => mudar({ fundo: v })}>{r}</Button>
+              ))}
+              <Ajuda titulo="Fundo do Claude">O app do Claude só aceita fundos desenhados (vetor), não fotos. Por isso a sua foto vira um <b>mosaico</b> aqui mesmo no navegador: ela não sai do seu computador, e fica escurecida para o texto continuar legível.</Ajuda>
+            </div>
+            {ap.fundo === "cor" && (
+              <label className="flex items-center gap-3 text-sm">Cor <input type="color" value={ap.cor} onChange={(e) => mudar({ cor: e.target.value })} className="h-9 w-14 cursor-pointer rounded-md border bg-transparent" aria-label="Cor do fundo" /> <code className="text-xs text-muted-foreground">{ap.cor}</code></label>
+            )}
+            {ap.fundo === "degrade" && (
+              <div className="flex items-center gap-3 text-sm">
+                {[0, 1].map((k) => (
+                  <input key={k} type="color" value={ap.degrade[k] ?? "#000000"} aria-label={`Cor ${k + 1} do degradê`}
+                    onChange={(e) => { const d = [...ap.degrade]; d[k] = e.target.value; mudar({ degrade: d }) }} className="h-9 w-14 cursor-pointer rounded-md border bg-transparent" />
+                ))}
+                <span className="h-9 w-32 rounded-md border" style={{ background: `linear-gradient(90deg, ${ap.degrade.join(", ")})` }} />
+              </div>
+            )}
+            {ap.fundo === "foto" && (
+              <div className="flex flex-wrap items-center gap-3">
+                <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:border-primary">
+                  {lendoFoto ? <Loader2 className="size-4 animate-spin" /> : <ImageUp className="size-4" />} {ap.fotoSvg ? "Trocar a foto" : "Escolher uma foto"}
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => void escolherFoto(e.target.files?.[0])} />
+                </label>
+                {ap.fotoSvg && <span className="h-10 w-16 rounded-md border bg-cover bg-center" style={{ backgroundImage: svgComoUrl(ap.fotoSvg) }} />}
+                {erroFoto && <span className="text-sm text-destructive">{erroFoto}</span>}
+              </div>
+            )}
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Estilo das mensagens</p>
+            <div className="flex flex-wrap gap-2">
+              {ESTILOS.map(([v, r, d]) => (
+                <button key={v} type="button" aria-pressed={ap.estilo === v} onClick={() => mudar({ estilo: v })}
+                  className={cn("rounded-xl border px-3 py-2 text-left text-sm transition-colors", ap.estilo === v ? "border-primary bg-primary/10" : "text-muted-foreground hover:border-foreground/30")}>
+                  <span className="block font-medium text-foreground">{r}</span><span className="text-xs">{d}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2. Painel Hoje */}
       <section className="space-y-4">
@@ -125,8 +194,12 @@ export function Aparencia({ temas, ap, setAp, visual, setVisual, respostas }: Pr
             {ap.painel && (
               <>
                 <div className="flex items-center gap-3">
+                  <Switch id="inicio" checked={ap.inicio !== false} onCheckedChange={(v) => mudar({ inicio: v })} />
+                  <Label htmlFor="inicio">Mostrar o painel na página de criar (acima da caixa de mensagem, numa conversa nova)</Label>
+                </div>
+                <div className="flex items-center gap-3">
                   <Switch id="abrir" checked={ap.abrirPainel} onCheckedChange={(v) => mudar({ abrirPainel: v })} />
-                  <Label htmlFor="abrir">Abrir sozinho quando eu começar uma conversa</Label>
+                  <Label htmlFor="abrir">Abrir também a barra lateral quando eu começar uma conversa</Label>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium">Atalhos de um clique <span className="text-muted-foreground font-normal">(até 6)</span></p>

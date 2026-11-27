@@ -145,7 +145,7 @@ export const register: Register = (on, options) => {
   // Página de criar: o painel compacto acima da caixa de mensagem, só enquanto a conversa está vazia.
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const ini = await read($, inicio)
-    if (e.props.hasSurvey || e.props.isWorking || ini.mensagens > 0 || ini.oculto) return next(e)
+    if (options.inicio === false || e.props.hasSurvey || e.props.isWorking || ini.mensagens > 0 || ini.oculto) return next(e)
     const { Box, Text, Button, Input } = $.ui.resolve(e)
     const agora = new Date(await $.clock.now())
     const u = await read($, uso)

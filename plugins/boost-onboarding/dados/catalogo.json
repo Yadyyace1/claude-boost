@@ -2715,6 +2715,433 @@
           "texto": "Peça tarefas grandes de uma vez e deixe o Claude usar subagentes; o seu CLAUDE.md já recebe as regras do modo extremo."
         }
       ]
+    },
+    {
+      "id": "adobe",
+      "nome": "Adobe Creative Cloud",
+      "categoria": "Design",
+      "tipo": "conector",
+      "resumo": "Photoshop, Illustrator e Express pelo Claude: editar, gerar e exportar peças.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "design": 3,
+        "arte": 2,
+        "marketing": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Adobe Creative Cloud\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "affinity",
+      "nome": "Affinity (Canva)",
+      "categoria": "Design",
+      "tipo": "conector",
+      "resumo": "Projetos do Affinity Designer, Photo e Publisher.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "design": 3,
+        "arte": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Affinity (Canva)\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "ableton",
+      "nome": "Ableton Live",
+      "categoria": "Música e áudio",
+      "tipo": "conector",
+      "resumo": "Ajuda a produzir no Ableton: faixas, clipes e dispositivos.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "musica": 3,
+        "audio": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Ableton Live\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "splice",
+      "nome": "Splice",
+      "categoria": "Música e áudio",
+      "tipo": "conector",
+      "resumo": "Buscar samples e loops no Splice pelo estilo que você descreve.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "musica": 3,
+        "audio": 2
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Splice\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "sketchup",
+      "nome": "SketchUp",
+      "categoria": "Arquitetura e 3D",
+      "tipo": "conector",
+      "resumo": "Modelos 3D de arquitetura e interiores no SketchUp.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "arquitetura": 3,
+        "3d": 2,
+        "design": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"SketchUp\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "squarespace",
+      "nome": "Squarespace",
+      "categoria": "Design",
+      "tipo": "conector",
+      "resumo": "Páginas, blog e loja do seu site no Squarespace.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "web": 3,
+        "ecommerce": 2,
+        "design": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Squarespace\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "tines",
+      "nome": "Tines",
+      "categoria": "Automação",
+      "tipo": "conector",
+      "resumo": "Fluxos de automação e segurança no Tines.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "automacao": 3,
+        "dev": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Tines\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "spotify",
+      "nome": "Spotify",
+      "categoria": "Música e áudio",
+      "tipo": "conector",
+      "resumo": "Playlists e músicas: montar trilhas para treino, foco, eventos ou vídeos.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 1,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "o conector é grátis; o serviço pode ter plano pago"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "musica": 2,
+        "fitness": 1,
+        "conteudo": 1
+      },
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "No app do Claude: Configurações → Conectores → procurar \"Spotify\" → Conectar e entrar na conta."
+        }
+      ]
+    },
+    {
+      "id": "whatsapp-business",
+      "nome": "WhatsApp Business (Meta, oficial)",
+      "categoria": "Vendas e atendimento",
+      "tipo": "mcp",
+      "resumo": "MCP oficial da Meta que configura a conta, o número, os modelos de mensagem e os webhooks da API oficial do WhatsApp Business.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "atendimento": 3,
+        "vendas": 2,
+        "comunicacao": 2,
+        "ecommerce": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir a documentação oficial em developers.facebook.com/documentation/mcp (servidor WhatsApp Business Tools, em beta). Precisa de uma conta no Meta Business e de um número só para a empresa. Depois use a skill /bot-whatsapp para montar o atendimento."
+        }
+      ],
+      "aviso": "é a API oficial para empresas, não o WhatsApp pessoal; mensagens iniciadas pela empresa usam modelos aprovados e podem ser cobradas pela Meta"
+    },
+    {
+      "id": "instagram-facebook",
+      "nome": "Instagram e Facebook (Meta, oficial)",
+      "categoria": "Marketing",
+      "tipo": "mcp",
+      "resumo": "MCPs oficiais da Meta para páginas e contas profissionais: publicações, comentários, métricas e a documentação da Graph API.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "social": 3,
+        "marketing": 2,
+        "conteudo": 2
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir developers.facebook.com/documentation/mcp e ligar os servidores de Facebook e Instagram com a conta profissional."
+        }
+      ]
+    },
+    {
+      "id": "perplexity",
+      "nome": "Perplexity (busca com IA)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Pesquisa na web com respostas e fontes pela API da Perplexity, de dentro do Claude.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 0,
+        "nota": "paga por uso na API da Perplexity"
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "pesquisa": 3,
+        "ia": 2
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Criar a chave em perplexity.ai → Configurações → API e seguir o README oficial (github.com/perplexityai/modelcontextprotocol)."
+        }
+      ]
+    },
+    {
+      "id": "replicate",
+      "nome": "Replicate (modelos de IA)",
+      "categoria": "IA e automação",
+      "tipo": "mcp",
+      "resumo": "Rodar modelos de imagem, vídeo e voz de código aberto (Flux, Stable Diffusion, Whisper) pela Replicate.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "pago",
+        "mensal_brl": 0,
+        "nota": "paga por segundo de uso"
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "ia": 3,
+        "arte": 1,
+        "video": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Criar o token em replicate.com/account e seguir as instruções de MCP da documentação da Replicate."
+        }
+      ]
+    },
+    {
+      "id": "jina",
+      "nome": "Jina AI (ler e buscar)",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "Lê páginas, busca na web e extrai texto limpo de sites e PDFs (entre os mais usados no Smithery).",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "pesquisa": 3,
+        "web": 1
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Seguir github.com/jina-ai/MCP (servidor remoto; chave grátis em jina.ai para mais uso)."
+        }
+      ]
+    },
+    {
+      "id": "brave-search",
+      "nome": "Brave Search",
+      "categoria": "Pesquisa",
+      "tipo": "mcp",
+      "resumo": "Busca na web e notícias com a API do Brave, com privacidade (muito usado no Smithery).",
+      "oficial": true,
+      "local": true,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0
+      },
+      "tokens_fixos": 600,
+      "estimado": true,
+      "sinais": {
+        "pesquisa": 3
+      },
+      "verificar": true,
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Criar a chave grátis em brave.com/search/api e seguir github.com/brave/brave-search-mcp-server."
+        }
+      ],
+      "requisitos": [
+        "req-node"
+      ]
+    },
+    {
+      "id": "atendimento-ia-whatsapp",
+      "nome": "Atendente de IA no WhatsApp (sem programar)",
+      "categoria": "Vendas e atendimento",
+      "tipo": "nativo",
+      "resumo": "Roteiro guiado para pôr um bot que responde clientes no WhatsApp: API oficial da Meta + n8n + Claude, com handoff para humano.",
+      "oficial": true,
+      "local": false,
+      "terceiros": false,
+      "dificuldade": 2,
+      "custo": {
+        "tipo": "freemium",
+        "mensal_brl": 0,
+        "nota": "a Meta cobra conversas iniciadas pela empresa; o n8n tem plano grátis self-hosted"
+      },
+      "tokens_fixos": 0,
+      "sinais": {
+        "atendimento": 3,
+        "vendas": 2,
+        "automacao": 2,
+        "ecommerce": 1
+      },
+      "requisitos": [],
+      "passos": [
+        {
+          "tipo": "manual",
+          "texto": "Depois de instalar, digite /bot-whatsapp no Claude: a skill monta junto com você o número, o fluxo de atendimento, as respostas e o encaminhamento para um humano."
+        }
+      ]
     }
   ]
 }

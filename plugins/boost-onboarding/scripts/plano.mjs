@@ -63,11 +63,23 @@ function configurar(plugin, valores) {
   return { tipo: "cmd", comando, texto: null, variavel: null, nota: "grava as escolhas da etapa Aparência" };
 }
 for (const p of plano) {
-  if (p.id === "boost-temas" && ap.tema) p.passos.push(configurar("boost-temas@claude-boost", { tema: ap.tema, cenario: ap.cenario !== false }));
+  if (p.id === "boost-temas" && ap.tema) {
+    const fundo = ["tema", "cor", "degrade", "foto", "nenhum"].includes(ap.fundo) ? ap.fundo : "tema";
+    const hex = (c) => (/^#[0-9a-fA-F]{6}$/.test(c) ? c : null);
+    p.passos.push(configurar("boost-temas@claude-boost", {
+      tema: ap.tema, cenario: ap.cenario !== false,
+      fundo: fundo === "foto" && !ap.fotoArquivo ? "tema" : fundo,
+      cor: hex(ap.cor) ?? "#141210",
+      degrade: (ap.degrade || []).map(hex).filter(Boolean).join(",") || "#1b1036,#0b1f3a",
+      foto: ap.fotoArquivo || "",
+      estilo: ["padrao", "bolhas", "cartoes"].includes(ap.estilo) ? ap.estilo : "padrao",
+    }));
+  }
   if (p.id === "boost-painel") {
     p.passos.push(configurar("boost-painel@claude-boost", {
       nome: typeof r.nome === "string" ? r.nome : "",
-      abrir: ap.abrirPainel !== false,
+      abrir: ap.abrirPainel === true,
+      inicio: ap.inicio !== false,
       atalhos: (ap.atalhos || []).join("|") || undefined,
     }));
   }

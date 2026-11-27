@@ -1,8 +1,10 @@
 {
   "name": "boost-temas",
-  "version": "0.1.0",
-  "description": "Temas do Spark para o app do Claude: 7 visuais (claro e escuro), dois com cenário animado. Troque com /tema.",
-  "author": { "name": "João Vitor" },
+  "version": "0.2.0",
+  "description": "Temas do Spark para o app do Claude: 10 visuais (claro e escuro), cinco com fundo animado; fundo próprio (cor, degradê ou foto em mosaico) e estilo das mensagens. Troque com /tema.",
+  "author": {
+    "name": "João Vitor"
+  },
   "license": "MIT",
   "userConfig": {
     "tema": {
@@ -10,13 +12,66 @@
       "title": "Tema",
       "description": "O visual do app do Claude. Também dá para trocar com /tema <nome>.",
       "default": "ambar",
-      "options": ["ambar", "synthwave", "floresta", "oceano", "caderno", "grafite", "royal"]
+      "options": [
+        "ambar",
+        "synthwave",
+        "floresta",
+        "oceano",
+        "caderno",
+        "grafite",
+        "royal",
+        "aurora",
+        "noite",
+        "spark"
+      ]
     },
     "cenario": {
       "type": "boolean",
       "title": "Cenário animado",
-      "description": "Mostra o fundo em movimento nos temas que têm um (Synthwave e Oceano).",
+      "description": "Mostra o fundo em movimento nos temas que têm um (Synthwave, Oceano, Aurora, Noite estrelada e Spark).",
       "default": true
+    },
+    "fundo": {
+      "type": "string",
+      "title": "Fundo",
+      "description": "tema (o do tema escolhido), cor, degrade, foto (o mosaico feito no assistente do Spark) ou nenhum.",
+      "default": "tema",
+      "options": [
+        "tema",
+        "cor",
+        "degrade",
+        "foto",
+        "nenhum"
+      ]
+    },
+    "cor": {
+      "type": "string",
+      "title": "Cor do fundo",
+      "description": "Para o fundo \"cor\": um hex como #141210.",
+      "default": "#141210"
+    },
+    "degrade": {
+      "type": "string",
+      "title": "Degradê do fundo",
+      "description": "Para o fundo \"degrade\": 2 a 4 cores em hex separadas por vírgula, como #1b1036,#0b1f3a.",
+      "default": "#1b1036,#0b1f3a"
+    },
+    "foto": {
+      "type": "string",
+      "title": "Arquivo do fundo com foto",
+      "description": "Para o fundo \"foto\": o SVG em mosaico que o assistente do Spark grava (~/Spark/fundo.svg).",
+      "default": ""
+    },
+    "estilo": {
+      "type": "string",
+      "title": "Estilo das mensagens",
+      "description": "padrao, bolhas (arredondadas) ou cartoes (com borda). Só no app do desktop.",
+      "default": "padrao",
+      "options": [
+        "padrao",
+        "bolhas",
+        "cartoes"
+      ]
     }
   }
 }

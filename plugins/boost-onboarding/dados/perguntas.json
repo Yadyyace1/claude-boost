@@ -210,6 +210,108 @@
                 "automacao": 3,
                 "dev": 1
               }
+            },
+            {
+              "valor": "imobiliario",
+              "rotulo": "Imobiliário",
+              "descricao": "corretor, imobiliária, aluguel",
+              "icone": "home",
+              "sinais": {
+                "vendas": 3,
+                "atendimento": 2,
+                "social": 2,
+                "docs": 1
+              }
+            },
+            {
+              "valor": "fitness",
+              "rotulo": "Fitness e esporte",
+              "descricao": "personal, academia, nutrição",
+              "icone": "dumbbell",
+              "sinais": {
+                "fitness": 3,
+                "conteudo": 2,
+                "atendimento": 1,
+                "social": 1
+              }
+            },
+            {
+              "valor": "beleza",
+              "rotulo": "Beleza e estética",
+              "descricao": "salão, clínica, maquiagem",
+              "icone": "sparkle",
+              "sinais": {
+                "atendimento": 3,
+                "social": 2,
+                "conteudo": 2,
+                "vendas": 1
+              }
+            },
+            {
+              "valor": "restaurante",
+              "rotulo": "Restaurante e delivery",
+              "descricao": "cardápio, pedidos, iFood",
+              "icone": "utensils",
+              "sinais": {
+                "atendimento": 3,
+                "ecommerce": 2,
+                "social": 2,
+                "vendas": 1
+              }
+            },
+            {
+              "valor": "arquitetura",
+              "rotulo": "Arquitetura e interiores",
+              "descricao": "projetos, 3D, obra",
+              "icone": "ruler",
+              "sinais": {
+                "arquitetura": 3,
+                "design": 2,
+                "3d": 2,
+                "docs": 1
+              }
+            },
+            {
+              "valor": "contabilidade",
+              "rotulo": "Contabilidade e finanças",
+              "descricao": "escritório, impostos, clientes",
+              "icone": "calculator",
+              "sinais": {
+                "dados": 3,
+                "financas": 2,
+                "docs": 2,
+                "atendimento": 1
+              },
+              "flags": {
+                "sensivel": true
+              }
+            },
+            {
+              "valor": "rh",
+              "rotulo": "RH e recrutamento",
+              "descricao": "vagas, entrevistas, pessoas",
+              "icone": "users",
+              "sinais": {
+                "produtividade": 2,
+                "docs": 2,
+                "comunicacao": 2,
+                "escrita": 1
+              },
+              "flags": {
+                "sensivel": true
+              }
+            },
+            {
+              "valor": "eventos",
+              "rotulo": "Eventos e turismo",
+              "descricao": "festas, viagens, agenda",
+              "icone": "plane",
+              "sinais": {
+                "produtividade": 2,
+                "social": 2,
+                "atendimento": 2,
+                "vendas": 1
+              }
             }
           ]
         }
