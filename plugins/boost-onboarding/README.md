@@ -1,5 +1,9 @@
 # boost-onboarding
 
+```
+/plugin install boost-onboarding --marketplace Yadyyace1/claude-boost
+```
+
 Onboarding guiado do Claude, para vender como serviço: o cliente responde a um assistente no navegador, recebe uma recomendação personalizada de conectores, plugins e instaladores, e o Claude instala tudo junto com ele.
 
 ```

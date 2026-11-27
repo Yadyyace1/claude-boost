@@ -4,6 +4,7 @@ export type Projeto = { caminho: string; nome: string; ultimo: number; vezes: nu
 export type Arquivo = { nome: string; tamanho: number; quando: number }
 export type Caixa = { pasta: string; arquivos: Arquivo[] }
 export type Contagem = { dia: string; conversas: number }
+export type Inicio = { mensagens: number; oculto: boolean }
 
 declare module 'claude-code' {
   interface PluginState {
@@ -13,6 +14,7 @@ declare module 'claude-code' {
       projetos: Shaped<Projeto[]>
       caixa: Shaped<Caixa>
       contagem: Shaped<Contagem>
+      inicio: Shaped<Inicio>
     }
   }
 }

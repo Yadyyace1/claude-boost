@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.0 — 2026-11-27
+
+- **boost-criacao (0.1.0, novo): Spark: criação**, 17 skills em português:
+  - vídeo e roteiro: `roteiro-video`, `roteiro-youtube`, `roteiro-live`;
+  - redes sociais: `ideias-conteudo`, `calendario-conteudo`, `legenda-redes`, `carrossel`, `post-linkedin`;
+  - texto: `revisar-texto`, `email-profissional`, `copy-vendas`, `artigo-seo`, `resumo-reuniao`;
+  - aprender e usar melhor o Claude: `estudo-ativo`, `plano-de-aula`, `melhorar-prompt`, `primeiros-passos`.
+- **Assistente: etapa Skills** depois da Personalização. Os cartões vêm marcados conforme a área e as tarefas, com filtros por categoria e "só as recomendadas". As escolhidas são copiadas para `~/.claude/skills`; o plano só aceita ids do índice, nunca um caminho vindo da página.
+- **boost-painel (0.3.0):**
+  - o painel Hoje aparece na **página de criar**, acima da caixa de mensagem, numa conversa nova: pedido, atalhos, skills de um clique e uso do limite; some quando a conversa começa;
+  - a barra lateral ficou mais enxuta e só abre sozinha se a pessoa pedir.
+- **Corrigido:** o assistente buscava `ambiente.json` e `respostas.json` sem o código secreto (desde a 0.8.0) e perdia a detecção do que já estava instalado e as respostas pré-preenchidas.
+
 ## 0.8.1 — 2026-11-27
 
 - **Erros da instalação corrigidos:**

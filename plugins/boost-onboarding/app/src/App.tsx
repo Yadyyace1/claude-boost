@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { ArrowLeft, ArrowRight, Bot, Check, CheckCircle2, ClipboardCheck, Loader2, Moon, Palette, RotateCcw, SlidersHorizontal, Sun, Wand2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, Check, CheckCircle2, ClipboardCheck, Loader2, Moon, Palette, RotateCcw, SlidersHorizontal, Sparkles, Sun, Wand2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -9,13 +9,14 @@ import { calcular, carregar, recomendar } from "@/lib/motor"
 import { ICONE_ETAPA } from "@/lib/icones"
 import { aplicarVisual, lerVisual, type Visual } from "@/lib/visual"
 import type { Escolha } from "@/lib/descoberta"
-import type { Ambiente, Avaliado, Catalogo, Item, Marca, Perguntas, Recomendacao as Rec, Respostas } from "@/lib/tipos"
+import type { Ambiente, Avaliado, Catalogo, Item, Marca, Perguntas, Recomendacao as Rec, Respostas, Skill } from "@/lib/tipos"
 import { Pergunta } from "@/components/Pergunta"
 import { Recomendacao } from "@/components/Recomendacao"
 import { ItemDetalhes } from "@/components/ItemDetalhes"
 import { Resumo } from "@/components/Resumo"
 import { Revisao } from "@/components/Revisao"
 import { Personalizacao } from "@/components/Personalizacao"
+import { Skills, skillsRecomendadas } from "@/components/Skills"
 import { Aparencia, APARENCIA_PADRAO, sugestoesDeAtalho, type EscolhaAparencia, type TemaPreview } from "@/components/Aparencia"
 import { GanhosPorCategoria, PerfilResumo } from "@/components/Visuais"
 import { Instalacao } from "@/components/Instalacao"
@@ -31,7 +32,7 @@ import { coresDoTema } from "@/components/SimulacaoClaude"
 const OBRIGATORIAS = ["area", "nivel", "preferencia", "economia", "sensivel"]
 const MEMORIA = "boost-onboarding-v2"
 
-type Dados = { catalogo: Catalogo; perguntas: Perguntas; marca: Marca; ambiente: Ambiente; temas: TemaPreview[] }
+type Dados = { catalogo: Catalogo; perguntas: Perguntas; marca: Marca; ambiente: Ambiente; temas: TemaPreview[]; skills: Skill[] }
 
 export default function App() {
   const [dados, setDados] = useState<Dados | null>(null)
@@ -47,13 +48,14 @@ export default function App() {
   const [enviando, setEnviando] = useState(false)
   const [pronto, setPronto] = useState(false)
   const [instalando, setInstalando] = useState(false)
+  const [skills, setSkills] = useState<Set<string> | null>(null)
   const [tutorial, setTutorial] = useState(() => !tutorialJaVisto())
 
   const setVisual = (v: Visual) => setVisualEstado(v)
 
   // Carrega catálogo, perguntas, marca, temas, ambiente e o perfil pré-preenchido (se o consultor mandou).
   useEffect(() => {
-    carregar().then(({ catalogo, perguntas, marca, ambiente, preenchidas, temas }) => {
+    carregar().then(({ catalogo, perguntas, marca, ambiente, preenchidas, temas, skills }) => {
       const { _nota, ...pre } = preenchidas as Respostas & { _nota?: string }
       void _nota
       const salvo = JSON.parse(localStorage.getItem(MEMORIA) || "null")
@@ -63,7 +65,7 @@ export default function App() {
       const v = lerVisual(marca?.cor ?? "#E0A33B")
       setVisualEstado(v)
       document.title = `${marca?.nome ?? "Claude"} · Onboarding`
-      setDados({ catalogo, perguntas, marca, ambiente, temas })
+      setDados({ catalogo, perguntas, marca, ambiente, temas, skills })
     })
   }, [])
 
@@ -85,8 +87,9 @@ export default function App() {
   const IDX_AP = nEtapas
   const IDX_REC = nEtapas + 1
   const IDX_DESC = nEtapas + 2
-  const IDX_REV = nEtapas + 3
-  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Aparência", "Recomendação", "Personalização", "Revisão"] : []
+  const IDX_SKILLS = nEtapas + 3
+  const IDX_REV = nEtapas + 4
+  const titulos = dados ? [...dados.perguntas.etapas.map((e) => e.titulo), "Aparência", "Recomendação", "Personalização", "Skills", "Revisão"] : []
   const porId = useMemo(() => Object.fromEntries((dados?.catalogo.itens ?? []).map((i) => [i.id, i])) as Record<string, Item>, [dados])
   const avaliados = useMemo(() => (rec ? (Object.values(rec.grupos).flat() as Avaliado[]) : []), [rec])
   const todosAvaliados = useMemo(() => {
@@ -141,6 +144,7 @@ export default function App() {
       setSelecao(new Set([...r.selecao, ...extras.map((e) => e.item.id)]))
       setEscolhas([])
     }
+    if (i === IDX_SKILLS && skills === null) setSkills(new Set(skillsRecomendadas(dados!.skills, respostas)))
     setEtapa(i)
   }
 
@@ -166,6 +170,7 @@ export default function App() {
     const corpo = {
       respostas: { ...respostas, aparencia: ap },
       selecao: [...selecao],
+      skills: [...(skills ?? [])],
       requisitos: totais.requisitos,
       desligados,
       descoberta: escolhas,
@@ -195,11 +200,12 @@ export default function App() {
   const orcamento = Number(respostas.orcamento ?? 0)
   const itensSelecionados = [...(totais?.requisitos ?? []), ...selecao].map((id) => porId[id]).filter(Boolean)
   const categorias = [...new Set(dados.catalogo.itens.filter((i) => i.tipo !== "requisito").map((i) => i.categoria))]
-  const IconeEtapa = etapa < nEtapas ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : [Palette, Wand2, SlidersHorizontal, ClipboardCheck][etapa - nEtapas]
+  const IconeEtapa = etapa < nEtapas ? ICONE_ETAPA[dados.perguntas.etapas[etapa].icone ?? ""] ?? Bot : [Palette, Wand2, SlidersHorizontal, Sparkles, ClipboardCheck][etapa - nEtapas]
   const SUBTITULOS: Record<number, string> = {
     [IDX_AP]: "Escolha a cara do seu Claude: o tema do app, a tela inicial como dashboard e o visual desta tela.",
     [IDX_REC]: "Montada a partir das suas respostas. Clique num cartão para marcar ou desmarcar, e em Detalhes para ver como é instalado.",
     [IDX_DESC]: "Filtre o catálogo inteiro e dê Spark no que quiser. O vibed aprende com cada escolha, e o inventário à direita guarda os extras.",
+    [IDX_SKILLS]: "Skills são receitas prontas que o Claude segue: roteiro, legenda, e-mail, estudo... Marque as que fazem sentido para você. Depois é só digitar / e o nome.",
     [IDX_REV]: "É isto que vai acontecer. Nada é instalado sem o seu OK, e senhas e chaves nunca passam pelo chat.",
   }
 
@@ -280,7 +286,7 @@ export default function App() {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Etapa {etapa + 1} de {titulos.length}</p>
               <h1 className="text-3xl font-semibold tracking-tight">
-                {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : etapa === IDX_DESC ? "Personalização" : titulos[etapa]}
+                {etapa === IDX_REC ? `Sua recomendação${nome ? `, ${nome}` : ""}` : etapa === IDX_REV ? "Revise antes de instalar" : etapa === IDX_DESC ? "Personalização" : etapa === IDX_SKILLS ? "Suas skills" : titulos[etapa]}
               </h1>
               <p className="text-muted-foreground max-w-2xl">
                 {etapa < nEtapas ? "Responda do seu jeito: dá para mudar tudo no final. As respostas ficam salvas neste navegador." : SUBTITULOS[etapa]}
@@ -304,10 +310,14 @@ export default function App() {
           {etapa === IDX_DESC && rec && totais && (
             <Personalizacao itens={todosAvaliados} selecao={selecao} alternar={alternar} escolhas={escolhas} setEscolhas={setEscolhas}
               detalhes={setAberto} teto={rec.teto} tokens={totais.totais.tokens_fixos} mensal={totais.totais.mensal_brl} orcamento={orcamento}
-              voltar={() => irPara(IDX_REC)} revisar={() => irPara(IDX_REV)} />
+              voltar={() => irPara(IDX_REC)} revisar={() => irPara(IDX_SKILLS)} />
           )}
 
-          {temResumo && etapa !== IDX_DESC && (
+          {etapa === IDX_SKILLS && skills && (
+            <Skills lista={dados.skills} escolhidas={skills} setEscolhidas={setSkills} respostas={respostas} />
+          )}
+
+          {temResumo && etapa !== IDX_DESC && etapa !== IDX_SKILLS && (
             <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
               <div className="min-w-0">
                 {etapa === IDX_REC ? (
@@ -343,7 +353,7 @@ export default function App() {
             <Button variant="outline" onClick={() => irPara(etapa - 1)} disabled={etapa === 0}><ArrowLeft /> Voltar</Button>
             {etapa < IDX_REV && (
               <Button onClick={avancar}>
-                {etapa === IDX_AP ? "Ver minha recomendação" : etapa === IDX_REC ? "Personalizar" : etapa === IDX_DESC ? "Revisar" : "Continuar"} <ArrowRight />
+                {etapa === IDX_AP ? "Ver minha recomendação" : etapa === IDX_REC ? "Personalizar" : etapa === IDX_DESC ? "Escolher skills" : etapa === IDX_SKILLS ? "Revisar" : "Continuar"} <ArrowRight />
               </Button>
             )}
             {etapa === IDX_REV && (

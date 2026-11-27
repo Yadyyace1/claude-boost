@@ -42,6 +42,8 @@ export type Pergunta = {
 export type Etapa = { titulo: string; icone?: string; dica?: string; perguntas: Pergunta[] }
 export type Perguntas = { etapas: Etapa[] }
 
+export type Skill = { id: string; nome: string; categoria: string; resumo: string; exemplo: string; areas: string[]; tarefas: string[]; todos: boolean }
+
 export type Marca = { nome: string; subtitulo: string; cor?: string; consultor?: string; rodape?: string }
 export type Ambiente = { sistema?: "win" | "mac" | "linux"; comandos?: Record<string, boolean>; plugins?: string[]; mcps?: string[] }
 export type Respostas = Record<string, string | string[] | number | undefined>

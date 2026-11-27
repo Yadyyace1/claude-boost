@@ -1,7 +1,7 @@
 {
   "name": "boost-painel",
-  "version": "0.2.0",
-  "description": "Painel Hoje, o menu inicial ao lado do chat: campo para pedir, métricas de uso, projetos recentes, caixa de arquivos, personalização (tema, modelo, conversa, backup), lembretes e dica do dia.",
+  "version": "0.3.0",
+  "description": "Painel Hoje: na página de criar (acima da caixa de mensagem) com o pedido, atalhos, skills e uso; e ao lado do chat com métricas, projetos, caixa de arquivos, personalização e lembretes.",
   "author": {
     "name": "João Vitor"
   },
@@ -16,15 +16,21 @@
     },
     "abrir": {
       "type": "boolean",
-      "title": "Abrir o painel ao iniciar",
-      "description": "Abre o painel Hoje toda vez que uma sessão começa. Dá para abrir a qualquer hora com /painel.",
-      "default": true
+      "title": "Abrir a barra lateral ao iniciar",
+      "description": "Abre o painel Hoje ao lado do chat quando uma sessão começa. A página de criar mostra o painel de qualquer jeito.",
+      "default": false
     },
     "atalhos": {
       "type": "string",
       "title": "Atalhos",
       "description": "Pedidos de um clique, separados por | (barra vertical).",
       "default": "Planejar o meu dia|Resumir o que fiz hoje|Revisar a segurança deste projeto|Sugerir o próximo passo do meu objetivo"
+    },
+    "skills": {
+      "type": "string",
+      "title": "Skills nos atalhos",
+      "description": "Skills do Spark que aparecem como botões na página de criar, separadas por |.",
+      "default": ""
     }
   }
 }

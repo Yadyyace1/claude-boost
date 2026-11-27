@@ -1,6 +1,9 @@
 # boost-painel
 
-O painel **Hoje** do Spark: o menu inicial do Claude, aberto ao lado do chat.
+O painel **Hoje** do Spark, em dois lugares:
+
+- **na página de criar**: numa conversa nova, aparece logo acima da caixa de mensagem, com o pedido, os atalhos, as suas skills e o uso do limite; some quando a conversa começa (ou no botão Esconder);
+- **ao lado do chat** (`/painel`): métricas, projetos, caixa de arquivos, personalização e lembretes.
 
 ```
 /plugin install boost-painel --marketplace Yadyyace1/claude-boost

@@ -1,15 +1,17 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, SessionContextUsage, SessionRateLimit } from 'claude-code'
 
-import type { Arquivo, Caixa, Contagem, Lembrete, Projeto, Uso } from '../types'
+import type { Arquivo, Caixa, Contagem, Inicio, Lembrete, Projeto, Uso } from '../types'
 
-// O painel "Hoje": o menu inicial do Spark, ao lado do chat.
+// O painel "Hoje" do Spark: na página de criar (a faixa acima da caixa de mensagem, enquanto a conversa
+// está vazia) e, completo, ao lado do chat (/painel).
 const PAINEL = 'boost-hoje'
 const uso = atom({ plugin: 'boost-painel', key: 'uso' } as const, { contexto: null, cincoHoras: null, semana: null, reset5h: null } as Uso, { shape: 'uso-1' })
 const lembretes = atom({ plugin: 'boost-painel', key: 'lembretes' } as const, [] as Lembrete[], { shape: 'lembretes-1' })
 const projetos = atom({ plugin: 'boost-painel', key: 'projetos' } as const, [] as Projeto[], { shape: 'projetos-1' })
 const caixa = atom({ plugin: 'boost-painel', key: 'caixa' } as const, { pasta: '', arquivos: [] } as Caixa, { shape: 'caixa-1' })
 const contagem = atom({ plugin: 'boost-painel', key: 'contagem' } as const, { dia: '', conversas: 0 } as Contagem, { shape: 'contagem-1' })
+const inicio = atom({ plugin: 'boost-painel', key: 'inicio' } as const, { mensagens: 0, oculto: false } as Inicio, { shape: 'inicio-1' })
 
 const TEMAS: [string, string][] = [['ambar', 'Âmbar'], ['synthwave', 'Synthwave'], ['floresta', 'Floresta'], ['oceano', 'Oceano'], ['caderno', 'Caderno'], ['grafite', 'Grafite'], ['royal', 'Royal']]
 
@@ -118,6 +120,7 @@ async function trocarTema($: EngineInterface, id: string) {
 export const register: Register = (on, options) => {
   const nome = String(options.nome ?? '').trim()
   const atalhos = String(options.atalhos ?? '').split('|').map(s => s.trim()).filter(Boolean).slice(0, 6)
+  const skills = String(options.skills ?? '').split('|').map(s => s.trim()).filter(s => /^[a-z0-9-]+$/.test(s)).slice(0, 12)
 
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'painel', description: 'Abre o painel Hoje do Spark' })
@@ -129,8 +132,51 @@ export const register: Register = (on, options) => {
     await lerCaixa($).catch(() => undefined)
     const atual = await $.session.usage()
     await update($, uso, () => deUso(atual.context, atual.rateLimits))
-    if (options.abrir !== false) void abrir($)
+    if (options.abrir === true) void abrir($)
     return next(e)
+  })
+
+  // A conversa começou: a página de criar sai da frente.
+  on('prompt.submit', async ($, e, next) => {
+    await update($, inicio, i => ({ ...i, mensagens: i.mensagens + 1 }))
+    return next(e)
+  })
+
+  // Página de criar: o painel compacto acima da caixa de mensagem, só enquanto a conversa está vazia.
+  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const ini = await read($, inicio)
+    if (e.props.hasSurvey || e.props.isWorking || ini.mensagens > 0 || ini.oculto) return next(e)
+    const { Box, Text, Button, Input } = $.ui.resolve(e)
+    const agora = new Date(await $.clock.now())
+    const u = await read($, uso)
+    const medidas = [
+      u.cincoHoras !== null ? `5 h: ${Math.round(u.cincoHoras)}%` : null,
+      u.semana !== null ? `semana: ${Math.round(u.semana)}%` : null,
+    ].filter(Boolean).join(' · ')
+    return (
+      <Box flexDirection="column" gap={1}>
+        <Box flexDirection="row" gap={1} flexWrap="wrap">
+          <Text weight="semibold">✦ {saudacao(agora.getHours())}{nome ? `, ${nome}` : ''}!</Text>
+          {medidas && <Text dimColor>uso {medidas}</Text>}
+        </Box>
+        <Input key="pedido-inicio" label="O que vamos criar hoje?" placeholder="Descreva e aperte Enter" submitLabel="criar" onSubmit={(v: string) => void enviar($, v)} />
+        {atalhos.length > 0 && (
+          <Box flexDirection="row" gap={1} flexWrap="wrap">
+            {atalhos.map((a, i) => <Button key={`ini-atalho-${i}`} label={a} onPress={() => void enviar($, a)} />)}
+          </Box>
+        )}
+        {skills.length > 0 && (
+          <Box flexDirection="row" gap={1} flexWrap="wrap">
+            <Text dimColor>Skills:</Text>
+            {skills.map(s => <Button key={`ini-skill-${s}`} label={`/${s}`} onPress={() => void preencher($, `/${s} `)} />)}
+          </Box>
+        )}
+        <Box flexDirection="row" gap={1} flexWrap="wrap">
+          <Button key="ini-painel" label="Painel completo" onPress={() => void abrir($)} />
+          <Button key="ini-esconder" label="Esconder" onPress={() => void update($, inicio, i => ({ ...i, oculto: true }))} />
+        </Box>
+      </Box>
+    )
   })
 
   on('session.measure', async ($, e, next) => {
@@ -159,6 +205,7 @@ export const register: Register = (on, options) => {
 
   on('ui.render', { component: 'Pane', requestId: PAINEL }, async ($, e) => {
     const { Box, Text, Button, Progress, Input, Link } = $.ui.resolve(e)
+    void atalhos
     const agoraMs = await $.clock.now()
     const agora = new Date(agoraMs)
     const u = await read($, uso)
@@ -179,14 +226,14 @@ export const register: Register = (on, options) => {
           <Text dimColor>{data}</Text>
         </Box>
 
-        <Input key="pedido" label="O que vamos criar hoje?" placeholder="Descreva o que você quer fazer e aperte Enter" rows={3} submitLabel="enviar" onSubmit={(v: string) => void enviar($, v)} />
+        <Input key="pedido" label="Pedir algo" placeholder="Escreva e aperte Enter" submitLabel="enviar" onSubmit={(v: string) => void enviar($, v)} />
 
-        {atalhos.length > 0 && (
+        {skills.length > 0 && (
           <Box flexDirection="column" gap={1}>
-            <Text weight="semibold">Atalhos</Text>
-            {atalhos.map((a, i) => (
-              <Button key={`atalho-${i}`} label={a} onPress={() => void enviar($, a)} />
-            ))}
+            <Text weight="semibold">Suas skills</Text>
+            <Box flexDirection="row" gap={1} flexWrap="wrap">
+              {skills.map(s => <Button key={`skill-${s}`} label={`/${s}`} onPress={() => void preencher($, `/${s} `)} />)}
+            </Box>
           </Box>
         )}
 

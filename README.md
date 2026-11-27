@@ -18,6 +18,7 @@ Kit para turbinar o **Claude Code**: o que já foi testado e funciona, num pacot
 | **boost-temas** | todo mundo | 7 temas para o app do Claude (claro e escuro, dois com fundo animado): `/tema` |
 | **boost-painel** | todo mundo | o menu inicial **Hoje** ao lado do chat: pedido, métricas, projetos, caixa de arquivos, personalização e lembretes |
 | **boost-backup** | todo mundo | `/backup` e `/restaurar`: as suas configurações num arquivo, para trocar de plano ou de conta sem perder nada |
+| **boost-criacao** | todo mundo | 17 skills em português: roteiro de vídeo e de live, ideias e calendário de conteúdo, legendas, carrossel, LinkedIn, revisão de texto, e-mails, texto de vendas, artigo SEO, ata de reunião, estudo ativo, plano de aula, melhorar o pedido e primeiros passos |
 
 Instale **só os módulos que você usa**: cada um ligado ocupa contexto (= tokens).
 

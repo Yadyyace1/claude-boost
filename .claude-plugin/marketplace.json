@@ -65,6 +65,12 @@
       "description": "Backup e restauração das configurações do Claude Code (ajustes, CLAUDE.md, memórias, skills, plugins, marketplaces e MCPs) num arquivo só: /backup e /restaurar.",
       "category": "productivity",
       "source": "./plugins/boost-backup"
+    },
+    {
+      "name": "boost-criacao",
+      "description": "Spark: criação — 17 skills de vídeo, roteiro, redes sociais, textos, estudo e uso do Claude.",
+      "category": "productivity",
+      "source": "./plugins/boost-criacao"
     }
   ]
 }

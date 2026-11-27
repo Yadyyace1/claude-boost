@@ -1,0 +1,294 @@
+{
+  "skills": [
+    {
+      "id": "roteiro-video",
+      "nome": "Roteiro de vídeo curto",
+      "categoria": "Vídeo e roteiro",
+      "resumo": "Roteiro de Reels, TikTok ou Shorts com gancho, falas, cenas e chamada final.",
+      "exemplo": "/roteiro-video Reels de 30s mostrando 3 erros de quem começa na academia",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "stream",
+        "educacao"
+      ],
+      "tarefas": [
+        "video",
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "roteiro-youtube",
+      "nome": "Roteiro de vídeo longo",
+      "categoria": "Vídeo e roteiro",
+      "resumo": "Roteiro de vídeo para YouTube com título, abertura, capítulos e retenção.",
+      "exemplo": "/roteiro-youtube 12 minutos explicando como montar um PC gamer de entrada",
+      "areas": [
+        "conteudo",
+        "educacao",
+        "stream"
+      ],
+      "tarefas": [
+        "video"
+      ],
+      "todos": false
+    },
+    {
+      "id": "roteiro-live",
+      "nome": "Roteiro de live ou podcast",
+      "categoria": "Vídeo e roteiro",
+      "resumo": "Pauta de live ou podcast por blocos, com interação do chat e momentos para cortes.",
+      "exemplo": "/roteiro-live live de 2h na Twitch jogando o lançamento e respondendo o chat",
+      "areas": [
+        "stream",
+        "conteudo"
+      ],
+      "tarefas": [
+        "lives"
+      ],
+      "todos": false
+    },
+    {
+      "id": "ideias-conteudo",
+      "nome": "Banco de ideias de conteúdo",
+      "categoria": "Redes sociais",
+      "resumo": "30 ideias de posts organizadas por pilar, formato e objetivo.",
+      "exemplo": "/ideias-conteudo nutricionista que atende online, público mulheres 30+",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "ecommerce",
+        "educacao",
+        "saude"
+      ],
+      "tarefas": [
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "calendario-conteudo",
+      "nome": "Calendário de conteúdo",
+      "categoria": "Redes sociais",
+      "resumo": "Calendário semanal ou mensal para várias redes, com datas e formatos.",
+      "exemplo": "/calendario-conteudo dezembro para uma loja de roupas no Instagram e TikTok",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "ecommerce"
+      ],
+      "tarefas": [
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "legenda-redes",
+      "nome": "Legendas para redes",
+      "categoria": "Redes sociais",
+      "resumo": "Legenda certa para cada rede, com gancho, corpo, CTA e hashtags.",
+      "exemplo": "/legenda-redes post do lançamento do meu curso de pixel art, Instagram e LinkedIn",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "ecommerce",
+        "stream"
+      ],
+      "tarefas": [
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "carrossel",
+      "nome": "Carrossel slide a slide",
+      "categoria": "Redes sociais",
+      "resumo": "Carrossel para Instagram ou LinkedIn com o texto e a ideia visual de cada slide.",
+      "exemplo": "/carrossel 7 slides: como organizar as finanças de um MEI",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "educacao",
+        "juridico",
+        "saude"
+      ],
+      "tarefas": [
+        "redes"
+      ],
+      "todos": false
+    },
+    {
+      "id": "post-linkedin",
+      "nome": "Post de LinkedIn e X",
+      "categoria": "Redes sociais",
+      "resumo": "Post de autoridade para LinkedIn ou thread para X a partir de uma ideia ou história.",
+      "exemplo": "/post-linkedin o que aprendi entregando 5 projetos de automação para pequenas empresas",
+      "areas": [
+        "gestao",
+        "dev",
+        "marketing",
+        "juridico",
+        "atendimento"
+      ],
+      "tarefas": [
+        "redes",
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "revisar-texto",
+      "nome": "Revisão de texto",
+      "categoria": "Texto e escrita",
+      "resumo": "Revisa gramática, clareza e estilo em português, mantendo a sua voz.",
+      "exemplo": "/revisar-texto (cole o texto) deixar mais claro e formal",
+      "areas": [
+        "juridico",
+        "estudos",
+        "gestao",
+        "conteudo",
+        "educacao",
+        "saude",
+        "atendimento"
+      ],
+      "tarefas": [
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "email-profissional",
+      "nome": "E-mails profissionais",
+      "categoria": "Texto e escrita",
+      "resumo": "E-mails de proposta, cobrança, follow-up, recusa e pedido, no tom certo.",
+      "exemplo": "/email-profissional cobrar com educação um cliente que atrasou 15 dias",
+      "areas": [
+        "gestao",
+        "juridico",
+        "atendimento",
+        "ecommerce",
+        "dev",
+        "saude"
+      ],
+      "tarefas": [
+        "escrever",
+        "cobrar"
+      ],
+      "todos": false
+    },
+    {
+      "id": "copy-vendas",
+      "nome": "Texto de vendas",
+      "categoria": "Texto e escrita",
+      "resumo": "Página de vendas, descrição de produto ou mensagem de oferta que converte.",
+      "exemplo": "/copy-vendas página do meu curso de edição de vídeo, R$ 197",
+      "areas": [
+        "marketing",
+        "ecommerce",
+        "conteudo",
+        "atendimento"
+      ],
+      "tarefas": [
+        "anuncios",
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "artigo-seo",
+      "nome": "Artigo para blog (SEO)",
+      "categoria": "Texto e escrita",
+      "resumo": "Artigo de blog estruturado para o Google, com título, intertítulos e perguntas.",
+      "exemplo": "/artigo-seo 'como abrir um MEI em 2026' para o blog do meu escritório",
+      "areas": [
+        "conteudo",
+        "marketing",
+        "ecommerce",
+        "saude",
+        "juridico",
+        "educacao"
+      ],
+      "tarefas": [
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "resumo-reuniao",
+      "nome": "Ata e resumo de reunião",
+      "categoria": "Produtividade",
+      "resumo": "Transforma notas ou transcrição em ata com decisões, responsáveis e prazos.",
+      "exemplo": "/resumo-reuniao (cole a transcrição) reunião com o cliente sobre o site",
+      "areas": [
+        "gestao",
+        "dev",
+        "juridico",
+        "atendimento",
+        "educacao",
+        "saude"
+      ],
+      "tarefas": [
+        "escrever",
+        "agenda"
+      ],
+      "todos": false
+    },
+    {
+      "id": "estudo-ativo",
+      "nome": "Estudo ativo",
+      "categoria": "Aprender",
+      "resumo": "Explica um assunto do seu jeito, faz perguntas e gera flashcards para revisar.",
+      "exemplo": "/estudo-ativo me ensine juros compostos como se eu tivesse 15 anos, depois me teste",
+      "areas": [
+        "estudos",
+        "educacao",
+        "saude",
+        "juridico",
+        "dev"
+      ],
+      "tarefas": [
+        "estudar"
+      ],
+      "todos": false
+    },
+    {
+      "id": "plano-de-aula",
+      "nome": "Plano de aula e curso",
+      "categoria": "Aprender",
+      "resumo": "Plano de aula, treinamento ou curso com objetivos, atividades e avaliação.",
+      "exemplo": "/plano-de-aula aula de 50 min de introdução à programação para o 9º ano",
+      "areas": [
+        "educacao",
+        "estudos",
+        "conteudo",
+        "gestao"
+      ],
+      "tarefas": [
+        "estudar",
+        "escrever"
+      ],
+      "todos": false
+    },
+    {
+      "id": "melhorar-prompt",
+      "nome": "Melhorar o meu pedido",
+      "categoria": "Usar melhor o Claude",
+      "resumo": "Transforma um pedido vago em um pedido claro, e ensina o porquê.",
+      "exemplo": "/melhorar-prompt quero um site pra minha loja",
+      "areas": [],
+      "tarefas": [],
+      "todos": true
+    },
+    {
+      "id": "primeiros-passos",
+      "nome": "Primeiros passos no Claude Code",
+      "categoria": "Usar melhor o Claude",
+      "resumo": "Um guia prático e interativo para começar a usar o Claude Code no dia a dia.",
+      "exemplo": "/primeiros-passos",
+      "areas": [],
+      "tarefas": [],
+      "todos": true
+    }
+  ]
+}

@@ -72,6 +72,26 @@ for (const p of plano) {
     }));
   }
 }
+// Skills escolhidas na etapa Skills: copiadas do plugin boost-criacao para ~/.claude/skills.
+const indiceSkills = existsSync(join(raiz, "dados", "skills.json")) ? ler(join(raiz, "dados", "skills.json")).skills.map((s) => s.id) : [];
+const skillsEscolhidas = [...new Set(sel.skills || [])].filter((id) => indiceSkills.includes(id));
+if (skillsEscolhidas.length) {
+  const origem = join(raiz, "..", "boost-criacao", "skills");
+  const lista = skillsEscolhidas.map((id) => `'${join(origem, id).replace(/'/g, "''")}'`).join(", ");
+  const comando = so === "win"
+    ? `$d = Join-Path $HOME '.claude\\skills'; New-Item -ItemType Directory -Force $d | Out-Null; foreach ($s in @(${lista})) { Copy-Item -LiteralPath $s -Destination $d -Recurse -Force }; "skills instaladas: ${skillsEscolhidas.length}"`
+    : `mkdir -p ~/.claude/skills && ${skillsEscolhidas.map((id) => `cp -R '${join(origem, id).replace(/'/g, "'\\''")}' ~/.claude/skills/`).join(" && ")}`;
+  plano.push({
+    ordem: plano.length + 1, id: "skills-spark", nome: `Skills do Spark (${skillsEscolhidas.length})`, tipo: "skill",
+    resumo: `Receitas prontas: ${skillsEscolhidas.map((id) => "/" + id).join(", ")}.`,
+    desligar_depois: null, aviso: null, conferir: false,
+    passos: [{ tipo: "cmd", comando, texto: null, variavel: null, nota: "copia as skills para a sua pasta de skills do Claude" }],
+  });
+  const painel = plano.find((p) => p.id === "boost-painel");
+  if (painel) for (const passo of painel.passos) if (passo.comando?.includes("plugin configure boost-painel")) {
+    passo.comando = passo.comando.replace('"abrir":', `"skills":"${skillsEscolhidas.join("|")}","abrir":`);
+  }
+}
 writeFileSync(join(pasta, "plano.json"), JSON.stringify({ sistema: so, itens: plano }, null, 2) + "\n");
 
 const rotulos = (qid) => {
