@@ -34,6 +34,10 @@ Na pasta **Spark - Instalador** (montada por `instalador/montar.ps1`), dê dois 
 
 Você só confirma e entra nas suas contas. Um `perfil.json` ao lado do .exe deixa as respostas pré-preenchidas. O programa ainda não tem assinatura digital: na primeira vez o Windows pede **Mais informações → Executar assim mesmo**.
 
+## Instalar no Mac
+
+No zip **Spark - Instalador Mac**, clique com o botão direito em **Spark.command** → Abrir (na primeira vez; depois, dois cliques). Ele instala o Homebrew, o Git, o Node.js, o uv e o Claude Code se faltarem, abre o login, registra o kit e abre o assistente. O zip é montado por `uv run instalador/montar_mac.py`.
+
 ## Instalar pelo terminal
 
 Pré-requisitos e passo a passo completo no [guia de instalação](docs/GUIA-INSTALACAO.md). Resumo, no PowerShell:

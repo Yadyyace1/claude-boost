@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.12.0 — 2026-11-27
+
+- **Versão para Mac:** `instalador/mac/Spark.command`, que abre com dois cliques no Terminal. Ele faz o mesmo que o Spark.exe:
+  - Homebrew, Git, Node.js e uv;
+  - o Claude Code pelo instalador oficial, com uma segunda tentativa;
+  - o login, a troca de kit antigo (com confirmação) e o assistente;
+  - confirmações em janelas do macOS e o fim com "We got you".
+- O zip do Mac é montado por `instalador/montar_mac.py`, que grava a permissão de execução. O script foi testado numa simulação de ponta a ponta, não num Mac de verdade.
+- **Assistente no Mac:**
+  - o PATH inclui o Homebrew (`/opt/homebrew/bin` e `/usr/local/bin`);
+  - as chaves ficam em `~/.config/spark/segredos.sh` (permissão 600), carregado pelo `~/.zshrc`;
+  - comandos com `${CHAVE}` gravam o valor na hora, porque o app do Claude no Mac não lê as variáveis do terminal.
+- **Licenças:** o LEIA-ME do Windows lista as licenças e o código-fonte do Git, do Node.js e do uv, que vão no pacote.
+
 ## 0.11.0 — 2026-11-27
 
 - **Catálogo com 104 itens.** Entram 5 IAs com MCP oficial: Pollinations (grátis, sem conta), Picsart (140+ modelos), Recraft (imagem e vetor), Magnific (aumentar e refinar) e Civitai (modelos da comunidade). Elas se somam a Higgsfield, PixelLab, Tripo, ElevenLabs, Perplexity e Replicate.

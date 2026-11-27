@@ -8,7 +8,7 @@
 // Escuta só em 127.0.0.1. Todo pedido que muda algo precisa do código secreto desta execução
 // (vai na URL aberta, ?t=...), para outra página aberta no navegador não conseguir disparar nada.
 import { createServer } from "node:http";
-import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync, appendFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync, appendFileSync, chmodSync } from "node:fs";
 import { spawn, execFileSync } from "node:child_process";
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { dirname, join, normalize, extname } from "node:path";
@@ -70,10 +70,15 @@ function gerarPlano() {
 const variaveisDoPlano = () => new Set((plano?.itens ?? []).flatMap((i) => i.passos.filter((p) => p.tipo === "segredo").map((p) => p.variavel)));
 
 const NOME_VALIDO = /^[A-Z][A-Z0-9_]{1,63}$/;
+// No Mac e no Linux as chaves ficam em ~/.config/spark/segredos.sh (permissão 600, só o usuário lê),
+// carregado pelo ~/.zshrc e pelo ~/.bash_profile.
+const ARQ_SEGREDOS = join(homedir(), ".config", "spark", "segredos.sh");
 function segredoSalvo(nome) {
   if (!NOME_VALIDO.test(nome)) return false;
   if (process.env[nome]) return true;
-  if (!win) return false;
+  if (!win) {
+    try { return readFileSync(ARQ_SEGREDOS, "utf8").includes(`export ${nome}=`); } catch { return false; }
+  }
   try {
     const v = execFileSync("powershell.exe", ["-NoProfile", "-Command", `[Environment]::GetEnvironmentVariable('${nome}','User')`], { encoding: "utf8" });
     return v.trim().length > 0;
@@ -85,7 +90,7 @@ function segredoSalvo(nome) {
 // "o termo 'claude' não é reconhecido" logo depois de uma instalação nova.
 const EXTRAS_PATH = win
   ? [join(homedir(), ".local", "bin"), join(process.env.APPDATA ?? "", "npm"), join(homedir(), ".bun", "bin"), join(homedir(), ".cargo", "bin")]
-  : [join(homedir(), ".local", "bin"), join(homedir(), ".bun", "bin")];
+  : ["/opt/homebrew/bin", "/usr/local/bin", join(homedir(), ".local", "bin"), join(homedir(), ".bun", "bin"), join(homedir(), ".cargo", "bin")];
 const extrasPs = EXTRAS_PATH.map((p) => `'${p.replace(/'/g, "''")}'`).join(", ");
 
 // Roda um comando do plano no PowerShell (Windows) ou no shell (mac/linux), com o PATH recarregado
@@ -126,8 +131,26 @@ async function executarItem(id) {
 
 function salvarSegredo(nome, valor) {
   return new Promise((ok) => {
+    if (!NOME_VALIDO.test(nome)) return ok({ ok: false });
     process.env[nome] = valor;
-    if (!win) return ok({ ok: true, aviso: "No mac/linux, acrescente a variável ao ~/.zshrc para valer nos próximos terminais." });
+    if (!win) {
+      try {
+        mkdirSync(join(homedir(), ".config", "spark"), { recursive: true });
+        const atual = existsSync(ARQ_SEGREDOS) ? readFileSync(ARQ_SEGREDOS, "utf8").split("\n").filter((l) => l && !l.startsWith(`export ${nome}=`)) : ["# Chaves salvas pelo Spark. Só você lê este arquivo (permissão 600)."];
+        atual.push(`export ${nome}='${valor.replace(/'/g, "'\\''")}'`);
+        writeFileSync(ARQ_SEGREDOS, atual.join("\n") + "\n", { mode: 0o600 });
+        chmodSync(ARQ_SEGREDOS, 0o600);
+        const linha = '[ -f "$HOME/.config/spark/segredos.sh" ] && . "$HOME/.config/spark/segredos.sh"';
+        for (const rc of [".zshrc", ".bash_profile"]) {
+          const arq = join(homedir(), rc);
+          const txt = existsSync(arq) ? readFileSync(arq, "utf8") : "";
+          if (!txt.includes(".config/spark/segredos.sh")) appendFileSync(arq, `${txt && !txt.endsWith("\n") ? "\n" : ""}\n# Spark: chaves dos conectores\n${linha}\n`);
+        }
+        return ok({ ok: true });
+      } catch (e) {
+        return ok({ ok: false, aviso: String(e.message) });
+      }
+    }
     // O valor vai por variável de ambiente do processo filho: nunca aparece na linha de comando nem em log.
     const p = spawn("powershell.exe", ["-NoProfile", "-Command", "[Environment]::SetEnvironmentVariable($env:BOOST_NOME, $env:BOOST_VALOR, 'User')"], {
       env: { ...process.env, BOOST_NOME: nome, BOOST_VALOR: valor }, windowsHide: true,

@@ -22,3 +22,9 @@ SPARK - INSTALADOR
 
 Mantenha o .exe dentro desta pasta: ele usa a pasta "kit" que está ao lado.
 Se quiser começar com respostas já preenchidas, coloque um arquivo "perfil.json" ao lado do .exe.
+
+PROGRAMAS DE TERCEIROS NA PASTA "pacotes"
+- Git para Windows: licença GPL v2; código-fonte em https://github.com/git-for-windows/git
+- Node.js: licença MIT; código-fonte em https://github.com/nodejs/node
+- uv (Astral): licenças MIT e Apache 2.0; código-fonte em https://github.com/astral-sh/uv
+Eles vêm sem alteração, baixados das fontes oficiais e conferidos pelo SHA-256 (instalador/baixar-pacotes.ps1).

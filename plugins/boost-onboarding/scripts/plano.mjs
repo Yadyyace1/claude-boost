@@ -44,6 +44,7 @@ const plano = itens.map((it, n) => ({
   aviso: it.aviso || null, conferir: !!it.verificar,
   passos: (it.passos || [])
     .map((p) => ({ tipo: p.tipo, comando: p[so] || p.win || null, texto: p.texto || null, variavel: p.var || null, nota: p.nota || null }))
+    .map((p) => (so !== "win" && p.comando ? { ...p, comando: p.comando.replace(/'([A-Z][A-Z0-9_]*)=\$\{([A-Z][A-Z0-9_]*)\}'/g, (_, nome, variavel) => `"${nome}=$${variavel}"`) } : p))
     .filter((p) => !(p.tipo === "cmd" && pularPasso(p.comando))),
 }));
 for (const p of plano) {

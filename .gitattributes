@@ -1,4 +1,6 @@
 # Tudo com LF: o bash quebra com CRLF nos scripts (\r no fim da linha)
 * text=auto eol=lf
-*.png binary
+*.command text eol=lf
 *.jpg binary
+*.png binary
+*.sh text eol=lf

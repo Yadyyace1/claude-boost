@@ -1,0 +1,26 @@
+SPARK - INSTALADOR PARA MAC
+
+1. Descompacte o zip (dois cliques nele) e abra a pasta "Spark - Instalador Mac".
+
+2. Na primeira vez: clique com o botão direito em "Spark.command" → Abrir → Abrir.
+   O Mac pede isso porque o programa ainda não tem assinatura da Apple. Das próximas vezes,
+   dois cliques bastam.
+   Se aparecer "não tem permissão", abra o Terminal e rode:
+       chmod +x ~/Downloads/"Spark - Instalador Mac"/Spark.command
+   (troque o caminho se a pasta estiver em outro lugar)
+
+3. O Terminal abre e o Spark:
+   - instala o Homebrew, o Git, o Node.js e o uv, se faltarem (pergunta antes; o Homebrew pede a senha do Mac);
+   - instala o Claude Code pelo instalador oficial da Anthropic, se ainda não tiver;
+   - abre o login da sua conta do Claude, se precisar;
+   - registra o kit desta pasta no seu Claude;
+   - abre o assistente no navegador.
+
+4. No navegador, responda as perguntas, escolha o visual, os conectores e as skills e clique em
+   "Confirmar e instalar". As chaves que você colar ficam só no seu Mac, em
+   ~/.config/spark/segredos.sh (só o seu usuário consegue ler).
+
+5. No fim, feche e abra de novo o app do Claude. Experimente /guia, /painel, /tema e /lembrete.
+
+Mantenha o Spark.command dentro desta pasta: ele usa a pasta "kit" que está ao lado.
+Se quiser começar com respostas já preenchidas, coloque um arquivo "perfil.json" ao lado dele.
