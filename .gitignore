@@ -16,3 +16,6 @@ desktop.ini
 
 # Instaladores baixados (vão no pacote, não no git)
 instalador/pacotes/
+
+# Cache dos lotes de tradução (scripts/traduzir.mjs)
+.cache-traducao/

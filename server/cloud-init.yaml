@@ -1,0 +1,80 @@
+#cloud-config
+# Configuração inicial do servidor do Spark (Vultr, São Paulo). Vai como "user data" ao criar a máquina.
+# Instala Node 24 e Caddy, deixa o fuso em America/Sao_Paulo (GMT-3), liga o firewall (22, 80, 443),
+# cria o usuário "spark" e o serviço da API. O segredo das sessões é gerado no próprio servidor.
+# <<DOMINIO>> é trocado por server/criar-servidor.ps1 (ou fica "auto" quando colado no site da Vultr);
+# DOMINIO=auto usa <ip>.sslip.io (HTTPS sem domínio próprio).
+timezone: America/Sao_Paulo
+package_update: true
+package_upgrade: true
+packages: [curl, ufw, sqlite3, debian-keyring, debian-archive-keyring, apt-transport-https, unattended-upgrades]
+users:
+  - default
+  - name: spark
+    system: true
+    shell: /usr/sbin/nologin
+    home: /opt/spark
+write_files:
+  - path: /etc/spark/api.env
+    permissions: "0600"
+    content: |
+      SPARK_BANCO=/opt/spark/dados/spark.db
+      SPARK_PORTA=8787
+      TZ=America/Sao_Paulo
+  - path: /etc/systemd/system/spark-api.service
+    content: |
+      [Unit]
+      Description=API de contas do Spark
+      After=network.target
+      [Service]
+      User=spark
+      EnvironmentFile=/etc/spark/api.env
+      WorkingDirectory=/opt/spark
+      ExecStart=/usr/bin/node /opt/spark/spark-api.mjs
+      Restart=always
+      NoNewPrivileges=true
+      ProtectSystem=strict
+      ReadWritePaths=/opt/spark/dados
+      PrivateTmp=true
+      [Install]
+      WantedBy=multi-user.target
+  - path: /opt/spark-caddy.sh
+    permissions: "0755"
+    content: |
+      #!/bin/sh
+      # HTTPS sem domínio próprio: <ip>.sslip.io aponta para o próprio IP e o Caddy pega o certificado sozinho.
+      DOMINIO="<<DOMINIO>>"
+      case "$DOMINIO" in "<<"*) DOMINIO=auto;; esac
+      if [ "$DOMINIO" = auto ]; then
+        IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+        DOMINIO="$(echo "$IP" | tr . -).sslip.io"
+      fi
+      cat > /etc/caddy/Caddyfile <<FIM
+      $DOMINIO {
+        encode gzip
+        reverse_proxy 127.0.0.1:8787
+        header Strict-Transport-Security max-age=31536000
+      }
+      FIM
+  - path: /etc/cron.daily/spark-backup
+    permissions: "0755"
+    content: |
+      #!/bin/sh
+      # Cópia diária do banco (guarda 14 dias) em /opt/spark/backups
+      mkdir -p /opt/spark/backups
+      sqlite3 /opt/spark/dados/spark.db ".backup /opt/spark/backups/spark-$(date +%F).db"
+      find /opt/spark/backups -name 'spark-*.db' -mtime +14 -delete
+runcmd:
+  - curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
+  - apt-get install -y nodejs
+  - curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  - curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' -o /etc/apt/sources.list.d/caddy-stable.list
+  - apt-get update && apt-get install -y caddy
+  - sh /opt/spark-caddy.sh
+  - mkdir -p /opt/spark/dados /opt/spark/backups
+  # o segredo das sessões nasce aqui, no próprio servidor: não passa por ninguém
+  - grep -q SPARK_SEGREDO /etc/spark/api.env || echo "SPARK_SEGREDO=$(openssl rand -hex 32)" >> /etc/spark/api.env
+  - curl -fsSL https://raw.githubusercontent.com/Yadyyace1/spark/main/server/spark-api.mjs -o /opt/spark/spark-api.mjs
+  - chown -R spark:spark /opt/spark
+  - ufw default deny incoming && ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable
+  - systemctl daemon-reload && systemctl enable --now spark-api && systemctl restart caddy

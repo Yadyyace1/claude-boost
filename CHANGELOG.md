@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.14.0 — 2026-11-28
+
+- **Assistente em 10 idiomas:** português, inglês, espanhol, francês, alemão, italiano, japonês, chinês, coreano e russo.
+  - **seletor de idioma:** fica no topo e na tela de login; na primeira visita usa o idioma do computador;
+  - **o que é traduzido:** a interface, as perguntas, o catálogo, as skills e os temas;
+  - **como foi gerado:** `scripts/traduzir.mjs` traduz uma vez com o Claude Haiku, sem ferramentas, e grava em `dados/i18n/<idioma>.json`, que vai no kit.
+- **Login antes das configurações:**
+  - telas de entrar e criar conta, com a sessão só na aba aberta e o botão Sair;
+  - aparece quando o Spark tem servidor de contas (`"api"` no `marca.json` ou `SPARK_API`);
+  - o assistente só libera esse endereço na política de segurança (CSP).
+- **API de contas** (`server/spark-api.mjs`): Node 24 sem dependências, SQLite, scrypt, sessões assinadas e que dá para revogar, limite contra força bruta e CORS só do assistente local. Passou em 16 testes.
+- **Servidor na Vultr São Paulo (GMT-3), pronto para criar:**
+  - `server/cloud-init.yaml` instala Node, Caddy (HTTPS), firewall e backup diário;
+  - `server/criar-servidor.ps1` mostra o preço oficial (vc2-1c-1gb, US$ 5/mês) e só cria com `-Confirmar`.
+
 ## 0.13.0 — 2026-11-28
 
 - **Repositório renomeado para `Yadyyace1/spark`.** O GitHub redireciona o endereço antigo, e o kit dentro do Claude continua com o nome técnico `claude-boost`. O plano entende que `Yadyyace1/spark` é o mesmo kit e não tenta registrar de novo.

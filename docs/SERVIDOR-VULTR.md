@@ -1,33 +1,39 @@
-# Servidor do Spark na Vultr (São Paulo) — proposta
+# Servidor do Spark na Vultr (São Paulo, GMT-3)
 
-**Situação:** só no papel. Nada foi contratado. Precisa do OK do João para o valor e da chave da API da Vultr salva como variável de ambiente (`VULTR_API_KEY`), nunca colada no chat.
+**Situação:** pronto para criar, mas nada foi contratado. Falta o João salvar a chave da API da Vultr (`VULTR_API_KEY`) no próprio PowerShell e aprovar o valor.
 
-## Para que serve
+## O que roda nele
 
-O Spark roda inteiro na máquina de cada cliente. Um servidor só vale a pena para o que precisa ficar ligado o tempo todo:
+- **API de contas** (`server/spark-api.mjs`): criar conta, entrar, sair, perfil (nome, avatar, idioma). Node 24 sem dependências, banco **SQLite** (`node:sqlite`).
+  - **senhas:** scrypt (nunca guardadas em texto);
+  - **sessões:** assinadas, de 30 dias, que dá para revogar;
+  - **contra ataques:** limite contra força bruta e a mesma resposta para senha errada e e-mail inexistente;
+  - **CORS:** só o assistente local (`http://127.0.0.1:<porta>`) e as origens configuradas.
+- **Caddy** na frente, com HTTPS automático. Sem domínio próprio, usa `<ip>.sslip.io`.
+- **Backup diário** do banco (guarda 14 dias) em `/opt/spark/backups`.
+- **Fuso** `America/Sao_Paulo`. O banco guarda as datas em UTC.
+- **Firewall:** só as portas 22, 80 e 443.
 
-1. **Perfil e rede do Spark:** página de perfil de cada cliente e a rede de networking (o próximo projeto).
-2. **Bot de WhatsApp dos clientes:** o webhook da API oficial da Meta precisa de um endereço público sempre no ar. Um **n8n** no servidor recebe as mensagens, chama o Claude pela API e responde.
-3. **Assinaturas, depois:** controle de quem assinou o serviço e acesso ao kit.
+Depois: o perfil e a rede social, os webhooks do bot de WhatsApp (n8n) e as assinaturas.
 
-## Menor custo possível
+## Preço oficial (API pública da Vultr, região `sao`, consultado em 2026-11-28)
 
-| Item | Escolha | Por quê |
-|---|---|---|
-| Região | São Paulo (`sao`) | latência baixa para clientes no Brasil |
-| Máquina | o menor plano com IPv4 (1 vCPU, 1–2 GB) | aguenta o n8n e uma API pequena |
-| Preço | **entre US$ 9 e US$ 18 por mês**, a confirmar no painel com a região São Paulo escolhida | as fontes públicas não batem; o painel mostra o valor certo |
-| Sistema | Ubuntu LTS + Docker | um `docker compose` sobe tudo |
-| HTTPS | Caddy | certificado grátis e automático |
-| Banco e login | **Supabase no plano grátis** (fora do servidor) | não gasta memória do servidor e tem backup |
-| Backup | snapshot manual antes de mudanças grandes | backup automático da Vultr é pago à parte |
+| Plano | vCPU | Memória | Disco | Tráfego | US$/mês |
+|---|---|---|---|---|---|
+| **vc2-1c-1gb** (recomendado para começar) | 1 | 1 GB | 25 GB | 1 TB | **5** |
+| vc2-1c-2gb (com n8n) | 1 | 2 GB | 55 GB | 2 TB | 10 |
+| vc2-2c-2gb | 2 | 2 GB | 65 GB | 3 TB | 15 |
 
-Para economizar também nos tokens: o n8n só chama o Claude quando chega mensagem, com um modelo menor (Haiku) para o atendimento comum e respostas curtas, e a base de respostas do cliente fica num arquivo, em vez de ir inteira em cada chamada.
+O backup automático da Vultr é opcional e custa +20%. O backup diário do banco já vem de graça no próprio servidor.
 
-## Passo a passo (quando aprovado)
+## Como criar
 
-1. O João cria a chave em Vultr → Account → API e a salva com `[Environment]::SetEnvironmentVariable("VULTR_API_KEY", "…", "User")` no próprio PowerShell.
-2. O Claude confere o preço real do plano na região São Paulo pela API e mostra o valor antes de criar.
-3. Com o OK: cria a máquina e a chave SSH, ativa o firewall (só 22, 80 e 443) e instala Docker, Caddy e n8n.
-4. Aponta um subdomínio (ex.: `api.` + domínio do Spark) para o IP.
-5. Registra tudo aqui e no Obsidian (nota "Consultoria Claude Boost").
+1. Criar a chave em my.vultr.com → Account → API e salvar (no seu PowerShell, nunca no chat):
+   `[Environment]::SetEnvironmentVariable("VULTR_API_KEY", "SUA_CHAVE", "User")`
+2. Ver o plano e o preço, sem criar nada: `powershell -ExecutionPolicy Bypass -File server\criar-servidor.ps1`
+3. Criar (começa a cobrança): `... criar-servidor.ps1 -Confirmar`
+4. Pôr o endereço que ele mostra em `plugins/boost-onboarding/dados/marca.json` (`"api": "https://<ip>.sslip.io"`) e remontar o instalador. A partir daí, o assistente pede login antes das configurações.
+
+## Testar no PC, sem servidor
+
+`server/spark-api.mjs` roda local com `SPARK_SEGREDO` (32+ caracteres) e `SPARK_PORTA`. O assistente usa a API definida em `SPARK_API`, por exemplo `http://127.0.0.1:8787`.

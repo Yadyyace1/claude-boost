@@ -3,6 +3,7 @@
 import * as m from "@motor/recomendar.mjs"
 import type { Ambiente, Avaliado, Catalogo, Marca, Perguntas, Recomendacao, Respostas, Skill } from "./tipos"
 import { pegar as pegarComCodigo } from "./api"
+import { carregarTraducao, idiomaAtual, ligarTradutor, traduzirDados } from "./i18n"
 import type { TemaPreview } from "@/components/Aparencia"
 
 export const recomendar = m.recomendar as (r: Respostas, c: Catalogo, p: Perguntas, a: Ambiente) => Recomendacao
@@ -25,12 +26,18 @@ export async function carregar() {
     pegar("dados/temas.json"),
     pegar("dados/skills.json"),
   ])
-  return {
+  // Idioma: troca os textos dos dados e liga o tradutor da tela (português não precisa de nada).
+  const traducao = await carregarTraducao(idiomaAtual())
+  ligarTradutor(traducao)
+  const t = traduzirDados(traducao, {
     temas: ((temas as { temas?: TemaPreview[] }).temas ?? []) as TemaPreview[],
     skills: ((skills as { skills?: Skill[] }).skills ?? []) as Skill[],
     catalogo: catalogo as Catalogo,
     perguntas: perguntas as Perguntas,
     marca: { nome: "Spark", subtitulo: "Vamos montar o seu Claude", ...(marca as Partial<Marca>) } as Marca,
+  })
+  return {
+    ...t,
     ambiente: ambiente as Ambiente,
     preenchidas: preenchidas as Respostas,
   }

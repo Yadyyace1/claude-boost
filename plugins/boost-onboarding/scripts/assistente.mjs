@@ -34,11 +34,20 @@ const PERMITIDOS = ["assistente", "dados"];
 const DIST = join(raiz, "app", "dist");
 const temApp = existsSync(join(DIST, "index.html"));
 
+// API de contas do Spark (login): SPARK_API ou "api" do dados/marca.json. Só https (ou localhost, para teste).
+const API_CONTAS = (() => {
+  let api = process.env.SPARK_API ?? "";
+  if (!api) { try { api = JSON.parse(readFileSync(join(raiz, "dados", "marca.json"), "utf8")).api ?? ""; } catch { /* sem marca */ } }
+  try {
+    const u = new URL(api);
+    return u.protocol === "https:" || /^(127\.0\.0\.1|localhost)$/.test(u.hostname) ? u.origin : "";
+  } catch { return ""; }
+})();
 const SEGURANCA = {
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "no-referrer",
   "X-Frame-Options": "DENY",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
+  "Content-Security-Policy": `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'${API_CONTAS ? " " + API_CONTAS : ""}; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`,
 };
 function servir(res, arquivo) {
   res.writeHead(200, { "Content-Type": TIPOS[extname(arquivo)] || "application/octet-stream", "Cache-Control": "no-store", ...SEGURANCA });
@@ -332,6 +341,7 @@ const servidor = createServer(async (req, res) => {
     return res.end(respostasArq && existsSync(respostasArq) ? readFileSync(respostasArq) : "{}");
   }
   if (url.pathname === "/modo") return json(res, 200, { instalar: modoInstalar });
+  if (url.pathname === "/config.json") return json(res, 200, { api: API_CONTAS });
   if (url.pathname === "/plano") {
     if (!plano) return json(res, 404, {});
     const segredos = Object.fromEntries([...variaveisDoPlano()].map((v) => [v, segredoSalvo(v)]));

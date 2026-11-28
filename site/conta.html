@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spark · Sua conta</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="ceu" aria-hidden="true"></div>
+  <header class="topo"><div class="wrap"><a class="marca" href="index.html"><img src="logo.svg" alt="" width="34" height="34" /> Spark</a><nav class="menu"><a href="index.html#planos">Planos</a><button class="bt contorno mini oculto" id="sair" type="button">Sair</button></nav></div></header>
+
+  <main class="wrap">
+    <!-- entrar / criar conta -->
+    <div class="painel" id="tela-entrar">
+      <div style="text-align:center"><img src="logo.svg" alt="" width="56" height="56" style="margin:0 auto" /><h1 style="font-size:28px;margin:14px 0 4px;max-width:none">Entre no Spark</h1><p style="color:var(--suave);margin:0">Para comprar, baixar e participar da comunidade.</p></div>
+      <div class="abas" role="tablist"><button type="button" class="on" data-modo="entrar">Entrar</button><button type="button" data-modo="criar">Criar conta</button></div>
+      <form id="form-conta">
+        <input class="campo oculto" id="nome" placeholder="Como quer ser chamado" autocomplete="nickname" maxlength="60" />
+        <input class="campo" id="email" type="email" required placeholder="seu@email.com" autocomplete="email" />
+        <input class="campo" id="senha" type="password" required minlength="8" placeholder="Senha" autocomplete="current-password" />
+        <p class="erro" id="erro-conta" role="alert"></p>
+        <button class="bt ambar" style="width:100%" type="submit" id="enviar">Entrar</button>
+      </form>
+      <div id="bloco-social" class="oculto"><div class="ou">ou continue com</div><div class="social" id="social"></div></div>
+      <p class="erro" id="aviso-api"></p>
+    </div>
+
+    <!-- conta -->
+    <div class="painel largo oculto" id="tela-conta">
+      <h1 style="font-size:30px;margin:0;max-width:none">Olá, <span id="conta-nome"></span> ✦</h1>
+      <p style="color:var(--suave);margin:6px 0 24px" id="conta-email"></p>
+      <div class="grade">
+        <div class="cartao"><h3>Seu plano</h3><p id="plano-status">—</p><div class="acoes" style="justify-content:flex-start;margin-top:16px" id="comprar">
+          <button class="bt contorno mini" type="button" data-plano="anual">Anual · R$ 99,99/ano</button>
+          <button class="bt ambar mini" type="button" data-plano="vitalicio">Vitalício · R$ 499</button></div>
+          <p class="erro" id="erro-compra"></p></div>
+        <div class="cartao"><h3>Instalador</h3><p>Baixe, descompacte e dê dois cliques.</p><div class="acoes" style="justify-content:flex-start;margin-top:16px" id="downloads">
+          <a class="bt contorno mini" href="https://github.com/Yadyyace1/spark/releases/latest" target="_blank" rel="noopener">Windows e Mac</a></div></div>
+      </div>
+      <div class="cartao oculto" id="comunidade" style="margin-top:16px">
+        <h3>Comunidade</h3><p>Dicas, dúvidas e fluxos de quem usa o Spark.</p>
+        <a class="bt contorno mini oculto" id="grupo" target="_blank" rel="noopener" style="margin-top:12px">Entrar no grupo</a>
+        <form id="form-post" style="margin-top:16px"><textarea class="campo" id="texto-post" rows="3" maxlength="1000" placeholder="Compartilhe uma dica ou pergunte algo"></textarea><button class="bt ambar mini" type="submit">Publicar</button></form>
+        <div id="posts"></div>
+      </div>
+    </div>
+  </main>
+  <script src="config.js"></script>
+  <script src="site.js"></script>
+  <script src="conta.js"></script>
+</body>
+</html>

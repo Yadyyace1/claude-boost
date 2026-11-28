@@ -23,9 +23,12 @@ import { Instalacao } from "@/components/Instalacao"
 import { postar } from "@/lib/api"
 import { LogoSpark } from "@/components/Logo"
 import { Suporte } from "@/components/Suporte"
+import { Entrar, contaApi, guardarSessao, lerSessao, type Conta, type Sessao } from "@/components/Entrar"
+import { pegar as pegarLocal } from "@/lib/api"
 import { motion } from "motion/react"
 import { Tutorial, tutorialJaVisto } from "@/components/Tutorial"
 import { Avatar } from "@/lib/avatares"
+import { SeletorIdioma } from "@/components/SeletorIdioma"
 import { CircleHelp } from "lucide-react"
 import { coresDoTema } from "@/components/SimulacaoClaude"
 
@@ -50,6 +53,33 @@ export default function App() {
   const [instalando, setInstalando] = useState(false)
   const [skills, setSkills] = useState<Set<string> | null>(null)
   const [tutorial, setTutorial] = useState(() => !tutorialJaVisto())
+  // Login: só quando o Spark tem servidor de contas (config.json). undefined = ainda conferindo.
+  const [api, setApi] = useState<string | undefined>(undefined)
+  const [conta, setConta] = useState<Conta | null>(null)
+  useEffect(() => {
+    pegarLocal<{ api?: string }>("config.json").then(async (c) => {
+      const endereco = c?.api ?? ""
+      if (endereco) {
+        const s = lerSessao()
+        if (s) {
+          try { const r = await contaApi<{ conta: Conta }>(endereco, "/v1/eu", "GET", undefined, s.token); setConta(r.conta) }
+          catch { guardarSessao(null) }
+        }
+      }
+      setApi(endereco)
+    })
+  }, [])
+  function entrou(s: Sessao) {
+    setConta(s.conta)
+    // O nome e o avatar da conta entram nas respostas, se a pessoa ainda não respondeu.
+    setRespostas((r) => ({ ...r, nome: (r.nome as string) || s.conta.nome || undefined, avatar: (r.avatar as string) || s.conta.avatar || undefined }))
+  }
+  async function sair() {
+    const s = lerSessao()
+    if (api && s) await contaApi(api, "/v1/sessoes", "DELETE", undefined, s.token).catch(() => undefined)
+    guardarSessao(null)
+    setConta(null)
+  }
 
   const setVisual = (v: Visual) => setVisualEstado(v)
 
@@ -104,9 +134,10 @@ export default function App() {
     [selecao, rec, dados, avaliados],
   )
 
-  if (!dados) {
+  if (!dados || api === undefined) {
     return <div className="grid min-h-screen place-items-center text-muted-foreground"><Loader2 className="size-6 animate-spin" /></div>
   }
+  if (api && !conta) return <Entrar api={api} entrou={entrou} />
 
   const mudar = (id: string, v: Respostas[string]) => {
     setRespostas((r) => ({ ...r, [id]: v }))
@@ -211,7 +242,7 @@ export default function App() {
 
   if (instalando) {
     return (
-      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)} sair={conta ? sair : undefined}>
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 lg:px-8">
           <header className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight">Instalação</h1>
@@ -225,7 +256,7 @@ export default function App() {
 
   if (pronto) {
     return (
-      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
+      <Casca marca={dados.marca} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)} sair={conta ? sair : undefined}>
         <div className="mx-auto max-w-xl px-4 py-20 text-center space-y-5">
           <CheckCircle2 className="mx-auto size-14 text-primary" />
           <h1 className="text-4xl font-bold tracking-tight">We got you{nome ? `, ${nome}` : ""}.</h1>
@@ -243,7 +274,7 @@ export default function App() {
   const temResumo = etapa >= IDX_REC && rec && totais
 
   return (
-    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)}>
+    <Casca marca={dados.marca} progresso={((etapa + 1) / titulos.length) * 100} visual={visual} setVisual={setVisual} usuario={usuario} abrirTutorial={() => setTutorial(true)} sair={conta ? sair : undefined}>
       <div className={cn("mx-auto grid gap-8 px-4 py-8 lg:px-8", etapa === IDX_DESC ? "max-w-[1600px] py-5" : "max-w-7xl lg:grid-cols-[220px_1fr]")}>
         <nav aria-label="Etapas" className={cn("hidden", etapa !== IDX_DESC && "lg:block")}>
           <div className="sticky top-24">
@@ -378,7 +409,7 @@ export default function App() {
 }
 
 type Usuario = { nome: string; avatar?: string }
-function Casca({ marca, progresso, visual, setVisual, usuario, abrirTutorial, children }: { marca: Marca; progresso?: number; visual: Visual; setVisual: (v: Visual) => void; usuario?: Usuario; abrirTutorial?: () => void; children: React.ReactNode }) {
+function Casca({ marca, progresso, visual, setVisual, usuario, abrirTutorial, sair, children }: { marca: Marca; progresso?: number; visual: Visual; setVisual: (v: Visual) => void; usuario?: Usuario; abrirTutorial?: () => void; sair?: () => void; children: React.ReactNode }) {
   const escuro = visual.modo === "escuro"
   return (
     <div className="min-h-screen">
@@ -393,11 +424,13 @@ function Casca({ marca, progresso, visual, setVisual, usuario, abrirTutorial, ch
           </div>
           <div className="flex items-center gap-4">
             {progresso != null && <Progress value={progresso} className="hidden h-1.5 w-40 sm:block" aria-label="Progresso" />}
+            <SeletorIdioma />
             {abrirTutorial && <Button variant="ghost" size="icon" aria-label="Abrir o tutorial" title="Tutorial" onClick={abrirTutorial}><CircleHelp /></Button>}
             <Button variant="ghost" size="icon" aria-label={escuro ? "Mudar para o modo claro" : "Mudar para o modo escuro"} onClick={() => setVisual({ ...visual, modo: escuro ? "claro" : "escuro" })}>
               {escuro ? <Sun /> : <Moon />}
             </Button>
             {usuario && (usuario.avatar || usuario.nome) && <span className="flex items-center gap-2 border-l pl-4 text-sm"><Avatar id={usuario.avatar} nome={usuario.nome} /><span className="hidden md:inline">{usuario.nome}</span></span>}
+            {sair && <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={sair}>Sair</Button>}
           </div>
         </div>
       </header>
